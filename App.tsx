@@ -1,11 +1,12 @@
 import React from 'react';
-import {SafeAreaView, View, StyleSheet, Text} from 'react-native';
+import {SafeAreaView, StyleSheet, Text} from 'react-native';
+import Screen from './src/Screens/Screen';
 
 const App = () => {
     return (
         <SafeAreaView style={styles.screen}>
             <Text style={styles.header}>Добро пожаловать в приложение</Text>
-
+            <Screen/>
         </SafeAreaView>
     );
 };
