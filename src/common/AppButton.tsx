@@ -1,5 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableHighlight} from 'react-native';
+import {width as w} from '../consts/size';
+
 
 
 
@@ -16,17 +18,16 @@ export const AppButton = ({title, onPress}) => {
 
 const styles = StyleSheet.create({
     btn: {
+        width: w - 30,
         alignItems: 'center',
-        width: 40,
+        borderRadius: 30,
+        paddingVertical: 10,
+        backgroundColor: '#00008b',
         textAlign: 'center',
-        paddingVertical: 14,
-        color: 'gray',
-        fontSize: 14,
-        lineHeight: 17,
-        letterSpacing: -0.28,
-        borderRadius: 8,
+
     },
     textStyle: {
-        color: 'white',
+        color: '#ffffff',
+
     }
 });
