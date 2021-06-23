@@ -38,13 +38,14 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'center',
         width: '100%',
-        height: '100%'
+        height: '100%',
     },
     header: {
         textAlign: 'center',
         fontSize: 30,
-        marginTop: 110,
+        marginTop: 60,
         color: '#ffff',
+        marginBottom: 50
     },
     containerInput: {
         marginBottom: 60

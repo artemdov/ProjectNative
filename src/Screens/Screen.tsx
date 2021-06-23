@@ -11,28 +11,37 @@ const Stack =createStackNavigator()
 
 export const Screen = () => {
 
+    const myOptions = {
+        title: 'Вход',
+        headerTintColor: '#fff',
+        headerStyle: {
+            backgroundColor: '#0c0c30',
+        }
+    }
+
     return (
         <NavigationContainer>
-            <Stack.Navigator initialRouteName="Welcome" screenOptions={{
-                                     title: '',
-                                     headerStyle: {height: 51},
-                                     headerTransparent: true,
-                                     headerBackImage: () => <Image style={{backgroundColor: 'white', width: 29, height: 71, marginLeft: 9}} source={require('../../assets/backArrow.png')} />
-                                 }}>
+            <Stack.Navigator>
                 <Stack.Screen
                     name={'MainScreen'}
                     component={MainScreen}
+                    options={{
+                        header: () =>null
+                    }}
+
 
                 />
                 <Stack.Screen
                     name={'SecondScreen'}
                     component={SecondScreen}
+                    options={myOptions}
 
                 />
             </Stack.Navigator>
         </NavigationContainer>
 
     )
+
 }
 
 export default Screen
