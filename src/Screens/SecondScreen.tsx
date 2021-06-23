@@ -1,26 +1,29 @@
 import React, {useState} from 'react';
-import {StyleSheet, Text, TextInput, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import {AppButton} from '../common/AppButton';
 import {AppInput} from "../common/AppInput";
 
 
 export const SecondScreen = ({navigation}) => {
 
-    const [changeValue, setChangeValue] = useState('')
+    const [changeValueEmail, setChangeValueEmail] = useState('')
+    const [changeValuePassword, setChangeValuePassword] = useState('')
+
 
     return (
         <View style={styles.blockSecondScreen}>
             <Text style={styles.header}>Войдите, чтобы начать использовать приложение</Text>
-            <AppInput
-                icon={}
-                label={'User1'}
-                value={changeValue}
-                onChangeText={(text: string) => setChangeValue(text)}
-            />
-            <AppInput
-                label={'User2'}
-                value={changeValue}
-                onChangeText={(text: string) => setChangeValue(text)}/>
+            <View style={styles.containerInput}>
+                <AppInput
+                    label={'Email'}
+                    value={changeValueEmail}
+                    onChangeText={(text: string) => setChangeValueEmail(text)}
+                />
+                <AppInput
+                    label={'Пароль'}
+                    value={changeValuePassword}
+                    onChangeText={(text: string) => setChangeValuePassword(text)}/>
+            </View>
             <AppButton title={'Вход'} onPress={() => {
                 navigation.navigate('MainScreen')
             }}/>
@@ -42,6 +45,9 @@ const styles = StyleSheet.create({
         fontSize: 30,
         marginTop: 110,
         color: '#ffff',
+    },
+    containerInput: {
+        marginBottom: 60
     }
 
 

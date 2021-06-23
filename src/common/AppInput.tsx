@@ -1,17 +1,18 @@
 import React from 'react';
 import {View, StyleSheet, Text, TextInput} from 'react-native';
+import {height as h} from '../consts/size';
+import {width as w} from '../consts/size';
 
 
-export const AppInput = ({onChangeText, value, label, icon}) => {
+
+export const AppInput = ({onChangeText, value, label}) => {
 
 
     return (
         <View style={styles.container}>
-            {label && <Text>{label}</Text>}
+            {label && <Text style={styles.textInputHeader}>{label}</Text>}
 
             <View style={styles.wrapper}>
-                <View>{icon && icon}</View>
-
                 <TextInput style={styles.textInput}
                            onChangeText={onChangeText}
                            value={value}
@@ -23,12 +24,23 @@ export const AppInput = ({onChangeText, value, label, icon}) => {
 
 const styles = StyleSheet.create({
     container: {
-        height: 42,
-        backgroundColor: '#00ff7f',
-        borderRadius: 10
+        width: w - 30,
+        paddingVertical: 11,
+        height: h/3 - 150,
+        backgroundColor: '#0c0c30',
+        borderRadius: 10,
+        margin: 10,
     },
     wrapper: {
+        paddingHorizontal: 10,
+    },
+    textInput: {
+        color: '#40e0d0',
 
     },
-    textInput: {}
+    textInputHeader: {
+        color: '#40e0d0',
+        marginHorizontal: 12
+    }
+
 });
