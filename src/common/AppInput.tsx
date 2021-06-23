@@ -5,7 +5,7 @@ import {width as w} from '../consts/size';
 
 
 
-export const AppInput = ({onChangeText, value, label}) => {
+export const AppInput = ({onChangeText, value, label, ...props}) => {
 
 
     return (
@@ -16,6 +16,7 @@ export const AppInput = ({onChangeText, value, label}) => {
                 <TextInput style={styles.textInput}
                            onChangeText={onChangeText}
                            value={value}
+                           {...props}
                 />
             </View>
         </View>

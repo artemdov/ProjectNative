@@ -2,9 +2,14 @@ import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {AppButton} from '../common/AppButton';
 import {height as h} from '../consts/size';
+import { StackScreenProps } from '@react-navigation/stack';
+import {StackParamListType} from "./Screen";
 
 
-export const MainScreen = ({navigation}) => {
+type Props = StackScreenProps<StackParamListType, 'MainScreen'>;
+
+
+export const MainScreen = ({navigation}: Props) => {
         return (
             <View style={styles.blockMainScreen}>
                 <Text style={styles.header}>Добро пожаловать в приложение</Text>
@@ -12,7 +17,7 @@ export const MainScreen = ({navigation}) => {
                     <AppButton
                         title={'Вход'}
                         onPress={() => {
-                            navigation.navigate('SecondScreen');
+                            navigation.navigate('EnterScreen');
                         }}
                     />
                 </View>
@@ -20,7 +25,7 @@ export const MainScreen = ({navigation}) => {
                     <AppButton
                         title={'Регистрация'}
                         onPress={() => {
-                            navigation.navigate('SecondScreen');
+                            navigation.navigate('RegistrationScreen');
                         }}
                     />
                 </View>
