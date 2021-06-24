@@ -1,10 +1,10 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import {AppButton} from '../common/AppButton';
+import {AppButton} from '../components/common/AppButton';
 import {height as h} from '../consts/size';
 import screenNames from '../navigation/ScreenNames';
 
-export const MainScreen: React.FC<any> = ({navigation}) => {
+export const LandingScreen: React.FC<any> = ({navigation}) => {
   return (
     <View style={styles.blockMainScreen}>
       <Text style={styles.header}>Добро пожаловать в приложение</Text>
@@ -12,7 +12,7 @@ export const MainScreen: React.FC<any> = ({navigation}) => {
         <AppButton
           title={'Вход'}
           onPress={() => {
-            navigation.navigate(screenNames.ENTER_SCREEN);
+            navigation.navigate(screenNames.LOGIN_SCREEN);
           }}
         />
       </View>
