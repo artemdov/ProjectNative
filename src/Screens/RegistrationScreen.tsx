@@ -5,7 +5,7 @@ import {AppInput} from "../common/AppInput";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 
 
-export const RegistrationScreen = ({navigation}) => {
+export const RegistrationScreen = ({navigation}: any) => {
 
     const [changeValueEmail, setChangeValueEmail] = useState('')
     const [changeValuePassword, setChangeValuePassword] = useState('')
@@ -13,7 +13,7 @@ export const RegistrationScreen = ({navigation}) => {
 
 
     return (
-        <KeyboardAwareScrollView>
+        <KeyboardAwareScrollView style={styles.containerKeyboard}>
             <View style={styles.blockSecondScreen}>
                 <Text style={styles.header}>Заполните поля и нажмите "Продолжить"</Text>
                 <View style={styles.containerInput}>
@@ -43,8 +43,11 @@ export const RegistrationScreen = ({navigation}) => {
 }
 
 const styles = StyleSheet.create({
-    blockSecondScreen: {
+    containerKeyboard: {
         backgroundColor: '#8a2be2',
+
+    },
+    blockSecondScreen: {
         flexDirection: 'column',
         alignItems: 'center',
         width: '100%',

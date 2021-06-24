@@ -2,10 +2,11 @@ import React from 'react';
 import {View, StyleSheet, Text, TextInput} from 'react-native';
 import {height as h} from '../consts/size';
 import {width as w} from '../consts/size';
+import {AppInputType} from "../types/types";
 
 
 
-export const AppInput = ({onChangeText, value, label, ...props}) => {
+export const AppInput: React.FC<AppInputType> = ({onChangeText, value, label, ...props}) => {
 
 
     return (

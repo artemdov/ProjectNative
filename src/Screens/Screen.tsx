@@ -4,36 +4,21 @@ import {NavigationContainer} from "@react-navigation/native";
 import {EnterScreen} from "./EnterScreen";
 import {createStackNavigator} from "@react-navigation/stack";
 import {RegistrationScreen} from "./RegistrationScreen";
-
-type myOptionsType = {
-    title: string,
-    headerTintColor: string,
-    headerStyle: {
-        backgroundColor: string
-    }
-}
-type MainScreenType = {
-    header: () => void
-}
-export type StackParamListType = {
-    MainScreen: MainScreenType
-    EnterScreen: myOptionsType,
-    RegistrationScreen: myOptionsType
-}
-
+import {StackParamListType} from "../types/types";
 
 
 const Stack = createStackNavigator<StackParamListType>()
+export const myOptions = {
+    title: 'Вход',
+    headerTintColor: '#fff',
+    headerStyle: {
+        backgroundColor: '#0c0c30',
+    }
+}
 
 export const Screen = () => {
 
-    const myOptions = {
-        title: 'Вход',
-        headerTintColor: '#fff',
-        headerStyle: {
-            backgroundColor: '#0c0c30',
-        }
-    }
+
 
     return (
         <NavigationContainer>

@@ -3,18 +3,19 @@ import {StyleSheet, Text, View} from 'react-native';
 import {AppButton} from '../common/AppButton';
 import {AppInput} from "../common/AppInput";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
+import {Props} from "../types/types";
 
 
-export const EnterScreen = ({navigation}) => {
+export const EnterScreen: React.FC<any> = ({navigation}: any) => {
 
     const [changeValueEmail, setChangeValueEmail] = useState('')
     const [changeValuePassword, setChangeValuePassword] = useState('')
 
 
     return (
-
+        <KeyboardAwareScrollView style={styles.containerKeyboard}>
         <View style={styles.blockSecondScreen}>
-            <KeyboardAwareScrollView>
+
                 <Text style={styles.header}>Войдите, чтобы начать использовать приложение</Text>
                 <View style={styles.containerInput}>
                     <AppInput
@@ -31,15 +32,18 @@ export const EnterScreen = ({navigation}) => {
                 <AppButton title={'Вход'} onPress={() => {
                     navigation.navigate('MainScreen')
                 }}/>
-            </KeyboardAwareScrollView>
         </View>
+        </KeyboardAwareScrollView>
+
 
     )
 }
 
 const styles = StyleSheet.create({
-    blockSecondScreen: {
+    containerKeyboard: {
         backgroundColor: '#8a2be2',
+    },
+    blockSecondScreen: {
         flexDirection: 'column',
         alignItems: 'center',
         width: '100%',
