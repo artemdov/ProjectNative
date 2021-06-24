@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {AppButton} from '../common/AppButton';
 import {height as h} from '../consts/size';
+import screenNames from '../navigation/ScreenNames';
 
 export const MainScreen: React.FC<any> = ({navigation}) => {
   return (
@@ -11,7 +12,7 @@ export const MainScreen: React.FC<any> = ({navigation}) => {
         <AppButton
           title={'Вход'}
           onPress={() => {
-            navigation.navigate('EnterScreen');
+            navigation.navigate(screenNames.ENTER_SCREEN);
           }}
         />
       </View>
@@ -19,7 +20,7 @@ export const MainScreen: React.FC<any> = ({navigation}) => {
         <AppButton
           title={'Регистрация'}
           onPress={() => {
-            navigation.navigate('RegistrationScreen');
+            navigation.navigate(screenNames.REGISTRATION_SCREEN);
           }}
         />
       </View>

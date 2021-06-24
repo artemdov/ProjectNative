@@ -1,11 +1,11 @@
 import React from 'react';
 import {SafeAreaView, StyleSheet} from 'react-native';
-import Screen from './src/Screens/Screen';
+import Router from './src/navigation/Router';
 
 const App = () => {
   return (
     <SafeAreaView style={styles.screen}>
-      <Screen />
+      <Router />
     </SafeAreaView>
   );
 };
