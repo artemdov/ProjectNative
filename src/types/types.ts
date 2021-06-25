@@ -1,5 +1,4 @@
 import {StackNavigationProp} from '@react-navigation/stack';
-
 import {GestureResponderEvent} from 'react-native';
 
 export type myOptionsType = {
@@ -21,11 +20,18 @@ export type Props = {
 
 export type AppInputType = {
   onChangeText: (text: string) => void;
+  onBlur: (e: FocusEvent) => void;
   value: string;
   label: string;
+  error: boolean | undefined;
+  errorMessage?: string | undefined;
   secureTextEntry?: boolean;
 };
 export type AppButtonType = {
   title: string;
   onPress: (event: GestureResponderEvent) => void;
+};
+export type OnSubmitType = {
+  email: string;
+  password: string;
 };

@@ -1,38 +1,59 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {AppButton} from '../../components/common/AppButton';
 import {AppInput} from '../../components/common/AppInput';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import screenNames from '../../navigation/ScreenNames';
+import {LoginSchema} from '../../consts/validation';
+import {Formik} from 'formik';
+import {OnSubmitType} from '../../types/types';
 
-export const LoginScreen: React.FC<any> = ({navigation}) => {
-  const [changeValueEmail, setChangeValueEmail] = useState('');
-  const [changeValuePassword, setChangeValuePassword] = useState('');
+export const LoginScreen = () => {
+  const onSubmit = async ({email, password}: OnSubmitType) => {
+    console.log(email, password);
+  };
+
   return (
     <KeyboardAwareScrollView style={styles.containerKeyboard}>
       <View style={styles.blockSecondScreen}>
         <Text style={styles.header}>
           Войдите, чтобы начать использовать приложение
         </Text>
-        <View style={styles.containerInput}>
-          <AppInput
-            label={'Email'}
-            value={changeValueEmail}
-            onChangeText={(text: string) => setChangeValueEmail(text)}
-          />
-          <AppInput
-            label={'Пароль'}
-            value={changeValuePassword}
-            onChangeText={(text: string) => setChangeValuePassword(text)}
-            secureTextEntry={true}
-          />
-        </View>
-        <AppButton
-          title={'Вход'}
-          onPress={() => {
-            navigation.navigate(screenNames.LANDING_SCREEN);
-          }}
-        />
+        <Formik
+          initialValues={{email: '', password: ''}}
+          onSubmit={onSubmit}
+          validationSchema={LoginSchema}>
+          {({
+            values,
+            errors,
+            touched,
+            handleChange,
+            handleBlur,
+            handleSubmit,
+          }) => (
+            <View>
+              <View style={styles.containerInput}>
+                <AppInput
+                  label={'Email'}
+                  error={!!errors.email && touched.email}
+                  errorMessage={errors.email}
+                  value={values.email}
+                  onChangeText={handleChange('email')}
+                  onBlur={handleBlur('email')}
+                />
+                <AppInput
+                  label={'Пароль'}
+                  error={!!errors.password && touched.password}
+                  errorMessage={errors.password}
+                  value={values.password}
+                  onChangeText={handleChange('password')}
+                  onBlur={handleBlur('password')}
+                  secureTextEntry={true}
+                />
+              </View>
+              <AppButton title={'Вход'} onPress={handleSubmit} />
+            </View>
+          )}
+        </Formik>
       </View>
     </KeyboardAwareScrollView>
   );

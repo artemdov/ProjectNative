@@ -6,22 +6,26 @@ import {AppInputType} from '../../types/types';
 
 export const AppInput: React.FC<AppInputType> = ({
   onChangeText,
+  onBlur,
   value,
   label,
+  error,
+  errorMessage,
   ...props
 }) => {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, error && styles.errorWrapper]}>
       {label && <Text style={styles.textInputHeader}>{label}</Text>}
-
       <View style={styles.wrapper}>
         <TextInput
           style={styles.textInput}
           onChangeText={onChangeText}
+          onBlur={onBlur}
           value={value}
           {...props}
         />
       </View>
+      {error && <Text style={styles.errorMessage}>{errorMessage}</Text>}
     </View>
   );
 };
@@ -45,4 +49,8 @@ const styles = StyleSheet.create({
     color: '#40e0d0',
     marginHorizontal: 12,
   },
+  errorWrapper: {
+    borderColor: '#dc143c',
+  },
+  errorMessage: {},
 });
