@@ -1,23 +1,22 @@
-import React from 'react'
-import { StyleSheet, Text } from 'react-native'
+import React from 'react';
+import {SafeAreaView, StyleSheet} from 'react-native';
+import Router from './src/navigation/Router';
 
 const App = () => {
   return (
-    <>
-      <Text style={styles.h1}>Hello</Text>
-    </>
-  )
-}
+    <SafeAreaView style={styles.screen}>
+      <Router />
+    </SafeAreaView>
+  );
+};
 
 const styles = StyleSheet.create({
-  h1: {
-    backgroundColor: '#BEFCE5',
-    color: '#000',
-    fontSize: 25,
+  screen: {
+    backgroundColor: '#8a2be2',
     fontWeight: '700',
-    padding: 20,
-    textAlign: 'center'
-  }
-})
+    width: '100%',
+    height: '100%',
+  },
+});
 
-export default App
+export default App;
