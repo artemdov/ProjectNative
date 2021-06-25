@@ -1,18 +1,19 @@
 import React, {useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import {AppButton} from '../components/common/AppButton';
-import {AppInput} from '../components/common/AppInput';
+import {AppButton} from '../../components/common/AppButton';
+import {AppInput} from '../../components/common/AppInput';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import screenNames from '../../navigation/ScreenNames';
 
-export const RegistrationScreen = ({navigation}: any) => {
+export const LoginScreen: React.FC<any> = ({navigation}) => {
   const [changeValueEmail, setChangeValueEmail] = useState('');
   const [changeValuePassword, setChangeValuePassword] = useState('');
-  const [repeatPassword, setRepeatPassword] = useState('');
-
   return (
     <KeyboardAwareScrollView style={styles.containerKeyboard}>
       <View style={styles.blockSecondScreen}>
-        <Text style={styles.header}>Заполните поля и нажмите "Продолжить"</Text>
+        <Text style={styles.header}>
+          Войдите, чтобы начать использовать приложение
+        </Text>
         <View style={styles.containerInput}>
           <AppInput
             label={'Email'}
@@ -25,17 +26,11 @@ export const RegistrationScreen = ({navigation}: any) => {
             onChangeText={(text: string) => setChangeValuePassword(text)}
             secureTextEntry={true}
           />
-          <AppInput
-            label={'Повторите пароль'}
-            value={repeatPassword}
-            onChangeText={(text: string) => setRepeatPassword(text)}
-            secureTextEntry={true}
-          />
         </View>
         <AppButton
-          title={'Продолжить'}
+          title={'Вход'}
           onPress={() => {
-            navigation.navigate('MainScreen');
+            navigation.navigate(screenNames.LANDING_SCREEN);
           }}
         />
       </View>

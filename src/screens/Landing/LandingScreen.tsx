@@ -1,8 +1,8 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import {AppButton} from '../components/common/AppButton';
-import {height as h} from '../consts/size';
-import screenNames from '../navigation/ScreenNames';
+import {AppButton} from '../../components/common/AppButton';
+import {height as h} from '../../consts/size';
+import screenNames from '../../navigation/ScreenNames';
 
 export const LandingScreen: React.FC<any> = ({navigation}) => {
   return (
