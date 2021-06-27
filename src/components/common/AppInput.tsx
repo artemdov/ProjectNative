@@ -14,9 +14,9 @@ export const AppInput: React.FC<AppInputType> = ({
   ...props
 }) => {
   return (
-    <View style={[styles.container, error && styles.errorWrapper]}>
+    <View style={[styles.container, error && styles.errorWrapperContainer]}>
       {label && <Text style={styles.textInputHeader}>{label}</Text>}
-      <View style={styles.wrapper}>
+      <View style={styles.wrapperInput}>
         <TextInput
           style={styles.textInput}
           onChangeText={onChangeText}
@@ -38,8 +38,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#0c0c30',
     borderRadius: 10,
     margin: 10,
+    borderColor: '#0c0c30',
+    borderWidth: 2,
   },
-  wrapper: {
+  errorWrapperContainer: {
+    borderColor: '#ff1818',
+  },
+  wrapperInput: {
     paddingHorizontal: 10,
   },
   textInput: {
@@ -49,13 +54,10 @@ const styles = StyleSheet.create({
     color: '#40e0d0',
     marginHorizontal: 12,
   },
-  errorWrapper: {
-    backgroundColor: '#ff2020',
-    marginBottom: 20,
-  },
   errorMessage: {
     fontWeight: 'bold',
-    fontSize: 16,
+    fontSize: 12,
+    paddingLeft: 10,
     color: '#ee0000',
   },
 });

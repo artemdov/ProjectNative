@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     color: '#ffff',
   },
   buttonEnter: {
-    marginTop: h / 2 - 30,
+    marginTop: h / 2,
   },
   buttonRegistration: {
     marginTop: 12,
