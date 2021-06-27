@@ -31,7 +31,12 @@ export type AppButtonType = {
   title: string;
   onPress: (event: GestureResponderEvent) => void;
 };
-export type OnSubmitType = {
+export type OnSubmitLoginType = {
   email: string;
   password: string;
+};
+export type OnSubmitRegistrationType = {
+  email: string;
+  password: string;
+  confirmPassword: string;
 };

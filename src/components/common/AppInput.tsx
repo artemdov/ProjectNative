@@ -50,7 +50,12 @@ const styles = StyleSheet.create({
     marginHorizontal: 12,
   },
   errorWrapper: {
-    borderColor: '#dc143c',
+    backgroundColor: '#ff2020',
+    marginBottom: 20,
   },
-  errorMessage: {},
+  errorMessage: {
+    fontWeight: 'bold',
+    fontSize: 16,
+    color: '#ee0000',
+  },
 });

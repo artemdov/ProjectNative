@@ -5,10 +5,10 @@ import {AppInput} from '../../components/common/AppInput';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {LoginSchema} from '../../consts/validation';
 import {Formik} from 'formik';
-import {OnSubmitType} from '../../types/types';
+import {OnSubmitLoginType} from '../../types/types';
 
 export const LoginScreen = () => {
-  const onSubmit = async ({email, password}: OnSubmitType) => {
+  const onSubmit = ({email, password}: OnSubmitLoginType) => {
     console.log(email, password);
   };
 
@@ -30,7 +30,7 @@ export const LoginScreen = () => {
             handleBlur,
             handleSubmit,
           }) => (
-            <View>
+            <View style={styles.wrapperElements}>
               <View style={styles.containerInput}>
                 <AppInput
                   label={'Email'}
@@ -64,8 +64,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#8a2be2',
   },
   blockSecondScreen: {
-    flexDirection: 'column',
-    alignItems: 'center',
     width: '100%',
     height: '100%',
   },
@@ -78,5 +76,9 @@ const styles = StyleSheet.create({
   },
   containerInput: {
     marginBottom: 60,
+  },
+  wrapperElements: {
+    flexDirection: 'column',
+    alignItems: 'center',
   },
 });

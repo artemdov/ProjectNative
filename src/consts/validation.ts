@@ -3,21 +3,27 @@ import * as Yup from 'yup';
 export const LoginSchema = Yup.object().shape({
   email: Yup.string()
     .email('Введите корректные данные')
-    .required('Обязательное поле'),
+    .required('Введите email'),
   password: Yup.string()
-    .min(4, 'Минимум 4 символа')
-    .max(20, 'Максимум 20 символов')
-    .required('Обязательное поле'),
+    .required('Введите пароль')
+    .matches(
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{6,20}$/,
+      'Введите корректный пароль',
+    ),
 });
 export const RegistrationSchema = Yup.object().shape({
   email: Yup.string()
     .email('Введите корректные данные')
-    .required('Обязательное поле'),
+    .required('Введите email'),
   password: Yup.string()
-    .min(4, 'Минимум 4 символа')
-    .max(20, 'Максимум 50 символов')
-    .required('Обязательное поле'),
+    .required('Введите пароль')
+    .matches(
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{6,20}$/,
+      'Введите корректный пароль',
+    ),
   confirmPassword: Yup.string()
     .oneOf([Yup.ref('password'), null], 'Пароли не совпадают')
-    .required('Обязательное поле'),
+    .required('Заполните поле'),
 });
+
+//Пароль должен содержать от 6 до 20 символов, Один символ в верхнем регистре, один символ в нижнем регистре, одно число и один спецсимвол'
