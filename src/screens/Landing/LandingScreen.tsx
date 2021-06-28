@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import {AppButton} from '../../components/common/AppButton';
+import {CustomButton} from '../../components/common/CustomButton';
 import {height as h} from '../../consts/size';
 import screenNames from '../../navigation/ScreenNames';
 
@@ -9,7 +9,7 @@ export const LandingScreen: React.FC<any> = ({navigation}) => {
     <View style={styles.blockMainScreen}>
       <Text style={styles.header}>Добро пожаловать в приложение</Text>
       <View style={styles.buttonEnter}>
-        <AppButton
+        <CustomButton
           title={'Вход'}
           onPress={() => {
             navigation.navigate(screenNames.LOGIN_SCREEN);
@@ -17,7 +17,7 @@ export const LandingScreen: React.FC<any> = ({navigation}) => {
         />
       </View>
       <View style={styles.buttonRegistration}>
-        <AppButton
+        <CustomButton
           title={'Регистрация'}
           onPress={() => {
             navigation.navigate(screenNames.REGISTRATION_SCREEN);

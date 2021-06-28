@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import {AppButton} from '../../components/common/AppButton';
-import {AppInput} from '../../components/common/AppInput';
+import {CustomButton} from '../../components/common/CustomButton';
+import {CustomTextInput} from '../../components/common/CustomTextInput';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Formik} from 'formik';
 import {RegistrationSchema} from '../../consts/validation';
@@ -34,7 +34,7 @@ export const RegistrationScreen = () => {
           }) => (
             <View style={styles.wrapperElements}>
               <View style={styles.containerInput}>
-                <AppInput
+                <CustomTextInput
                   label={'Email'}
                   error={!!errors.email && touched.email}
                   errorMessage={errors.email}
@@ -42,7 +42,7 @@ export const RegistrationScreen = () => {
                   onChangeText={handleChange('email')}
                   onBlur={handleBlur('email')}
                 />
-                <AppInput
+                <CustomTextInput
                   label={'Пароль'}
                   error={!!errors.password && touched.password}
                   errorMessage={errors.password}
@@ -51,7 +51,7 @@ export const RegistrationScreen = () => {
                   onBlur={handleBlur('password')}
                   secureTextEntry={true}
                 />
-                <AppInput
+                <CustomTextInput
                   label={'Повторите Пароль'}
                   error={!!errors.confirmPassword && touched.confirmPassword}
                   errorMessage={errors.confirmPassword}
@@ -61,7 +61,7 @@ export const RegistrationScreen = () => {
                   secureTextEntry={true}
                 />
               </View>
-              <AppButton title={'Продолжить'} onPress={handleSubmit} />
+              <CustomButton title={'Продолжить'} onPress={handleSubmit} />
             </View>
           )}
         </Formik>

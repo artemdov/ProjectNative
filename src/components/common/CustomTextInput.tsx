@@ -2,9 +2,9 @@ import React from 'react';
 import {View, StyleSheet, Text, TextInput} from 'react-native';
 import {height as h} from '../../consts/size';
 import {width as w} from '../../consts/size';
-import {AppInputType} from '../../types/types';
+import {CustomTextInputType} from '../../types/types';
 
-export const AppInput: React.FC<AppInputType> = ({
+export const CustomTextInput: React.FC<CustomTextInputType> = ({
   onChangeText,
   onBlur,
   value,

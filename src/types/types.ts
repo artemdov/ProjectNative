@@ -18,16 +18,16 @@ export type Props = {
   navigation: MainScreenProp;
 };
 
-export type AppInputType = {
+export type CustomTextInputType = {
   onChangeText: (text: string) => void;
   onBlur: (e: FocusEvent) => void;
   value: string;
   label: string;
-  error: boolean | undefined;
-  errorMessage?: string | undefined;
+  error?: boolean;
+  errorMessage?: string;
   secureTextEntry?: boolean;
 };
-export type AppButtonType = {
+export type CustomButtonType = {
   title: string;
   onPress: (event: GestureResponderEvent) => void;
 };
