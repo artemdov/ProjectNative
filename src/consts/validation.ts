@@ -25,4 +25,3 @@ export const RegistrationSchema = Yup.object().shape({
     .oneOf([Yup.ref('password'), null], 'Пароли не совпадают')
     .required('Заполните поле'),
 });
-
