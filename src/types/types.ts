@@ -20,7 +20,7 @@ export type Props = {
 
 export type CustomTextInputType = {
   onChangeText: (text: string) => void;
-  onBlur: (e: FocusEvent) => void;
+  onBlur?: (e: FocusEvent) => void;
   value: string;
   label: string;
   error?: boolean;
