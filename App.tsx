@@ -1,8 +1,8 @@
 import React from 'react';
 import {SafeAreaView, StyleSheet} from 'react-native';
 import Router from './src/navigation/Router';
-import {Provider} from 'react-redux';
 import {store} from './src/store/store';
+import {Provider} from 'react-redux';
 
 const App = () => {
   return (
