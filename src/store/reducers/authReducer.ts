@@ -7,9 +7,9 @@ const initialState = {
 type initialStateType = typeof initialState;
 
 const authReducer = (
-  state: initialStateType = initialState,
+  state = initialState,
   action: AuthActionType,
-) => {
+): initialStateType => {
   switch (action.type) {
     case actionReducerTypes.auth.LOGIN:
       return {...state, isLoggedIn: action.value};
