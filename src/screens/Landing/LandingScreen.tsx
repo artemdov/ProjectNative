@@ -5,23 +5,20 @@ import {height as h} from '../../consts/size';
 import screenNames from '../../navigation/ScreenNames';
 
 export const LandingScreen: React.FC<any> = ({navigation}) => {
-  const buttonEnterHandler = () => {
+  const onPressSubmit = () => {
     navigation.navigate(screenNames.LOGIN_SCREEN);
   };
-  const buttonRegistrationHandler = () => {
+  const onPressRegister = () => {
     navigation.navigate(screenNames.REGISTRATION_SCREEN);
   };
   return (
     <View style={styles.blockMainScreen}>
       <Text style={styles.header}>Добро пожаловать в приложение</Text>
       <View style={styles.buttonEnter}>
-        <CustomButton title={'Вход'} onPress={buttonEnterHandler} />
+        <CustomButton title={'Вход'} onPress={onPressSubmit} />
       </View>
       <View style={styles.buttonRegistration}>
-        <CustomButton
-          title={'Регистрация'}
-          onPress={buttonRegistrationHandler}
-        />
+        <CustomButton title={'Регистрация'} onPress={onPressRegister} />
       </View>
     </View>
   );
