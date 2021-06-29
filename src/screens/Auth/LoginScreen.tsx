@@ -37,7 +37,7 @@ export const LoginScreen = () => {
                   error={!!errors.email && touched.email}
                   errorMessage={errors.email}
                   value={values.email}
-                  onChangeText={handleChange('email')}
+                  onChangePassword={handleChange('email')}
                   onBlur={handleBlur('email')}
                 />
                 <CustomTextInput
@@ -45,7 +45,7 @@ export const LoginScreen = () => {
                   error={!!errors.password && touched.password}
                   errorMessage={errors.password}
                   value={values.password}
-                  onChangeText={handleChange('password')}
+                  onChangePassword={handleChange('password')}
                   onBlur={handleBlur('password')}
                   secureTextEntry={true}
                 />

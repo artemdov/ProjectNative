@@ -5,7 +5,7 @@ import {width as w} from '../../consts/size';
 import {CustomTextInputType} from '../../types/types';
 
 export const CustomTextInput: React.FC<CustomTextInputType> = ({
-  onChangeText,
+  onChangePassword,
   onBlur,
   value,
   label,
@@ -19,7 +19,7 @@ export const CustomTextInput: React.FC<CustomTextInputType> = ({
       <View style={styles.wrapperInput}>
         <TextInput
           style={styles.textInput}
-          onChangeText={onChangeText}
+          onChangeText={onChangePassword}
           onBlur={onBlur}
           value={value}
           {...props}

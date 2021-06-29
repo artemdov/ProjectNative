@@ -39,7 +39,7 @@ export const RegistrationScreen = () => {
                   error={!!errors.email && touched.email}
                   errorMessage={errors.email}
                   value={values.email}
-                  onChangeText={handleChange('email')}
+                  onChangePassword={handleChange('email')}
                   onBlur={handleBlur('email')}
                 />
                 <CustomTextInput
@@ -47,7 +47,7 @@ export const RegistrationScreen = () => {
                   error={!!errors.password && touched.password}
                   errorMessage={errors.password}
                   value={values.password}
-                  onChangeText={handleChange('password')}
+                  onChangePassword={handleChange('password')}
                   onBlur={handleBlur('password')}
                   secureTextEntry={true}
                 />
@@ -56,7 +56,7 @@ export const RegistrationScreen = () => {
                   error={!!errors.confirmPassword && touched.confirmPassword}
                   errorMessage={errors.confirmPassword}
                   value={values.confirmPassword}
-                  onChangeText={handleChange('confirmPassword')}
+                  onChangePassword={handleChange('confirmPassword')}
                   onBlur={handleBlur('confirmPassword')}
                   secureTextEntry={true}
                 />

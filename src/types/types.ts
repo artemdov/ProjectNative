@@ -19,7 +19,7 @@ export type Props = {
 };
 
 export type CustomTextInputType = {
-  onChangeText: (text: string) => void;
+  onChangePassword: (text: string) => void;
   onBlur?: (e: FocusEvent) => void;
   value: string;
   label: string;
