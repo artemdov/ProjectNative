@@ -1,10 +1,10 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import screenNames from '../ScreenNames';
-import {LandingScreen} from '../../screens/LandingScreen';
-import {LoginScreen} from '../../screens/LoginScreen';
-import {RegistrationScreen} from '../../screens/RegistrationScreen';
+import {LandingScreen} from '../../screens/Landing/LandingScreen';
+import {RegistrationScreen} from '../../screens/Auth/RegistrationScreen';
 import {myOptions} from '../options';
+import {LoginScreen} from '../../screens/Auth/LoginScreen';
 
 const Stack = createStackNavigator<any>();
 

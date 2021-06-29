@@ -1,9 +1,9 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableHighlight} from 'react-native';
 import {width as w} from '../../consts/size';
-import {AppButtonType} from '../../types/types';
+import {CustomButtonType} from '../../types/types';
 
-export const AppButton: React.FC<AppButtonType> = ({title, onPress}) => {
+export const CustomButton: React.FC<CustomButtonType> = ({title, onPress}) => {
   return (
     <TouchableHighlight style={styles.btn} onPress={onPress}>
       <Text style={styles.textStyle}>{title}</Text>

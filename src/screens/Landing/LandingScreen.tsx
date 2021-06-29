@@ -1,28 +1,24 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import {AppButton} from '../components/common/AppButton';
-import {height as h} from '../consts/size';
-import screenNames from '../navigation/ScreenNames';
+import {CustomButton} from '../../components/common/CustomButton';
+import {height as h} from '../../consts/size';
+import screenNames from '../../navigation/ScreenNames';
 
 export const LandingScreen: React.FC<any> = ({navigation}) => {
+  const onPressSubmit = () => {
+    navigation.navigate(screenNames.LOGIN_SCREEN);
+  };
+  const onPressRegister = () => {
+    navigation.navigate(screenNames.REGISTRATION_SCREEN);
+  };
   return (
     <View style={styles.blockMainScreen}>
       <Text style={styles.header}>Добро пожаловать в приложение</Text>
       <View style={styles.buttonEnter}>
-        <AppButton
-          title={'Вход'}
-          onPress={() => {
-            navigation.navigate(screenNames.LOGIN_SCREEN);
-          }}
-        />
+        <CustomButton title={'Вход'} onPress={onPressSubmit} />
       </View>
       <View style={styles.buttonRegistration}>
-        <AppButton
-          title={'Регистрация'}
-          onPress={() => {
-            navigation.navigate(screenNames.REGISTRATION_SCREEN);
-          }}
-        />
+        <CustomButton title={'Регистрация'} onPress={onPressRegister} />
       </View>
     </View>
   );
@@ -43,7 +39,7 @@ const styles = StyleSheet.create({
     color: '#ffff',
   },
   buttonEnter: {
-    marginTop: h / 2 - 30,
+    marginTop: h / 2,
   },
   buttonRegistration: {
     marginTop: 12,

@@ -2,26 +2,30 @@ import React from 'react';
 import {View, StyleSheet, Text, TextInput} from 'react-native';
 import {height as h} from '../../consts/size';
 import {width as w} from '../../consts/size';
-import {AppInputType} from '../../types/types';
+import {CustomTextInputType} from '../../types/types';
 
-export const AppInput: React.FC<AppInputType> = ({
-  onChangeText,
+export const CustomTextInput: React.FC<CustomTextInputType> = ({
+  onChangePassword,
+  onBlur,
   value,
   label,
+  error,
+  errorMessage,
   ...props
 }) => {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, error && styles.errorWrapperContainer]}>
       {label && <Text style={styles.textInputHeader}>{label}</Text>}
-
-      <View style={styles.wrapper}>
+      <View style={styles.wrapperInput}>
         <TextInput
           style={styles.textInput}
-          onChangeText={onChangeText}
+          onChangeText={onChangePassword}
+          onBlur={onBlur}
           value={value}
           {...props}
         />
       </View>
+      {error && <Text style={styles.errorMessage}>{errorMessage}</Text>}
     </View>
   );
 };
@@ -34,8 +38,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#0c0c30',
     borderRadius: 10,
     margin: 10,
+    borderColor: '#0c0c30',
+    borderWidth: 2,
   },
-  wrapper: {
+  errorWrapperContainer: {
+    borderColor: '#ff1818',
+  },
+  wrapperInput: {
     paddingHorizontal: 10,
   },
   textInput: {
@@ -44,5 +53,11 @@ const styles = StyleSheet.create({
   textInputHeader: {
     color: '#40e0d0',
     marginHorizontal: 12,
+  },
+  errorMessage: {
+    fontWeight: 'bold',
+    fontSize: 12,
+    paddingLeft: 10,
+    color: '#ee0000',
   },
 });
