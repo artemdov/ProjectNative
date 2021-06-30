@@ -1,5 +1,5 @@
 import {AuthActionType} from '../../types/types';
-import actionReducerTypes from '../actionTypes';
+import actionTypes from '../actionTypes';
 
 const initialState = {
   isLoggedIn: false,
@@ -11,10 +11,10 @@ const authReducer = (
   action: AuthActionType,
 ): initialStateType => {
   switch (action.type) {
-    case actionReducerTypes.auth.LOGIN:
-      return {...state, isLoggedIn: action.value};
+    case actionTypes.auth.LOGIN:
+      return {...state, isLoggedIn: action.payload};
 
-    case actionReducerTypes.auth.LOGOUT:
+    case actionTypes.auth.LOGOUT:
       return {...state};
 
     default:

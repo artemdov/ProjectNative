@@ -1,8 +1,8 @@
-const actionReducerTypes = {
+const actionTypes = {
   auth: {
     LOGIN: 'LOGIN',
     LOGOUT: 'LOGOUT',
   },
 };
 
-export default actionReducerTypes;
+export default actionTypes;
