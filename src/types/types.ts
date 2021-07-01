@@ -1,7 +1,7 @@
 import {StackNavigationProp} from '@react-navigation/stack';
 import {GestureResponderEvent} from 'react-native';
 import {rootReducer} from '../store/store';
-import {setIsLoggedIn} from "../store/actions/authAction";
+import {setIsLoggedIn} from '../store/actions/authAction';
 
 export type myOptionsType = {
   title: string;
@@ -11,13 +11,16 @@ export type myOptionsType = {
   };
 };
 export type StackParamListType = {
-  MainScreen: {name: string};
+  LandingScreen: {name: string};
   EnterScreen: myOptionsType;
   RegistrationScreen: myOptionsType;
 };
-type MainScreenProp = StackNavigationProp<StackParamListType, 'MainScreen'>;
+type LandingScreenProp = StackNavigationProp<
+  StackParamListType,
+  'LandingScreen'
+>;
 export type Props = {
-  navigation: MainScreenProp;
+  navigation: LandingScreenProp;
 };
 
 export type CustomTextInputType = {
