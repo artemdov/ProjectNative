@@ -5,15 +5,14 @@ import {CustomTextInput} from '../../components/common/CustomTextInput';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Formik} from 'formik';
 import {RegistrationSchema} from '../../consts/validation';
-import {OnSubmitRegistrationType} from '../../types/types';
+import {OnSubmitRegistrationDataType} from "../../types/types";
+import {useDispatch} from "react-redux";
+import {OnSubmitRegistration} from "../../store/actions/authAction";
 
 export const RegistrationScreen = () => {
-  const onSubmit = ({
-    email,
-    password,
-    confirmPassword,
-  }: OnSubmitRegistrationType) => {
-    console.log(email, password, confirmPassword);
+  const dispatch = useDispatch()
+  const onSubmit = (values: any) => {
+    dispatch(OnSubmitRegistration(values))
   };
 
   return (

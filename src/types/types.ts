@@ -1,7 +1,13 @@
 import {StackNavigationProp} from '@react-navigation/stack';
 import {GestureResponderEvent} from 'react-native';
 import {rootReducer} from '../store/store';
-import {setIsLoggedIn} from '../store/actions/authAction';
+import {
+  errorMessage,
+  loadingStatus,
+  OnSubmitLogIn,
+  OnSubmitRegistration, setInitialized,
+  setIsLoggedIn
+} from '../store/actions/authAction';
 
 export type myOptionsType = {
   title: string;
@@ -40,10 +46,12 @@ export type OnSubmitLoginType = {
   email: string;
   password: string;
 };
-export type OnSubmitRegistrationType = {
+export type OnSubmitRegistrationDataType = {
   email: string;
   password: string;
   confirmPassword: string;
 };
 export type AppRootStateType = ReturnType<typeof rootReducer>;
-export type AuthActionType = ReturnType<typeof setIsLoggedIn>;
+export type AuthActionType = ReturnType<typeof setIsLoggedIn> | ReturnType<typeof errorMessage> |
+    ReturnType<typeof OnSubmitRegistration> | ReturnType<typeof OnSubmitLogIn>
+    | ReturnType<typeof loadingStatus> | ReturnType<typeof setInitialized>;
