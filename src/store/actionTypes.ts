@@ -6,7 +6,7 @@ const actionTypes = {
     LOGIN: 'LOGIN',
     LOGOUT: 'LOGOUT',
     SIGNUP: 'SIGNUP',
-    IS_AUTHENTICATED: 'IS_AUTHENTICATED'
+    IS_AUTHENTICATED: 'IS_AUTHENTICATED',
   },
 };
 
