@@ -11,9 +11,10 @@ export const Preloader = () => {
 }
 const styles = StyleSheet.create({
     image: {
-        top: '30%',
-        width: '100%',
-        textAlign: 'center'
+        marginHorizontal: '25%',
+        marginVertical: '10%',
+        width: '50%',
+        height: '50%',
     },
 });
 

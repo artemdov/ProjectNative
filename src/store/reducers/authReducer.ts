@@ -13,13 +13,15 @@ type initialStateType = typeof initialState;
 const authReducer = (state = initialState, action: AuthActionType,): initialStateType => {
   switch (action.type) {
     case actionTypes.auth.SET_USER:
-      return {...state, user: action.payload, authenticated: true};
+      return {...state, user: action.payload};
     case actionTypes.auth.SET_LOADING:
       return {...state, loading: action.payload};
     case actionTypes.auth.SET_ERROR:
       return {...state, error: action.payload};
     case actionTypes.auth.LOGIN:
       return {...state, isLoggedIn: action.payload};
+    case actionTypes.auth.IS_AUTHENTICATED:
+      return {...state, authenticated: action.payload};
 
 
     default:
