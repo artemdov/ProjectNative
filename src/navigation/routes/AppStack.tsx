@@ -4,7 +4,7 @@ import screenNames from '../ScreenNames';
 import AuthStack from './AuthStack';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppRootStateType} from '../../types/types';
-import {isAuthenticated, setUser} from '../../store/actions/authAction';
+import {setIsLoggedIn, setUser} from '../../store/actions/authAction';
 import auth from '@react-native-firebase/auth';
 import MainStack from './MainStack';
 
@@ -12,15 +12,14 @@ const Stack = createStackNavigator<any>();
 
 export const AppStack = () => {
   const dispatch = useDispatch();
-  const authenticated = useSelector<AppRootStateType, boolean>(
-    state => state.auth.authenticated,
+  const isLoggedIn = useSelector<AppRootStateType, boolean>(
+    state => state.auth.isLoggedIn,
   );
-  console.log(authenticated, 'authenticated');
 
   const onAuthStateChanged = (user: any) => {
     dispatch(setUser(user));
-    if (authenticated) {
-      dispatch(isAuthenticated(true));
+    if (isLoggedIn) {
+      dispatch(setIsLoggedIn(true));
     }
   };
   useEffect(() => {
@@ -29,7 +28,7 @@ export const AppStack = () => {
 
   return (
     <Stack.Navigator>
-      {authenticated ? (
+      {isLoggedIn ? (
         <Stack.Screen
           name={screenNames.MAIN_STACK}
           component={MainStack}

@@ -24,12 +24,6 @@ export const errorMessage = (err: string) =>
     payload: err,
   } as const);
 
-export const isAuthenticated = (authenticated: boolean) =>
-  ({
-    type: actionTypes.auth.IS_AUTHENTICATED,
-    payload: authenticated,
-  } as const);
-
 export const loadingStatus = (value: boolean) =>
   ({
     type: actionTypes.auth.SET_LOADING,

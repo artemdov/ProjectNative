@@ -3,7 +3,6 @@ import {GestureResponderEvent} from 'react-native';
 import {rootReducer} from '../store/store';
 import {
   errorMessage,
-  isAuthenticated,
   loadingStatus,
   OnSubmitLogIn,
   OnSubmitRegistration,
@@ -60,5 +59,4 @@ export type AuthActionType =
   | ReturnType<typeof OnSubmitRegistration>
   | ReturnType<typeof OnSubmitLogIn>
   | ReturnType<typeof loadingStatus>
-  | ReturnType<typeof setUser>
-  | ReturnType<typeof isAuthenticated>;
+  | ReturnType<typeof setUser>;
