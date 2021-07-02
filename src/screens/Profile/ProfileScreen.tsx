@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {CustomButton} from '../../components/common/CustomButton';
 import {useDispatch} from 'react-redux';
-import {OnSubmitLogOut} from '../../store/actions/authAction';
+import {isAuthenticated, OnSubmitLogOut} from '../../store/actions/authAction';
 import screenNames from '../../navigation/ScreenNames';
 import {height as h} from '../../consts/size';
 
@@ -11,6 +11,7 @@ export const ProfileScreen: React.FC<any> = ({navigation}) => {
 
   const onPressUnSubmit = () => {
     dispatch(OnSubmitLogOut());
+    dispatch(isAuthenticated(false));
     navigation.navigate(screenNames.LANDING_SCREEN);
   };
 
