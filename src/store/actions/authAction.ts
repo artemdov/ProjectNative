@@ -33,15 +33,13 @@ export const loadingStatus = (value: boolean) =>
 export const onSubmitRegistration =
   (data: OnSubmitRegistrationDataType) => async (dispatch: Dispatch) => {
     try {
-      if (data.password === data.confirmPassword) {
-        dispatch(loadingStatus(true));
-        const res = await firebase
-          .auth()
-          .createUserWithEmailAndPassword(data.email, data.password);
-        if (res.user) {
-          dispatch(setIsLoggedIn(true));
-          dispatch(loadingStatus(false));
-        }
+      dispatch(loadingStatus(true));
+      const res = await firebase
+        .auth()
+        .createUserWithEmailAndPassword(data.email, data.password);
+      if (res.user) {
+        dispatch(setIsLoggedIn(true));
+        dispatch(loadingStatus(false));
       }
     } catch (err) {
       dispatch(errorMessage(err));
