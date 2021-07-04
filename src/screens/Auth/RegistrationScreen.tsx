@@ -6,13 +6,13 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Formik} from 'formik';
 import {RegistrationSchema} from '../../consts/validation';
 import {useDispatch} from 'react-redux';
-import {OnSubmitRegistration} from '../../store/actions/authAction';
+import {onSubmitRegistration} from '../../store/actions/authAction';
 import screenNames from '../../navigation/ScreenNames';
 
 export const RegistrationScreen: React.FC<any> = ({navigation}) => {
   const dispatch = useDispatch();
   const onSubmit = (values: any) => {
-    dispatch(OnSubmitRegistration(values));
+    dispatch(onSubmitRegistration(values));
     navigation.navigate(screenNames.LOGIN_SCREEN);
   };
 

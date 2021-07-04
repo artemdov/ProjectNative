@@ -5,6 +5,7 @@ import {LandingScreen} from '../../screens/Landing/LandingScreen';
 import {RegistrationScreen} from '../../screens/Auth/RegistrationScreen';
 import {myOptions} from '../options';
 import {LoginScreen} from '../../screens/Auth/LoginScreen';
+import {withoutHeader} from '../../components/common/withoutHeader';
 
 const Stack = createStackNavigator<any>();
 
@@ -15,7 +16,7 @@ const AuthStack = () => {
         name={screenNames.LANDING_SCREEN}
         component={LandingScreen}
         options={{
-          header: () => null,
+          header: withoutHeader,
         }}
       />
       <Stack.Screen

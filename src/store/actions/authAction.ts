@@ -30,7 +30,7 @@ export const loadingStatus = (value: boolean) =>
     payload: value,
   } as const);
 
-export const OnSubmitRegistration: any =
+export const onSubmitRegistration =
   (data: OnSubmitRegistrationDataType) => async (dispatch: Dispatch) => {
     try {
       if (data.password === data.confirmPassword) {
@@ -47,7 +47,7 @@ export const OnSubmitRegistration: any =
       dispatch(errorMessage(err));
     }
   };
-export const OnSubmitLogIn =
+export const onSubmitLogIn =
   (data: OnSubmitLoginType) => async (dispatch: Dispatch) => {
     try {
       dispatch(loadingStatus(true));
@@ -61,7 +61,7 @@ export const OnSubmitLogIn =
     }
   };
 
-export const OnSubmitLogOut = () => async (dispatch: Dispatch) => {
+export const onSubmitLogOut = () => async (dispatch: Dispatch) => {
   try {
     dispatch(loadingStatus(true));
     await firebase.auth().signOut();

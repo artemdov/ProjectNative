@@ -4,8 +4,8 @@ import {rootReducer} from '../store/store';
 import {
   errorMessage,
   loadingStatus,
-  OnSubmitLogIn,
-  OnSubmitRegistration,
+  onSubmitLogIn,
+  onSubmitRegistration,
   setIsLoggedIn,
   setUser,
 } from '../store/actions/authAction';
@@ -56,7 +56,7 @@ export type AppRootStateType = ReturnType<typeof rootReducer>;
 export type AuthActionType =
   | ReturnType<typeof setIsLoggedIn>
   | ReturnType<typeof errorMessage>
-  | ReturnType<typeof OnSubmitRegistration>
-  | ReturnType<typeof OnSubmitLogIn>
+  | ReturnType<typeof onSubmitRegistration>
+  | ReturnType<typeof onSubmitLogIn>
   | ReturnType<typeof loadingStatus>
   | ReturnType<typeof setUser>;

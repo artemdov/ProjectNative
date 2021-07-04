@@ -6,12 +6,12 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {LoginSchema} from '../../consts/validation';
 import {Formik} from 'formik';
 import {useDispatch} from 'react-redux';
-import {OnSubmitLogIn} from '../../store/actions/authAction';
+import {onSubmitLogIn} from '../../store/actions/authAction';
 
 export const LoginScreen = () => {
   const dispatch = useDispatch();
   const onSubmit = (values: any) => {
-    dispatch(OnSubmitLogIn(values));
+    dispatch(onSubmitLogIn(values));
   };
 
   return (
