@@ -41,7 +41,8 @@ export const onSubmitRegistration =
         dispatch(setIsLoggedIn(true));
         dispatch(setLoadingStatus(false));
       }
-    } catch (err) {
+    }
+    catch (err) {
       dispatch(errorMessage(err));
       dispatch(setLoadingStatus(false));
     }
@@ -55,7 +56,8 @@ export const onSubmitLogIn =
         .signInWithEmailAndPassword(data.email, data.password);
       dispatch(setIsLoggedIn(true));
       dispatch(setLoadingStatus(false));
-    } catch (err) {
+    }
+    catch (err) {
       dispatch(errorMessage(err));
       dispatch(setLoadingStatus(false));
     }
@@ -67,7 +69,8 @@ export const onSubmitLogOut = () => async (dispatch: Dispatch) => {
     await firebase.auth().signOut();
     dispatch(setIsLoggedIn(false));
     dispatch(setLoadingStatus(false));
-  } catch (err) {
+  }
+  catch (err) {
     dispatch(errorMessage(err));
     dispatch(setLoadingStatus(false));
   }
