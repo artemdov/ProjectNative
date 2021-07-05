@@ -1,7 +1,14 @@
 import {StackNavigationProp} from '@react-navigation/stack';
 import {GestureResponderEvent} from 'react-native';
 import {rootReducer} from '../store/store';
-import {setIsLoggedIn} from "../store/actions/authAction";
+import {
+  errorMessage,
+  setLoadingStatus,
+  onSubmitLogIn,
+  onSubmitRegistration,
+  setIsLoggedIn,
+  setUser,
+} from '../store/actions/authAction';
 
 export type myOptionsType = {
   title: string;
@@ -11,13 +18,16 @@ export type myOptionsType = {
   };
 };
 export type StackParamListType = {
-  MainScreen: {name: string};
+  LandingScreen: {name: string};
   EnterScreen: myOptionsType;
   RegistrationScreen: myOptionsType;
 };
-type MainScreenProp = StackNavigationProp<StackParamListType, 'MainScreen'>;
+type LandingScreenProp = StackNavigationProp<
+  StackParamListType,
+  'LandingScreen'
+>;
 export type Props = {
-  navigation: MainScreenProp;
+  navigation: LandingScreenProp;
 };
 
 export type CustomTextInputType = {
@@ -37,10 +47,16 @@ export type OnSubmitLoginType = {
   email: string;
   password: string;
 };
-export type OnSubmitRegistrationType = {
+export type OnSubmitRegistrationDataType = {
   email: string;
   password: string;
   confirmPassword: string;
 };
 export type AppRootStateType = ReturnType<typeof rootReducer>;
-export type AuthActionType = ReturnType<typeof setIsLoggedIn>;
+export type AuthActionType =
+  | ReturnType<typeof setIsLoggedIn>
+  | ReturnType<typeof errorMessage>
+  | ReturnType<typeof onSubmitRegistration>
+  | ReturnType<typeof onSubmitLogIn>
+  | ReturnType<typeof setLoadingStatus>
+  | ReturnType<typeof setUser>;

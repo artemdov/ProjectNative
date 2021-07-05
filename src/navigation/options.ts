@@ -5,3 +5,5 @@ export const myOptions = {
     backgroundColor: '#0c0c30',
   },
 };
+
+export const withoutHeader = () => ({headerShown: false});

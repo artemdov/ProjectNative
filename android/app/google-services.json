@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "295922941531",
+    "project_id": "optimal-vial-141912",
+    "storage_bucket": "optimal-vial-141912.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:295922941531:android:6220e44bf3815ad1d3c97e",
+        "android_client_info": {
+          "package_name": "com.myproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "295922941531-uu3rh6v62gakao1dnfkdjpaeti574s0v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD35DskK4BAnh6qdUAYb0NIUBtrc5QgC-c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "295922941531-uu3rh6v62gakao1dnfkdjpaeti574s0v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

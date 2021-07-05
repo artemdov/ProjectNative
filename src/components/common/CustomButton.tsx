@@ -3,13 +3,11 @@ import {StyleSheet, Text, TouchableHighlight} from 'react-native';
 import {width as w} from '../../consts/size';
 import {CustomButtonType} from '../../types/types';
 
-export const CustomButton: React.FC<CustomButtonType> = ({title, onPress}) => {
-  return (
+export const CustomButton: React.FC<CustomButtonType> = ({title, onPress}) => (
     <TouchableHighlight style={styles.btn} onPress={onPress}>
       <Text style={styles.textStyle}>{title}</Text>
     </TouchableHighlight>
   );
-};
 
 const styles = StyleSheet.create({
   btn: {

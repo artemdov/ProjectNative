@@ -5,11 +5,13 @@ import {CustomTextInput} from '../../components/common/CustomTextInput';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {LoginSchema} from '../../consts/validation';
 import {Formik} from 'formik';
-import {OnSubmitLoginType} from '../../types/types';
+import {useDispatch} from 'react-redux';
+import {onSubmitLogIn} from '../../store/actions/authAction';
 
 export const LoginScreen = () => {
-  const onSubmit = ({email, password}: OnSubmitLoginType) => {
-    console.log(email, password);
+  const dispatch = useDispatch();
+  const onSubmit = (values: any) => {
+    dispatch(onSubmitLogIn(values));
   };
 
   return (
