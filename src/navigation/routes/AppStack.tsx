@@ -2,21 +2,22 @@ import React, {useEffect} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import screenNames from '../ScreenNames';
 import AuthStack from './AuthStack';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {setIsLoggedIn, setUser} from '../../store/actions/authAction';
 import auth from '@react-native-firebase/auth';
 import MainStack from './MainStack';
-import {isLoggedIn} from '../../store/selectors';
-import {withoutHeader} from '../../components/common/withoutHeader';
+import {withoutHeader} from '../options';
+import {isLoggedInSelector} from "../../store/selectors";
 
 const Stack = createStackNavigator<any>();
 
 export const AppStack = () => {
   const dispatch = useDispatch();
+ const isInitialize = useSelector(isLoggedInSelector)
 
   const onAuthStateChanged = (user: any) => {
     dispatch(setUser(user));
-    if (isLoggedIn) {
+    if (isInitialize) {
       dispatch(setIsLoggedIn(true));
     }
   };
@@ -26,17 +27,17 @@ export const AppStack = () => {
 
   return (
     <Stack.Navigator>
-      {isLoggedIn ? (
+      {isInitialize ? (
         <Stack.Screen
           name={screenNames.MAIN_STACK}
           component={MainStack}
-          options={{header: withoutHeader}}
+          options={withoutHeader()}
         />
       ) : (
         <Stack.Screen
           name={screenNames.AUTH_STACK}
           component={AuthStack}
-          options={{header: withoutHeader}}
+          options={withoutHeader()}
         />
       )}
     </Stack.Navigator>

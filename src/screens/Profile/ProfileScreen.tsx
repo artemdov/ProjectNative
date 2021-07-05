@@ -9,7 +9,7 @@ import {height as h} from '../../consts/size';
 export const ProfileScreen: React.FC<any> = ({navigation}) => {
   const dispatch = useDispatch();
 
-  const onPressOnLogout = () => {
+  const onPressLogout = () => {
     dispatch(onSubmitLogOut());
     navigation.navigate(screenNames.LANDING_SCREEN);
   };
@@ -18,7 +18,7 @@ export const ProfileScreen: React.FC<any> = ({navigation}) => {
     <View style={styles.blockMainScreen}>
       <Text style={styles.header}>Профиль</Text>
       <View style={styles.buttonEnter}>
-        <CustomButton title={'Выход'} onPress={onPressOnLogout} />
+        <CustomButton title={'Выход'} onPress={onPressLogout} />
       </View>
     </View>
   );
