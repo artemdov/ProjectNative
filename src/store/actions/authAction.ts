@@ -1,7 +1,6 @@
 import actionTypes from '../actionTypes';
 import {
     OnSubmitLoginType,
-    OnSubmitRegistrationDataType,
 } from '../../types/types';
 import {firebase, FirebaseAuthTypes} from '@react-native-firebase/auth';
 import {Dispatch} from 'redux';
@@ -29,17 +28,20 @@ export const setLoadingStatus = (value: boolean) =>
         type: actionTypes.auth.SET_LOADING,
         payload: value,
     } as const);
+
 export const onSubmitRegistration =
-  (data: OnSubmitRegistrationDataType) => async (dispatch: Dispatch) => {
-    try {
+  (data: any) => async (dispatch: Dispatch) => {
+      try {
       dispatch(setLoadingStatus(true));
       const res = await firebase
         .auth()
         .createUserWithEmailAndPassword(data.email, data.password);
-      if (res.user) {
+        if (res.user) {
         dispatch(setIsLoggedIn(true));
         dispatch(setLoadingStatus(false));
       }
+      /*const resDB = await firebase.database().ref().child('users/').child(res.user?.uid).set(data.email, data.password);
+      if(resDB){}*/
     }
     catch (err) {
       dispatch(errorMessage(err));

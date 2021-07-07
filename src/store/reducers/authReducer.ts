@@ -1,4 +1,3 @@
-import {AuthActionType} from '../../types/types';
 import actionTypes from '../actionTypes';
 
 const initialState = {

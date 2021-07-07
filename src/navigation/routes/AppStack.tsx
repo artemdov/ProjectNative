@@ -25,8 +25,6 @@ export const AppStack = () => {
     useEffect(() => {
     return auth().onAuthStateChanged(onAuthStateChanged);
   }, []);
-  console.log(isLoading)
-    console.log(isUser)
 
   return (
     <Stack.Navigator>
