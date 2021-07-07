@@ -1,35 +1,34 @@
 import actionTypes from '../actionTypes';
 import {
-  OnSubmitLoginType,
-  OnSubmitRegistrationDataType,
+    OnSubmitLoginType,
+    OnSubmitRegistrationDataType,
 } from '../../types/types';
-import {firebase} from '@react-native-firebase/auth';
+import {firebase, FirebaseAuthTypes} from '@react-native-firebase/auth';
 import {Dispatch} from 'redux';
 
 export const setIsLoggedIn = (value: boolean) =>
-  ({
-    type: actionTypes.auth.LOGIN,
-    payload: value,
-  } as const);
+    ({
+        type: actionTypes.auth.LOGIN,
+        payload: value,
+    } as const);
 
-export const setUser = (user: any) =>
-  ({
-    type: actionTypes.auth.SET_USER,
-    payload: user,
-  } as const);
+export const setUser = (user: FirebaseAuthTypes.UpdateProfile | null) =>
+    ({
+        type: actionTypes.auth.SET_USER,
+        payload: user,
+    } as const);
 
 export const errorMessage = (err: string) =>
-  ({
-    type: actionTypes.auth.SET_ERROR,
-    payload: err,
-  } as const);
+    ({
+        type: actionTypes.auth.SET_ERROR,
+        payload: err,
+    } as const);
 
 export const setLoadingStatus = (value: boolean) =>
-  ({
-    type: actionTypes.auth.SET_LOADING,
-    payload: value,
-  } as const);
-
+    ({
+        type: actionTypes.auth.SET_LOADING,
+        payload: value,
+    } as const);
 export const onSubmitRegistration =
   (data: OnSubmitRegistrationDataType) => async (dispatch: Dispatch) => {
     try {

@@ -3,31 +3,42 @@ import {createStackNavigator} from '@react-navigation/stack';
 import screenNames from '../ScreenNames';
 import AuthStack from './AuthStack';
 import {useDispatch, useSelector} from 'react-redux';
-import {setIsLoggedIn, setUser} from '../../store/actions/authAction';
-import auth from '@react-native-firebase/auth';
+import {setIsLoggedIn, setLoadingStatus, setUser} from '../../store/actions/authAction';
+import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import MainStack from './MainStack';
 import {withoutHeader} from '../options';
-import {isLoggedInSelector} from "../../store/selectors";
+import {isLoadingSelector, isLoggedInSelector, setUserSelector} from '../../store/selectors';
+import {LoadingScreen} from "../../screens/LoadingScreen";
 
 const Stack = createStackNavigator<any>();
 
 export const AppStack = () => {
   const dispatch = useDispatch();
- const isInitialize = useSelector(isLoggedInSelector)
+  const isLoading = useSelector(isLoadingSelector)
+  const isUser = useSelector(setUserSelector)
+    console.log(isLoading,'before')
+    console.log(isUser,'before')
 
-  const onAuthStateChanged = (user: any) => {
+
+    const onAuthStateChanged = (user: FirebaseAuthTypes.UpdateProfile | null) => {
     dispatch(setUser(user));
-    if (isInitialize) {
-      dispatch(setIsLoggedIn(true));
-    }
+    dispatch(setLoadingStatus(false))
   };
-  useEffect(() => {
+
+    useEffect(() => {
     return auth().onAuthStateChanged(onAuthStateChanged);
   }, []);
+  console.log(isLoading)
+    console.log(isUser)
 
   return (
     <Stack.Navigator>
-      {isInitialize ? (
+      {isLoading ? (<Stack.Screen
+          name={screenNames.LOADING_SCREEN}
+          component={LoadingScreen}
+          options={withoutHeader()}
+      />) :
+      isUser ? (
         <Stack.Screen
           name={screenNames.MAIN_STACK}
           component={MainStack}
