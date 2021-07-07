@@ -16,9 +16,6 @@ export const AppStack = () => {
   const dispatch = useDispatch();
   const isLoading = useSelector(isLoadingSelector)
   const isUser = useSelector(setUserSelector)
-    console.log(isLoading,'before')
-    console.log(isUser,'before')
-
 
     const onAuthStateChanged = (user: FirebaseAuthTypes.UpdateProfile | null) => {
     dispatch(setUser(user));
