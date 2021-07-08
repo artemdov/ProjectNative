@@ -1,19 +1,15 @@
-import {AuthActionType} from '../../types/types';
 import actionTypes from '../actionTypes';
 
 const initialState = {
   user: null,
-  loading: false,
+  loading: true,
   error: '',
   authenticated: false,
   isLoggedIn: false,
 };
 type initialStateType = typeof initialState;
 
-const authReducer = (
-  state = initialState,
-  action: AuthActionType,
-): initialStateType => {
+const authReducer = (state = initialState, action: any): initialStateType => {
   switch (action.type) {
     case actionTypes.auth.SET_USER:
       return {...state, user: action.payload};

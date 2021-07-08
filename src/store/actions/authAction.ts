@@ -3,7 +3,7 @@ import {
   OnSubmitLoginType,
   OnSubmitRegistrationDataType,
 } from '../../types/types';
-import {firebase} from '@react-native-firebase/auth';
+import {firebase, FirebaseAuthTypes} from '@react-native-firebase/auth';
 import {Dispatch} from 'redux';
 
 export const setIsLoggedIn = (value: boolean) =>
@@ -12,7 +12,7 @@ export const setIsLoggedIn = (value: boolean) =>
     payload: value,
   } as const);
 
-export const setUser = (user: any) =>
+export const setUser = (user: FirebaseAuthTypes.UpdateProfile | null) =>
   ({
     type: actionTypes.auth.SET_USER,
     payload: user,
