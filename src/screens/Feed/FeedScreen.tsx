@@ -1,48 +1,73 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-import {CustomButton} from '../../components/common/CustomButton';
-import {useDispatch} from 'react-redux';
-import {onSubmitLogOut} from '../../store/actions/authAction';
-import screenNames from '../../navigation/ScreenNames';
+import {Image, StyleSheet, View, Text} from 'react-native';
 import {width as w, height as h} from '../../consts/size';
 
 export const FeedScreen: React.FC<any> = ({navigation}) => {
-  const dispatch = useDispatch();
 
-  const onPressLogout = () => {
-    dispatch(onSubmitLogOut());
-    navigation.navigate(screenNames.LANDING_SCREEN);
-  };
 
-  return (
-    <View style={styles.blockMainScreen}>
-      <Text style={styles.header}>Лента</Text>
-      <View style={styles.buttonEnter}>
-        <CustomButton title={'Выход'} onPress={onPressLogout} />
-      </View>
-    </View>
-  );
+    return (
+        <View style={styles.container}>
+            <View style={styles.card}>
+                <View style={styles.userInfo}>
+                    <Image style={styles.userImg} source={require('../../assets/users/user-3.jpg')}/>
+                    <View style={styles.userInfoText}>
+                        <Text style={styles.userName}>Аня</Text>
+                        <Text style={styles.postTime}>2 часа назад</Text>
+                    </View>
+                </View>
+                <Text style={styles.postText}>Всем привет</Text>
+                <Image style={styles.postImg} source={require('../../assets/posts/post-img-2.jpg')}/>
+
+            </View>
+        </View>
+    );
 };
 
 const styles = StyleSheet.create({
-  blockMainScreen: {
-    backgroundColor: '#5953ee',
-    flexDirection: 'column',
-    alignItems: 'center',
-    width: w,
-    height: h,
-  },
-  header: {
-    textAlign: 'center',
-    fontSize: h / 26,
-    marginTop: h / 7,
-    color: '#ffff',
-  },
-  buttonEnter: {
-    marginTop: h / 2,
-  },
-  buttonRegistration: {
-    marginTop: 12,
-    paddingBottom: 120,
-  },
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+    },
+    card: {
+        backgroundColor: '#f8f8f8',
+        width: '100%',
+        marginBottom: 20,
+        borderRadius: 10,
+    },
+    userInfo: {
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        padding: 15,
+    },
+    userImg: {
+        width: 50,
+        height: 50,
+        borderRadius: 25,
+    },
+    userName: {
+        fontSize: 14,
+        fontWeight: 'bold',
+    },
+    userInfoText: {
+        flexDirection: 'column',
+        justifyContent: 'center',
+        marginLeft: 10,
+    },
+    postTime: {
+        fontSize: 12,
+        color: '#666'
+    },
+    postText: {
+        fontSize: 14,
+        paddingLeft: 15,
+        paddingRight: 15,
+    },
+    postImg: {
+        width: '100%',
+        height: 250,
+        marginTop: 15,
+    },
+
+
 });
