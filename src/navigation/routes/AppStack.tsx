@@ -5,11 +5,10 @@ import AuthStack from './AuthStack';
 import {useDispatch, useSelector} from 'react-redux';
 import {setLoadingStatus, setUser} from '../../store/actions/authAction';
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
-import MainStack from './MainStack';
 import {withoutHeader} from '../options';
 import {isLoadingSelector, getUserSelector} from '../../store/selectors';
 import {LoadingScreen} from '../../screens/LoadingScreen';
-import {MainTabScreen} from "../../screens/TabScreen/MainTabScreen";
+import {MainTabScreen} from '../../screens/TabScreen/MainTabScreen';
 
 const Stack = createStackNavigator<any>();
 
@@ -36,12 +35,11 @@ export const AppStack = () => {
           options={withoutHeader()}
         />
       ) : isUser ? (
-          <Stack.Screen
-              name={screenNames.MAIN_BOTTOM_SCREEN}
-              component={MainTabScreen}
-              options={withoutHeader()}
-          />
-
+        <Stack.Screen
+          name={screenNames.MAIN_BOTTOM_SCREEN}
+          component={MainTabScreen}
+          options={withoutHeader()}
+        />
       ) : (
         <Stack.Screen
           name={screenNames.AUTH_STACK}

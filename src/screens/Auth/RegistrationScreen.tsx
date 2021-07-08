@@ -8,6 +8,7 @@ import {RegistrationSchema} from '../../consts/validation';
 import {useDispatch} from 'react-redux';
 import {onSubmitRegistration} from '../../store/actions/authAction';
 import screenNames from '../../navigation/ScreenNames';
+import {width as w, height as h} from '../../consts/size';
 
 export const RegistrationScreen: React.FC<any> = ({navigation}) => {
   const dispatch = useDispatch();
@@ -75,18 +76,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#8a2be2',
   },
   blockSecondScreen: {
-    width: '100%',
-    height: '100%',
+    width: w,
+    height: h,
   },
   header: {
     textAlign: 'center',
-    fontSize: 30,
-    marginTop: 60,
+    fontSize: h / 26,
+    marginTop: h / 30,
     color: '#ffff',
-    marginBottom: 50,
+    marginBottom: 20,
   },
   containerInput: {
-    marginBottom: 60,
+    marginBottom: h / 20,
   },
   wrapperElements: {
     flexDirection: 'column',

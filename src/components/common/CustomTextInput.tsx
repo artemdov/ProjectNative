@@ -33,11 +33,11 @@ export const CustomTextInput: React.FC<CustomTextInputType> = ({
 const styles = StyleSheet.create({
   container: {
     width: w - 30,
-    paddingVertical: 11,
-    height: h / 3 - 150,
+    paddingVertical: h / 90,
+    height: h / 9 - 5,
     backgroundColor: '#0c0c30',
     borderRadius: 10,
-    margin: 10,
+    margin: h / 35,
     borderColor: '#0c0c30',
     borderWidth: 2,
   },
@@ -49,14 +49,16 @@ const styles = StyleSheet.create({
   },
   textInput: {
     color: '#40e0d0',
+    fontSize: h / 40,
   },
   textInputHeader: {
     color: '#40e0d0',
     marginHorizontal: 12,
+    fontSize: h / 50,
   },
   errorMessage: {
     fontWeight: 'bold',
-    fontSize: 12,
+    fontSize: h / 60,
     paddingLeft: 10,
     color: '#ee0000',
   },
