@@ -5,17 +5,17 @@ export const myOptions = {
     backgroundColor: '#0c0c30',
   },
 };
-export const bottomOptions = {
+export const bottomTabBarOptions = {
       labelStyle: {
-        fontSize: 11,
+        fontSize: 12,
         lineHeight: 13,
-        marginBottom: 9,
+        marginBottom: 10,
         letterSpacing: -0.33
       },
-      inactiveTintColor: '#fff',
+      activeTintColor: '#ffffff',
+      inactiveTintColor: '#818181',
       activeBackgroundColor: '#4f016d',
       inactiveBackgroundColor: '#4f016d',
-
 }
 
 export const withoutHeader = () => ({headerShown: false});

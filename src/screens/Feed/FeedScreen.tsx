@@ -26,7 +26,7 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
 
 const styles = StyleSheet.create({
     blockMainScreen: {
-        backgroundColor: '#8a2be2',
+        backgroundColor: '#5953ee',
         flexDirection: 'column',
         alignItems: 'center',
         width: '100%',
