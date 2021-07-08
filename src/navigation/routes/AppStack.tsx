@@ -7,7 +7,7 @@ import {setLoadingStatus, setUser} from '../../store/actions/authAction';
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import MainStack from './MainStack';
 import {withoutHeader} from '../options';
-import {isLoadingSelector, setUserSelector} from '../../store/selectors';
+import {isLoadingSelector, getUserSelector} from '../../store/selectors';
 import {LoadingScreen} from '../../screens/LoadingScreen';
 
 const Stack = createStackNavigator<any>();
@@ -15,7 +15,7 @@ const Stack = createStackNavigator<any>();
 export const AppStack = () => {
   const dispatch = useDispatch();
   const isLoading = useSelector(isLoadingSelector);
-  const isUser = useSelector(setUserSelector);
+  const isUser = useSelector(getUserSelector);
 
   const onAuthStateChanged = (user: FirebaseAuthTypes.UpdateProfile | null) => {
     dispatch(setUser(user));

@@ -1,5 +1,8 @@
 import actionTypes from '../actionTypes';
-import {OnSubmitLoginType} from '../../types/types';
+import {
+  OnSubmitLoginType,
+  OnSubmitRegistrationDataType,
+} from '../../types/types';
 import {firebase, FirebaseAuthTypes} from '@react-native-firebase/auth';
 import {Dispatch} from 'redux';
 
@@ -28,7 +31,7 @@ export const setLoadingStatus = (value: boolean) =>
   } as const);
 
 export const onSubmitRegistration =
-  (data: any) => async (dispatch: Dispatch) => {
+  (data: OnSubmitRegistrationDataType) => async (dispatch: Dispatch) => {
     try {
       dispatch(setLoadingStatus(true));
       const res = await firebase
