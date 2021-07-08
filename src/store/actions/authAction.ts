@@ -40,8 +40,6 @@ export const onSubmitRegistration =
         dispatch(setIsLoggedIn(true));
         dispatch(setLoadingStatus(false));
       }
-      /*const resDB = await firebase.database().ref().child('users/').child(res.user?.uid).set(data.email, data.password);
-      if(resDB){}*/
     }
     catch (err) {
       dispatch(errorMessage(err));
