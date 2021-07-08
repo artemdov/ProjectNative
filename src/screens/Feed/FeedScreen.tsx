@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, StyleSheet, View, Text} from 'react-native';
+import {Image, StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import {width as w, height as h} from '../../consts/size';
 
 export const FeedScreen: React.FC<any> = ({navigation}) => {
@@ -17,7 +17,11 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
                 </View>
                 <Text style={styles.postText}>Всем привет</Text>
                 <Image style={styles.postImg} source={require('../../assets/posts/post-img-2.jpg')}/>
-
+            <View style={styles.interactionWrapper}>
+                <TouchableOpacity style={styles.interaction}>
+                    <Text>Лайк</Text>
+                </TouchableOpacity>
+            </View>
             </View>
         </View>
     );
@@ -67,6 +71,17 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 250,
         marginTop: 15,
+    },
+    interactionWrapper: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        padding: 15,
+    },
+    interaction: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        borderRadius: 5,
+        padding: 4,
     },
 
 
