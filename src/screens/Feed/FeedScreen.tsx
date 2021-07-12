@@ -1,6 +1,6 @@
 import React from 'react';
 import {Image, StyleSheet, View, Text, TouchableOpacity} from 'react-native';
-import {width as w, height as h} from '../../consts/size';
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 export const FeedScreen: React.FC<any> = ({navigation}) => {
 
@@ -19,6 +19,7 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
                 <Image style={styles.postImg} source={require('../../assets/posts/post-img-2.jpg')}/>
             <View style={styles.interactionWrapper}>
                 <TouchableOpacity style={styles.interaction}>
+                    <MaterialCommunityIcons name='heart' size={25}/>
                     <Text>Лайк</Text>
                 </TouchableOpacity>
             </View>
