@@ -1,89 +1,84 @@
 import React from 'react';
-import {Image, StyleSheet, View, Text, TouchableOpacity} from 'react-native';
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import {Image, StyleSheet, View, Text, TouchableOpacity, FlatList, Button} from 'react-native';
+import {width as w, height as h} from '../../consts/size';
+import {Ionicons} from '@expo/vector-icons';
+import {Qwe} from '../../styles/FeedStyles'
+import {PostCard} from "../../components/PostCard";
+import screenNames from "../../navigation/ScreenNames";
+
 
 export const FeedScreen: React.FC<any> = ({navigation}) => {
 
+    const Posts = [
+        {
+            id: '1',
+            usersName: 'Таня',
+            usersImg: require('../../assets/users/user-6.jpg'),
+            postsTime: '2 часа назад',
+            post: 'Привет',
+            postImg: require('../../assets/posts/post-img-1.jpg'),
+            liked: true,
+            likes: '6',
+            comments: '2'
+        },
+        {
+            id: '3',
+            usersName: 'Аня',
+            usersImg: require('../../assets/users/user-3.jpg'),
+            postsTime: '2 часа назад',
+            posts: 'Привет',
+            postImg: require('../../assets/posts/post-img-2.jpg'),
+            liked: true,
+            likes: '14',
+            comments: '5'
+        },
+        {
+            id: '2',
+            usersName: 'Саша',
+            usersImg: require('../../assets/users/user-2.jpg'),
+            postsTime: '3 часа назад',
+            posts: 'Всем привет',
+            postImg: require('../../assets/posts/post-img-1.jpg'),
+            liked: true,
+            likes: '14',
+            comments: '5'
+        },
+        {
+            id: '4',
+            usersName: 'Влад',
+            usersImg: require('../../assets/users/user-2.jpg'),
+            postsTime: '1 час назад',
+            posts: 'Привет',
+            postImg: require('../../assets/posts/post-img-2.jpg'),
+            liked: true,
+            likes: '6',
+            comments: '2'
+        }
+    ]
+    const handleSubmit = () => navigation.navigate(screenNames.ADD_POST_SCREEN)
 
     return (
         <View style={styles.container}>
-            <View style={styles.card}>
-                <View style={styles.userInfo}>
-                    <Image style={styles.userImg} source={require('../../assets/users/user-3.jpg')}/>
-                    <View style={styles.userInfoText}>
-                        <Text style={styles.userName}>Аня</Text>
-                        <Text style={styles.postTime}>2 часа назад</Text>
-                    </View>
-                </View>
-                <Text style={styles.postText}>Всем привет</Text>
-                <Image style={styles.postImg} source={require('../../assets/posts/post-img-2.jpg')}/>
-            <View style={styles.interactionWrapper}>
-                <TouchableOpacity style={styles.interaction}>
-                    <MaterialCommunityIcons name='heart' size={25}/>
-                    <Text>Лайк</Text>
-                </TouchableOpacity>
+            <View style={styles.button}>
+            <Button  title='Добавить пост' onPress={handleSubmit}/>
             </View>
-            </View>
+            <FlatList data={Posts}
+                      renderItem={({item}) => <PostCard item={item}/>}
+                      keyExtractor={item => item.id}
+                      showsVerticalScrollIndicator={false}
+            />
+
         </View>
+
     );
 };
-
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+
         backgroundColor: '#fff',
         alignItems: 'center',
     },
-    card: {
-        backgroundColor: '#f8f8f8',
-        width: '100%',
-        marginBottom: 20,
-        borderRadius: 10,
-    },
-    userInfo: {
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-        padding: 15,
-    },
-    userImg: {
-        width: 50,
-        height: 50,
-        borderRadius: 25,
-    },
-    userName: {
-        fontSize: 14,
-        fontWeight: 'bold',
-    },
-    userInfoText: {
-        flexDirection: 'column',
-        justifyContent: 'center',
-        marginLeft: 10,
-    },
-    postTime: {
-        fontSize: 12,
-        color: '#666'
-    },
-    postText: {
-        fontSize: 14,
-        paddingLeft: 15,
-        paddingRight: 15,
-    },
-    postImg: {
-        width: '100%',
-        height: 250,
-        marginTop: 15,
-    },
-    interactionWrapper: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        padding: 15,
-    },
-    interaction: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        borderRadius: 5,
-        padding: 4,
-    },
-
-
+    button: {
+        margin: 10,
+    }
 });

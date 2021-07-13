@@ -6,6 +6,7 @@ import screenNames from '../../navigation/ScreenNames';
 import {bottomTabBarOptions} from '../../navigation/options';
 import {Image, StyleSheet} from 'react-native';
 import {width as w, height as h} from '../../consts/size';
+import {FeedPostStack} from "../../navigation/routes/FeedPostStack";
 
 const Tab = createBottomTabNavigator<any>();
 const notFocused = 0.51;
@@ -26,8 +27,8 @@ export const MainTabScreen = () => (
       }}
     />
     <Tab.Screen
-      name={screenNames.FEED_SCREEN}
-      component={FeedScreen}
+      name={screenNames.FEED_POST_STACK}
+      component={FeedPostStack}
       options={{
         tabBarLabel: 'Лента',
         tabBarIcon: ({focused}) => (

@@ -1,4 +1,6 @@
 import {height as h} from '../consts/size';
+import {Button, View} from "react-native";
+import React from "react";
 
 export const myOptions = {
   title: 'Вход',
@@ -23,5 +25,13 @@ export const bottomTabBarOptions = {
   activeBackgroundColor: '#4f016d',
   inactiveBackgroundColor: '#4f016d',
 };
+export const feedPostOptions = {
+  headerStyle: {
+    shadowColor: '#fff',
+    elevation: 0,
+  },
+}
+
+
 
 export const withoutHeader = () => ({headerShown: false});
