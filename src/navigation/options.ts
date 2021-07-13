@@ -30,8 +30,5 @@ export const feedPostOptions = {
     shadowColor: '#fff',
     elevation: 0,
   },
-}
-
-
-
+};
 export const withoutHeader = () => ({headerShown: false});

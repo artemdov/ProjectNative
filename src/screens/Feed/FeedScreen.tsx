@@ -1,8 +1,7 @@
 import React from 'react';
-import {Image, StyleSheet, View, Text, TouchableOpacity, FlatList, Button} from 'react-native';
+import {StyleSheet, View, FlatList, Button} from 'react-native';
 import {width as w, height as h} from '../../consts/size';
-import {Ionicons} from '@expo/vector-icons';
-import {Qwe} from '../../styles/FeedStyles'
+import {Container} from '../../styles/FeedStyles'
 import {PostCard} from "../../components/PostCard";
 import screenNames from "../../navigation/ScreenNames";
 
@@ -58,8 +57,8 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
     const handleSubmit = () => navigation.navigate(screenNames.ADD_POST_SCREEN)
 
     return (
-        <View style={styles.container}>
-            <View style={styles.button}>
+        <Container>
+            <View style={{margin: 10}}>
             <Button  title='Добавить пост' onPress={handleSubmit}/>
             </View>
             <FlatList data={Posts}
@@ -68,17 +67,12 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
                       showsVerticalScrollIndicator={false}
             />
 
-        </View>
+        </Container>
 
     );
 };
 const styles = StyleSheet.create({
-    container: {
-
-        backgroundColor: '#fff',
-        alignItems: 'center',
-    },
     button: {
-        margin: 10,
+
     }
 });
