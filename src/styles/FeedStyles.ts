@@ -51,22 +51,26 @@ export const Divider = styled.View`
     `;
 export const InteractionWrapper = styled.View`
         flex-direction: row;
-        justify-content: space-around;
+        justify-content: flex-start;
         padding: 15px;
     `;
 export const Interaction = styled.TouchableOpacity`
-        flex-direction: row;
-        justify-content: center;
-        border-radius: 5px;
-        padding: 4px;
     `;
 export const InteractionHeart = styled.View`
+        padding: 5px;
+        color: #333;
+        margin-top: 5px;
+    `;
+export const InteractionComment = styled.View`
+        padding: 5px;
         color: #333;
         margin-top: 5px;
     `;
 export const InteractionText = styled.Text`
-        font-weight: bold;
-        margin-top: 5px;
+        margin-top: 10px;
+        font-size: 18px;
+        margin-right: 8px;
+
     `;
 
 

@@ -1,9 +1,10 @@
 import React from 'react';
-import {StyleSheet, View, FlatList, Button} from 'react-native';
+import {StyleSheet, View, FlatList, Button, TouchableOpacity} from 'react-native';
 import {width as w, height as h} from '../../consts/size';
 import {Container} from '../../styles/FeedStyles'
 import {PostCard} from "../../components/PostCard";
 import screenNames from "../../navigation/ScreenNames";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 
 export const FeedScreen: React.FC<any> = ({navigation}) => {
@@ -58,9 +59,9 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
 
     return (
         <Container>
-            <View style={{margin: 10}}>
-            <Button  title='Добавить пост' onPress={handleSubmit}/>
-            </View>
+            <TouchableOpacity style={styles.buttonAddPost} onPress={handleSubmit}>
+            <Ionicons name='add-circle' size={45} color="#2e64e5" />
+            </TouchableOpacity>
             <FlatList data={Posts}
                       renderItem={({item}) => <PostCard item={item}/>}
                       keyExtractor={item => item.id}
@@ -71,8 +72,11 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
 
     );
 };
-const styles = StyleSheet.create({
-    button: {
 
-    }
+const styles = StyleSheet.create({
+    buttonAddPost: {
+        margin: 5,
+        marginLeft: w / 1.2,
+    },
+
 });

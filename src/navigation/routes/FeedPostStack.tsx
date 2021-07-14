@@ -11,7 +11,7 @@ const Stack = createStackNavigator();
 export const FeedPostStack: React.FC<any> = () => (
     <Stack.Navigator>
         <Stack.Screen
-            name='Hello'
+            name={screenNames.FEED_SCREEN}
             component={FeedScreen}
             options={withoutHeader()}
         />
