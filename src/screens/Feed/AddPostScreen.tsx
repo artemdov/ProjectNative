@@ -10,8 +10,7 @@ export const AddPostScreen = () => {
             <InputWrapper>
                 <InputField placeholder='Напишите пост'
                             multiline
-                            numberOfLines={3}>
-
+                            numberOfLines={4}>
                 </InputField>
             </InputWrapper>
             <ActionButton buttonColor="rgba(231,76,60,1)">
