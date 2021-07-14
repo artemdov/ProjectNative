@@ -32,15 +32,18 @@ export const PostCard: React.FC<any> = ({item}) => {
             <PostText>{item.posts}</PostText>
             {item.postImg != 'none' ? <PostImg source={item.postImg}/> : <Divider style={{marginTop: h / 55}}/>}
             <InteractionWrapper>
-                <InteractionHeart>
-                    <Ionicons name={likeIcon} size={24} color={likeIconColor}/>
-                </InteractionHeart>
+                <Interaction>
+                    <InteractionHeart>
+                        <Ionicons name={likeIcon} size={24} color={likeIconColor}/>
+                    </InteractionHeart>
+                </Interaction>
                 <InteractionText>{item.likes}</InteractionText>
-                <InteractionComment>
-                    <EvilIcons name="comment" size={30} color="#000"/>
-                </InteractionComment>
+                <Interaction>
+                    <InteractionComment>
+                        <EvilIcons name="comment" size={30} color="#000"/>
+                    </InteractionComment>
+                </Interaction>
                 <InteractionText>{item.comments}</InteractionText>
-
             </InteractionWrapper>
         </Card>
     )
