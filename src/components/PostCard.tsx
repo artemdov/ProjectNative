@@ -15,29 +15,33 @@ import {
 } from "../styles/FeedStyles";
 
 
-export const PostCard: React.FC<any> = ({item}) => (
-    <Card style={{width: w - 40}}>
-        <UserInfo>
-            <UserImg source={item.usersImg}/>
-            <UserInfoText>
-                <UserName>{item.usersName}</UserName>
-                <PostTime>{item.postsTime}</PostTime>
-            </UserInfoText>
-        </UserInfo>
-        <PostText>{item.posts}</PostText>
-        <PostImg source={item.postImg}/>
-        <Divider style={{marginTop: h / 55}}/>
-        <InteractionWrapper>
-            <InteractionHeart>
-                <Ionicons name="heart" size={24} color="#2e64e5"/>
-            </InteractionHeart>
-            <InteractionText>{item.likes}</InteractionText>
+export const PostCard: React.FC<any> = ({item}) => {
 
-            <InteractionComment>
-                <EvilIcons name="comment" size={30} color="#000"/>
-            </InteractionComment>
-            <InteractionText>{item.comments}</InteractionText>
+    const likeIcon = item.liked ? 'heart' : 'heart-outline'
+    const likeIconColor = item.liked ? '#2e64e5' : '#333'
 
-        </InteractionWrapper>
-    </Card>
-)
+    return (
+        <Card style={{width: w - 40}}>
+            <UserInfo>
+                <UserImg source={item.usersImg}/>
+                <UserInfoText>
+                    <UserName>{item.usersName}</UserName>
+                    <PostTime>{item.postsTime}</PostTime>
+                </UserInfoText>
+            </UserInfo>
+            <PostText>{item.posts}</PostText>
+            {item.postImg != 'none' ? <PostImg source={item.postImg}/> : <Divider style={{marginTop: h / 55}}/>}
+            <InteractionWrapper>
+                <InteractionHeart>
+                    <Ionicons name={likeIcon} size={24} color={likeIconColor}/>
+                </InteractionHeart>
+                <InteractionText>{item.likes}</InteractionText>
+                <InteractionComment>
+                    <EvilIcons name="comment" size={30} color="#000"/>
+                </InteractionComment>
+                <InteractionText>{item.comments}</InteractionText>
+
+            </InteractionWrapper>
+        </Card>
+    )
+}

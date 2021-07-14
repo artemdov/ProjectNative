@@ -28,7 +28,7 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
             postsTime: '2 часа назад',
             posts: 'Привет',
             postImg: require('../../assets/posts/post-img-2.jpg'),
-            liked: true,
+            liked: false,
             likes: '14',
             comments: '5'
         },
@@ -38,8 +38,8 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
             usersImg: require('../../assets/users/user-2.jpg'),
             postsTime: '3 часа назад',
             posts: 'Всем привет',
-            postImg: require('../../assets/posts/post-img-1.jpg'),
-            liked: true,
+            postImg: 'none',
+            liked: false,
             likes: '14',
             comments: '5'
         },
