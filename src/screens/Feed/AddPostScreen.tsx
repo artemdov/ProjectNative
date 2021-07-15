@@ -29,7 +29,7 @@ export const AddPostScreen = () => {
     return (
         <PostContainer>
             <InputWrapper>
-                <InputField placeholder='Напишите пост'
+                <InputField placeholder='Подпись к фото'
                             multiline
                             numberOfLines={4}>
                 </InputField>

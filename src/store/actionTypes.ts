@@ -8,6 +8,10 @@ const actionTypes = {
     SIGNUP: 'SIGNUP',
     IS_AUTHENTICATED: 'IS_AUTHENTICATED',
   },
+  feed: {
+    CHANGE_VALUE: 'CHANGE_VALUE',
+    SET_IMAGE: 'SET_IMAGE',
+  }
 };
 
 export default actionTypes;
