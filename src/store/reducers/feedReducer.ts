@@ -2,7 +2,7 @@ import actionTypes from '../actionTypes';
 
 const initialState = {
   value: '',
-  image: null,
+  image: '',
 };
 type initialStateType = typeof initialState;
 

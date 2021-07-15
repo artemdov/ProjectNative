@@ -4,48 +4,49 @@ import {ContainerWrapper} from "../../styles/AddPostStyles";
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ImagePicker from 'react-native-image-crop-picker';
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {changeValueSelector, setImageSelector} from "../../store/selectors";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import {CustomButton} from "../../components/common/CustomButton";
 import {width as w, height as h} from '../../consts/size';
+import {setImage} from "../../store/actions/feedAction";
 
 
 export const AddPostScreen = () => {
 
-    const imageData: any = useSelector(setImageSelector)
+    const newImage = useSelector(setImageSelector)
     const changeValue = useSelector(changeValueSelector)
+    const dispatch = useDispatch()
+
     const takePhotoFromCamera = () => {
         ImagePicker.openCamera({
             width: 300,
-            height: 400,
-            cropping: true
+            height: 200,
+            cropping: true,
+            freeStyleCropEnabled: true,
         }).then(image => {
-            console.log(image);
-            imageData(image.path)
+            dispatch(setImage(image.path))
         });
     }
     const choosePhotoFromLibrary = () => {
         ImagePicker.openPicker({
             width: 300,
-            height: 400,
-            cropping: true
+            height: 200,
+            cropping: true,
+            freeStyleCropEnabled: true,
         }).then(image => {
-            console.log(image);
-            imageData(image.path)
+            dispatch(setImage(image.path))
         });
     }
     const OnPressHandler = () => {
 
     }
-
     return (
         <ContainerWrapper>
             <KeyboardAwareScrollView>
-                {imageData
-                    ? <Image source={{uri: imageData}} style={styles.imageStyle}/>
+                {newImage
+                    ? <Image source={{uri:newImage}} style={styles.imageStyle}/>
                     : <Icon name='camera' size={w - 80} color='#fff' style={styles.photoFeed}/>}
-
                 <TextInput style={styles.input}
                            placeholder='Подпись к фото'
                             multiline
@@ -80,8 +81,8 @@ const styles = StyleSheet.create({
         marginLeft: w / 15,
     },
     imageStyle: {
-        width: w - 80,
-        height: h - 80,
+        width: w / 1.1,
+        height: h / 2,
         borderRadius: 10
     },
     actionButtonStyle: {
