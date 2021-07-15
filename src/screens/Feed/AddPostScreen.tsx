@@ -1,12 +1,20 @@
 import React from 'react';
-import {StyleSheet} from "react-native";
-import {InputField, InputWrapper, PostContainer} from "../../styles/AddPostStyles";
+import {Image, StyleSheet, TextInput, View} from "react-native";
+import {ContainerWrapper} from "../../styles/AddPostStyles";
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ImagePicker from 'react-native-image-crop-picker';
+import {useSelector} from "react-redux";
+import {changeValueSelector, setImageSelector} from "../../store/selectors";
+import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
+import {CustomButton} from "../../components/common/CustomButton";
+import {width as w, height as h} from '../../consts/size';
+
 
 export const AddPostScreen = () => {
 
+    const imageData: any = useSelector(setImageSelector)
+    const changeValue = useSelector(changeValueSelector)
     const takePhotoFromCamera = () => {
         ImagePicker.openCamera({
             width: 300,
@@ -14,6 +22,7 @@ export const AddPostScreen = () => {
             cropping: true
         }).then(image => {
             console.log(image);
+            imageData(image.path)
         });
     }
     const choosePhotoFromLibrary = () => {
@@ -23,32 +32,68 @@ export const AddPostScreen = () => {
             cropping: true
         }).then(image => {
             console.log(image);
+            imageData(image.path)
         });
+    }
+    const OnPressHandler = () => {
+
     }
 
     return (
-        <PostContainer>
-            <InputWrapper>
-                <InputField placeholder='Подпись к фото'
+        <ContainerWrapper>
+            <KeyboardAwareScrollView>
+                {imageData
+                    ? <Image source={{uri: imageData}} style={styles.imageStyle}/>
+                    : <Icon name='camera' size={w - 80} color='#fff' style={styles.photoFeed}/>}
+
+                <TextInput style={styles.input}
+                           placeholder='Подпись к фото'
                             multiline
-                            numberOfLines={4}>
-                </InputField>
-            </InputWrapper>
-            <ActionButton buttonColor="rgba(231,76,60,1)">
-                <ActionButton.Item buttonColor='#9b59b6' title="Сделать фото" onPress={takePhotoFromCamera}>
-                    <Icon name="camera-outline" style={styles.actionButtonIcon}/>
-                </ActionButton.Item>
-                <ActionButton.Item buttonColor='#3498db' title="Выбрать из галереи" onPress={choosePhotoFromLibrary}>
-                    <Icon name="images-outline" style={styles.actionButtonIcon}/>
-                </ActionButton.Item>
-            </ActionButton>
-        </PostContainer>
+                >
+                </TextInput>
+                <View style={styles.customButton}>
+                    <CustomButton title='Отправить' onPress={OnPressHandler}/>
+                </View>
+                <ActionButton size={w / 7} style={styles.actionButtonStyle} buttonColor="rgba(231,76,60,1)">
+                    <ActionButton.Item buttonColor='#9b59b6' title="Сделать фото" onPress={takePhotoFromCamera}>
+                        <Icon name="camera-outline" style={styles.actionButtonIcon}/>
+                    </ActionButton.Item>
+                    <ActionButton.Item buttonColor='#3498db' title="Выбрать из галереи"
+                                       onPress={choosePhotoFromLibrary}>
+                        <Icon name="images-outline" style={styles.actionButtonIcon}/>
+                    </ActionButton.Item>
+                </ActionButton>
+            </KeyboardAwareScrollView>
+        </ContainerWrapper>
     )
 };
 const styles = StyleSheet.create({
     actionButtonIcon: {
-        fontSize: 20,
+        fontSize: h / 30,
         height: 22,
-        color: 'white',
+        color: '#ffffff',
+    },
+    photoFeed: {
+        opacity: 0.8,
+        borderRadius: 10,
+        marginBottom: h / 40,
+        marginLeft: w / 15,
+    },
+    imageStyle: {
+        width: w - 80,
+        height: h - 80,
+        borderRadius: 10
+    },
+    actionButtonStyle: {
+        marginBottom: h / 5,
+    },
+    customButton: {
+        marginTop: h / 15
+    },
+    input: {
+        fontSize: w / 30,
+        marginTop: h / 20,
+        borderBottomWidth: 1,
+        paddingVertical: h / 150 - 20,
     },
 });

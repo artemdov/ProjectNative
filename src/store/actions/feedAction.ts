@@ -1,6 +1,6 @@
 import actionTypes from '../actionTypes';
 
-export const changeValue = (value: string) =>
+export const changeValue = (value: (e: string) => void) =>
   ({
     type: actionTypes.feed.CHANGE_VALUE,
     payload: value,
