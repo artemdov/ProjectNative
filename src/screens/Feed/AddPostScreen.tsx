@@ -9,13 +9,13 @@ import {changeValueSelector, setImageSelector} from "../../store/selectors";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import {CustomButton} from "../../components/common/CustomButton";
 import {width as w, height as h} from '../../consts/size';
-import {setImage} from "../../store/actions/feedAction";
+import {changeValue, setImage} from "../../store/actions/feedAction";
 
 
 export const AddPostScreen = () => {
 
     const newImage = useSelector(setImageSelector)
-    const changeValue = useSelector(changeValueSelector)
+    const valueInput = useSelector(changeValueSelector)
     const dispatch = useDispatch()
 
     const takePhotoFromCamera = () => {
@@ -38,8 +38,8 @@ export const AddPostScreen = () => {
             dispatch(setImage(image.path))
         });
     }
-    const OnPressHandler = () => {
-
+    const OnPressHandler = (value: any) => {
+    dispatch(changeValue(value))
     }
     return (
         <ContainerWrapper>
