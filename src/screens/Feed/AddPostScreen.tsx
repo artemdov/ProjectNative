@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, StyleSheet, TextInput, View} from "react-native";
+import {Image, Platform, StyleSheet, TextInput, View} from "react-native";
 import {ContainerWrapper} from "../../styles/AddPostStyles";
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -25,7 +25,8 @@ export const AddPostScreen = () => {
             cropping: true,
             freeStyleCropEnabled: true,
         }).then(image => {
-            dispatch(setImage(image.path))
+            const imageUri = Platform.OS === 'ios' ? image.sourceURL : image.path
+            dispatch(setImage(imageUri))
         });
     }
     const choosePhotoFromLibrary = () => {
@@ -35,7 +36,8 @@ export const AddPostScreen = () => {
             cropping: true,
             freeStyleCropEnabled: true,
         }).then(image => {
-            dispatch(setImage(image.path))
+            const imageUri = Platform.OS === 'ios' ? image.sourceURL : image.path
+            dispatch(setImage(imageUri))
         });
     }
     const OnPressHandler = (value: any) => {

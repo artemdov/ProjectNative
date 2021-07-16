@@ -1,5 +1,4 @@
 import actionTypes from '../actionTypes';
-import {PossibleArray} from "react-native-image-crop-picker";
 
 export const changeValue = (value: string) =>
   ({
@@ -7,7 +6,7 @@ export const changeValue = (value: string) =>
     payload: value,
   } as const);
 
-export const setImage = (image: string) =>
+export const setImage = (image: string | undefined) =>
   ({
     type: actionTypes.feed.SET_IMAGE,
     payload: image,
