@@ -1,9 +1,9 @@
 import actionTypes from '../actionTypes';
 
-export const changeValue = (value: string) =>
+export const changeValuePost = (valuePost: string) =>
   ({
-    type: actionTypes.feed.CHANGE_VALUE,
-    payload: value,
+    type: actionTypes.feed.CHANGE_VALUE_POST,
+    payload: valuePost,
   } as const);
 
 export const setImage = (image: string | undefined) =>

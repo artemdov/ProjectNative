@@ -1,22 +1,26 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {CustomButton} from '../../components/common/CustomButton';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {onSubmitLogOut} from '../../store/actions/authAction';
 import screenNames from '../../navigation/ScreenNames';
 import {width as w, height as h} from '../../consts/size';
+import {getUserSelector} from "../../store/selectors";
 
 export const ProfileScreen: React.FC<any> = ({navigation}) => {
   const dispatch = useDispatch();
+  const user: any = useSelector(getUserSelector)
+
 
   const onPressLogout = () => {
     dispatch(onSubmitLogOut());
     navigation.navigate(screenNames.LANDING_SCREEN);
   };
 
+  // @ts-ignore
   return (
     <View style={styles.blockMainScreen}>
-      <Text style={styles.header}>Профиль</Text>
+      <Text style={styles.header}>Привет {user.uid}</Text>
       <View style={styles.buttonEnter}>
         <CustomButton title={'Выход'} onPress={onPressLogout} />
       </View>
@@ -29,12 +33,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#8a2be2',
     flexDirection: 'column',
     alignItems: 'center',
-    width: w,
+    width: w ,
     height: h,
   },
   header: {
     textAlign: 'center',
-    fontSize: h / 26,
+    fontSize: h / 30,
     marginTop: h / 7,
     color: '#ffff',
   },

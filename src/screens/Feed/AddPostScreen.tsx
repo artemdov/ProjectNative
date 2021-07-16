@@ -5,20 +5,29 @@ import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ImagePicker from 'react-native-image-crop-picker';
 import {useDispatch, useSelector} from "react-redux";
-import {isLoadingImageSelector, isTransferredSelector, setImageSelector} from "../../store/selectors";
+import {
+    changeValuePostSelector,
+    getUserSelector,
+    isLoadingImageSelector,
+    isTransferredSelector,
+    setImageSelector
+} from "../../store/selectors";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import {CustomButton} from "../../components/common/CustomButton";
 import {width as w, height as h} from '../../consts/size';
-import {setImage, setTransferred, upLoadingForImage} from "../../store/actions/feedAction";
+import {changeValuePost, setImage, setTransferred, upLoadingForImage} from "../../store/actions/feedAction";
 import storage from '@react-native-firebase/storage';
 import {StatusLoadingWrapper} from "../../styles/FeedStyles";
+import firebase from "firebase";
 
 export const AddPostScreen = () => {
 
+    const dispatch = useDispatch()
     const newImage = useSelector(setImageSelector)
+    const user: any = useSelector(getUserSelector)
     const isTransferred = useSelector(isTransferredSelector)
     const isLoad = useSelector(isLoadingImageSelector)
-    const dispatch = useDispatch()
+    const post = useSelector(changeValuePostSelector)
 
     const takePhotoFromCamera = () => {
         ImagePicker.openCamera({
@@ -42,30 +51,61 @@ export const AddPostScreen = () => {
             dispatch(setImage(imageUri))
         });
     }
-    const SubmitPost = async () => {
+
+    const submitPost = async () => {
+        const imageUrl = await uploadImage()
+        dispatch(setImage(''))
+
+        firebase.database()
+            .ref('usersPost/')
+            .push({
+                userId: user.uid,
+                post: post,
+                postImg: imageUrl,
+                postTime: firebase.firestore.Timestamp.now(),
+                likes: null,
+                comments: null
+            })
+            .then(() => {
+                console.log('Added post')
+                Alert.alert(
+                    'Пост опубликован',
+                    'Пост успешно опубликован!'
+                )
+                dispatch(changeValuePost(''))
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+        console.log('user', user)
+    }
+    const onChangePost = (value: string) => {
+        dispatch(changeValuePost(value))
+    }
+    const uploadImage = async () => {
         const uploadUri = newImage
         const fileName = uploadUri.substring(uploadUri.lastIndexOf('/') + 1)
-
-        try {
-            dispatch(upLoadingForImage(true))
-            dispatch(setTransferred(0))
-            const task = storage().ref(fileName).putFile(uploadUri)
-            task.on('state_changed', taskSnapshot => {
-                console.log(`${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`);
+        const storageRef = storage().ref(`photos/${fileName}`)
+        const task = storageRef.putFile(uploadUri)
+        task.on('state_changed', taskSnapshot => {
+            //console.log(`${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`);
             dispatch(setTransferred(
                 Math.round(taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) * 100
             ))
-            });
+        });
+        try {
+            dispatch(upLoadingForImage(true))
+            dispatch(setTransferred(0))
             await task
+            const url = await storageRef.getDownloadURL()
             dispatch(upLoadingForImage(false))
             Alert.alert('Картинка загружена успешно!')
+            return url
         } catch (err) {
-            console.log(err)
+            Alert.alert(err)
+            return ('')
         }
-        dispatch(setImage(''))
     }
-   // console.log('isLoad', isLoad)
-    //console.log('isTransferred', isTransferred)
     return (
         <ContainerWrapper>
             <KeyboardAwareScrollView>
@@ -79,12 +119,14 @@ export const AddPostScreen = () => {
                     </StatusLoadingWrapper>
                 ) : (
                     <View style={styles.customButton}>
-                        <CustomButton title='Отправить' onPress={SubmitPost}/>
+                        <CustomButton title='Отправить' onPress={submitPost}/>
                     </View>
                 )}
                 <TextInput style={styles.input}
                            placeholder='Подпись к фото'
                            multiline
+                           value={post}
+                           onChangeText={onChangePost}
                 >
                 </TextInput>
                 <ActionButton size={w / 7} style={styles.actionButtonStyle} buttonColor="rgba(231,76,60,1)">
