@@ -70,7 +70,10 @@ export const InteractionText = styled.Text`
         margin-top: 10px;
         font-size: 18px;
         margin-right: 8px;
-
+    `;
+export const StatusLoadingWrapper = styled.View`
+        align-items: center;
+        justify-content: center;
     `;
 
 

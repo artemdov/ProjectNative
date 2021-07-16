@@ -7,3 +7,8 @@ export const isLoadingSelector = (state: AppRootStateType) =>
 export const getUserSelector = (state: AppRootStateType) => state.auth.user;
 export const setImageSelector = (state: AppRootStateType) => state.feed.image;
 export const changeValueSelector = (state: AppRootStateType) => state.feed.value;
+export const isLoadingImageSelector = (state: AppRootStateType) =>
+    state.feed.upLoading;
+export const isTransferredSelector = (state: AppRootStateType) =>
+    state.feed.transferred;
+

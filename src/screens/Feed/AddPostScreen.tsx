@@ -1,21 +1,23 @@
 import React from 'react';
-import {Image, Platform, StyleSheet, TextInput, View} from "react-native";
+import {Alert, Image, Platform, StyleSheet, TextInput, View, ActivityIndicator, Text} from "react-native";
 import {ContainerWrapper} from "../../styles/AddPostStyles";
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ImagePicker from 'react-native-image-crop-picker';
 import {useDispatch, useSelector} from "react-redux";
-import {changeValueSelector, setImageSelector} from "../../store/selectors";
+import {isLoadingImageSelector, isTransferredSelector, setImageSelector} from "../../store/selectors";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import {CustomButton} from "../../components/common/CustomButton";
 import {width as w, height as h} from '../../consts/size';
-import {changeValue, setImage} from "../../store/actions/feedAction";
-
+import {setImage, setTransferred, upLoadingForImage} from "../../store/actions/feedAction";
+import storage from '@react-native-firebase/storage';
+import {StatusLoadingWrapper} from "../../styles/FeedStyles";
 
 export const AddPostScreen = () => {
 
     const newImage = useSelector(setImageSelector)
-    const valueInput = useSelector(changeValueSelector)
+    const isTransferred = useSelector(isTransferredSelector)
+    const isLoad = useSelector(isLoadingImageSelector)
     const dispatch = useDispatch()
 
     const takePhotoFromCamera = () => {
@@ -40,23 +42,51 @@ export const AddPostScreen = () => {
             dispatch(setImage(imageUri))
         });
     }
-    const OnPressHandler = (value: any) => {
-    dispatch(changeValue(value))
+    const SubmitPost = async () => {
+        const uploadUri = newImage
+        const fileName = uploadUri.substring(uploadUri.lastIndexOf('/') + 1)
+
+        try {
+            dispatch(upLoadingForImage(true))
+            dispatch(setTransferred(0))
+            const task = storage().ref(fileName).putFile(uploadUri)
+            task.on('state_changed', taskSnapshot => {
+                console.log(`${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`);
+            dispatch(setTransferred(
+                Math.round(taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) * 100
+            ))
+            });
+            await task
+            dispatch(upLoadingForImage(false))
+            Alert.alert('Картинка загружена успешно!')
+        } catch (err) {
+            console.log(err)
+        }
+        dispatch(setImage(''))
     }
+   // console.log('isLoad', isLoad)
+    //console.log('isTransferred', isTransferred)
     return (
         <ContainerWrapper>
             <KeyboardAwareScrollView>
                 {newImage
-                    ? <Image source={{uri:newImage}} style={styles.imageStyle}/>
+                    ? <Image source={{uri: newImage}} style={styles.imageStyle}/>
                     : <Icon name='camera' size={w - 80} color='#fff' style={styles.photoFeed}/>}
+                {isLoad ? (
+                    <StatusLoadingWrapper>
+                        <Text>{isTransferred} % Загружено!</Text>
+                        <ActivityIndicator size='large' color='#0000ff'/>
+                    </StatusLoadingWrapper>
+                ) : (
+                    <View style={styles.customButton}>
+                        <CustomButton title='Отправить' onPress={SubmitPost}/>
+                    </View>
+                )}
                 <TextInput style={styles.input}
                            placeholder='Подпись к фото'
-                            multiline
+                           multiline
                 >
                 </TextInput>
-                <View style={styles.customButton}>
-                    <CustomButton title='Отправить' onPress={OnPressHandler}/>
-                </View>
                 <ActionButton size={w / 7} style={styles.actionButtonStyle} buttonColor="rgba(231,76,60,1)">
                     <ActionButton.Item buttonColor='#9b59b6' title="Сделать фото" onPress={takePhotoFromCamera}>
                         <Icon name="camera-outline" style={styles.actionButtonIcon}/>

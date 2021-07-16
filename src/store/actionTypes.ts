@@ -11,6 +11,8 @@ const actionTypes = {
   feed: {
     CHANGE_VALUE: 'CHANGE_VALUE',
     SET_IMAGE: 'SET_IMAGE',
+    UPLOAD: 'UPLOAD',
+    SET_TRANSFERRED: 'SET_TRANSFERRED'
   }
 };
 
