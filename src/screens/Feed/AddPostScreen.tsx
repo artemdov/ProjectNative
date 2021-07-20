@@ -54,8 +54,8 @@ export const AddPostScreen = () => {
     }
 
     const submitPost = async () => {
-        const imageUrl = await uploadImage()
         dispatch(setKey())
+        const imageUrl = await uploadImage()
         dispatch(setImage(''))
         firebase.database()
             .ref(`usersPost/${key}`)

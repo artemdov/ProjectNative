@@ -20,7 +20,7 @@ export const ProfileScreen: React.FC<any> = ({navigation}) => {
   // @ts-ignore
   return (
     <View style={styles.blockMainScreen}>
-      <Text style={styles.header}>Привет {user.uid}</Text>
+      <Text style={styles.header}>Привет</Text>
       <View style={styles.buttonEnter}>
         <CustomButton title={'Выход'} onPress={onPressLogout} />
       </View>

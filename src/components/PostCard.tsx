@@ -18,7 +18,6 @@ import {getUserSelector} from "../store/selectors";
 
 
 export const PostCard: React.FC<any> = ({item, onDelete}) => {
-    console.log('item', item)
     const user: any = useSelector(getUserSelector)
 
 
@@ -30,7 +29,7 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
                 <UserImg source={{uri: item.usersImg}}/>
                 <UserInfoText>
                     <UserName>{item.usersName}</UserName>
-                    <PostTime>{item.postTime}</PostTime>
+                    <PostTime>{new Date(item.postTime).toString()}</PostTime>
                 </UserInfoText>
             </UserInfo>
             <PostText>{item.post}</PostText>
