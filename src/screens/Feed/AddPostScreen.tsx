@@ -1,5 +1,5 @@
 import React from 'react';
-import {Alert, Image, Platform, StyleSheet, TextInput, View, ActivityIndicator, Text} from "react-native";
+import {Alert, Image, Platform, StyleSheet, TextInput, View, ActivityIndicator, Text, Animated} from "react-native";
 import {ContainerWrapper} from "../../styles/AddPostStyles";
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -10,12 +10,12 @@ import {
     getUserSelector,
     isLoadingImageSelector,
     isTransferredSelector,
-    setImageSelector
+    setImageSelector, setKeySelector
 } from "../../store/selectors";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import {CustomButton} from "../../components/common/CustomButton";
 import {width as w, height as h} from '../../consts/size';
-import {changeValuePost, setImage, setTransferred, upLoadingForImage} from "../../store/actions/feedAction";
+import {changeValuePost, setImage, setKey, setTransferred, upLoadingForImage} from "../../store/actions/feedAction";
 import storage from '@react-native-firebase/storage';
 import {StatusLoadingWrapper} from "../../styles/FeedStyles";
 import firebase from "firebase";
@@ -27,7 +27,8 @@ export const AddPostScreen = () => {
     const user: any = useSelector(getUserSelector)
     const isTransferred = useSelector(isTransferredSelector)
     const isLoad = useSelector(isLoadingImageSelector)
-    const post = useSelector(changeValuePostSelector)
+    const postValue = useSelector(changeValuePostSelector)
+    const key = useSelector(setKeySelector)
 
     const takePhotoFromCamera = () => {
         ImagePicker.openCamera({
@@ -54,41 +55,42 @@ export const AddPostScreen = () => {
 
     const submitPost = async () => {
         const imageUrl = await uploadImage()
+        dispatch(setKey())
         dispatch(setImage(''))
-
         firebase.database()
-            .ref('usersPost/')
-            .push({
+            .ref(`usersPost/${key}`)
+            .update({
+                id: key,
                 userId: user.uid,
-                post: post,
+                post: postValue,
                 postImg: imageUrl,
-                postTime: firebase.firestore.Timestamp.now(),
+                postTime: firebase.database.ServerValue.TIMESTAMP,
                 likes: null,
-                comments: null
+                comments: null,
             })
             .then(() => {
-                console.log('Added post')
+                dispatch(changeValuePost(''))
                 Alert.alert(
                     'Пост опубликован',
                     'Пост успешно опубликован!'
                 )
-                dispatch(changeValuePost(''))
             })
             .catch((err) => {
                 console.log(err)
             })
-        console.log('user', user)
     }
     const onChangePost = (value: string) => {
         dispatch(changeValuePost(value))
     }
     const uploadImage = async () => {
+        if (!newImage) {
+            return null
+        }
         const uploadUri = newImage
         const fileName = uploadUri.substring(uploadUri.lastIndexOf('/') + 1)
         const storageRef = storage().ref(`photos/${fileName}`)
         const task = storageRef.putFile(uploadUri)
         task.on('state_changed', taskSnapshot => {
-            //console.log(`${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`);
             dispatch(setTransferred(
                 Math.round(taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) * 100
             ))
@@ -99,13 +101,13 @@ export const AddPostScreen = () => {
             await task
             const url = await storageRef.getDownloadURL()
             dispatch(upLoadingForImage(false))
-            Alert.alert('Картинка загружена успешно!')
             return url
         } catch (err) {
             Alert.alert(err)
             return ('')
         }
     }
+
     return (
         <ContainerWrapper>
             <KeyboardAwareScrollView>
@@ -125,7 +127,7 @@ export const AddPostScreen = () => {
                 <TextInput style={styles.input}
                            placeholder='Подпись к фото'
                            multiline
-                           value={post}
+                           value={postValue}
                            onChangeText={onChangePost}
                 >
                 </TextInput>

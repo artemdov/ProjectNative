@@ -13,24 +13,28 @@ import {
     UserInfoText,
     UserName
 } from "../styles/FeedStyles";
+import {useSelector} from "react-redux";
+import {getUserSelector} from "../store/selectors";
 
 
-export const PostCard: React.FC<any> = ({item}) => {
+export const PostCard: React.FC<any> = ({item, onDelete}) => {
+    console.log('item', item)
+    const user: any = useSelector(getUserSelector)
+
 
     const likeIcon = item.liked ? 'heart' : 'heart-outline'
     const likeIconColor = item.liked ? '#2e64e5' : '#333'
-
     return (
         <Card style={{width: w - 40}}>
             <UserInfo>
-                <UserImg source={item.usersImg}/>
+                <UserImg source={{uri: item.usersImg}}/>
                 <UserInfoText>
                     <UserName>{item.usersName}</UserName>
-                    <PostTime>{item.postsTime}</PostTime>
+                    <PostTime>{item.postTime}</PostTime>
                 </UserInfoText>
             </UserInfo>
-            <PostText>{item.posts}</PostText>
-            {item.postImg != 'none' ? <PostImg source={item.postImg}/> : <Divider style={{marginTop: h / 55}}/>}
+            <PostText>{item.post}</PostText>
+            {item.postImg != null ? <PostImg source={{uri: item.postImg}}/> : <Divider style={{marginTop: h / 55}}/>}
             <InteractionWrapper>
                 <Interaction>
                     <InteractionHeart>
@@ -44,6 +48,12 @@ export const PostCard: React.FC<any> = ({item}) => {
                     </InteractionComment>
                 </Interaction>
                 <InteractionText>{item.comments}</InteractionText>
+                {user.uid === item.userId ?
+                    <Interaction onPress={() => onDelete(item.id)}>
+                        <InteractionHeart>
+                            <Ionicons name='trash-bin-outline' size={24} color="#000"/>
+                        </InteractionHeart>
+                    </Interaction> : null}
             </InteractionWrapper>
         </Card>
     )
