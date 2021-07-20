@@ -65,7 +65,7 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
     const data: any = useSelector(setPostDataSelector)
     const handleSubmit = () => navigation.navigate(screenNames.ADD_POST_SCREEN)
     const fetch = () => {
-        const usersPostRef =  firebase.database().ref(`usersPost/${key}`)
+        const usersPostRef = firebase.database().ref(`usersPost/${key}`)
         const onLoadingFeed = usersPostRef.on('value', snapshot => {
             const listData: any = []
             snapshot.forEach((childSnapshot) => {
@@ -95,13 +95,30 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
         fetch()
     }, [])
 
-     useEffect(() => {
-         fetch()
-         dispatch(isDeletedPost(false))
-     }, [isDeleted])
+    useEffect(() => {
+        fetch()
+        dispatch(isDeletedPost(false))
+    }, [isDeleted])
 
     const handleDelete = (postId: string) => {
 
+        Alert.alert(
+            'Удалить пост',
+            'Вы уверены?',
+                [
+                {
+                    text: 'Отмена',
+                    onPress: () => console.log('Cancel pressed'),
+                    style: 'cancel'
+                },
+                    {
+                        text: 'Удалить',
+                        onPress: () => deletePost(postId),
+                        style: 'cancel'
+                    },
+                ],
+            {cancelable: false}
+        )
     }
 
     const deletePost = (postId: string) => {
@@ -152,7 +169,7 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
                 <Ionicons name='add-circle' size={45} color="#2e64e5"/>
             </TouchableOpacity>
             <FlatList data={data}
-                      renderItem={({item}) => <PostCard item={item} onDelete={deletePost}/>}
+                      renderItem={({item}) => <PostCard item={item} onDelete={handleDelete}/>}
                       keyExtractor={item => item.id}
                       showsVerticalScrollIndicator={false}
             />
