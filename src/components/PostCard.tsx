@@ -15,10 +15,12 @@ import {
 } from "../styles/FeedStyles";
 import {useSelector} from "react-redux";
 import {getUserSelector} from "../store/selectors";
+import moment from "moment";
 
 
 export const PostCard: React.FC<any> = ({item, onDelete}) => {
     const user: any = useSelector(getUserSelector)
+    console.log('date',(item.postTime))
 
 
     const likeIcon = item.liked ? 'heart' : 'heart-outline'
@@ -29,7 +31,7 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
                 <UserImg source={{uri: item.usersImg}}/>
                 <UserInfoText>
                     <UserName>{item.usersName}</UserName>
-                    <PostTime>{new Date(item.postTime).toString()}</PostTime>
+                    <PostTime>{moment(item.postTime).fromNow()}</PostTime>
                 </UserInfoText>
             </UserInfo>
             <PostText>{item.post}</PostText>
