@@ -55,6 +55,7 @@ export const InteractionWrapper = styled.View`
         padding: 15px;
     `;
 export const Interaction = styled.TouchableOpacity`
+
     `;
 export const InteractionHeart = styled.View`
         padding: 5px;

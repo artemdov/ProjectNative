@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {StyleSheet, View, FlatList, Button, TouchableOpacity, Animated, Alert} from 'react-native';
+import React, {useEffect} from 'react';
+import {StyleSheet, View, FlatList, Button, TouchableOpacity, Animated, Alert, ActivityIndicator} from 'react-native';
 import {width as w, height as h} from '../../consts/size';
 import {Container} from '../../styles/FeedStyles'
 import {PostCard} from "../../components/PostCard";
@@ -7,8 +7,11 @@ import screenNames from "../../navigation/ScreenNames";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import firebase from "firebase";
 import {useDispatch, useSelector} from "react-redux";
-import {isDeletedPostSelector, isLoadingPostSelector, setKeySelector, setPostDataSelector} from "../../store/selectors";
-import {isDeletedPost, setPostData} from "../../store/actions/feedAction";
+import {
+    isLoadingPostSelector,
+    setPostDataSelector
+} from "../../store/selectors";
+import {isLoadingPostValue, setPostData} from "../../store/actions/feedAction";
 import storage from "@react-native-firebase/storage";
 
 export const FeedScreen: React.FC<any> = ({navigation}) => {
@@ -59,17 +62,17 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
         }
     ]
     const dispatch = useDispatch()
-    const key = useSelector(setKeySelector)
-    const isLoad = useSelector(isLoadingPostSelector)
-    const isDeleted = useSelector(isDeletedPostSelector)
+    const loadPostInFeed = useSelector(isLoadingPostSelector)
     const data: any = useSelector(setPostDataSelector)
     const handleSubmit = () => navigation.navigate(screenNames.ADD_POST_SCREEN)
+
     const fetch = () => {
-        const usersPostRef = firebase.database().ref(`usersPost/${key}`)
+        dispatch(isLoadingPostValue(true))
+        const usersPostRef =  firebase.database().ref('usersPost')
         const onLoadingFeed = usersPostRef.on('value', snapshot => {
             const listData: any = []
             snapshot.forEach((childSnapshot) => {
-                const {id, userId, likes, comments, post, postImg, postTime} = childSnapshot.val()
+                const {id, userId, likes, comments, post, postImg, postTime, liked} = childSnapshot.val()
                 listData.push({
                     id,
                     userId,
@@ -80,47 +83,42 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
                     postTime,
                     post,
                     postImg,
-                    liked: false,
+                    liked,
                     likes,
                     comments,
                 })
             })
             dispatch(setPostData(listData))
+            dispatch(isLoadingPostValue(false))
         })
         return () => {
             usersPostRef.off('value', onLoadingFeed)
         }
     }
+
     useEffect(() => {
         fetch()
     }, [])
 
-    useEffect(() => {
-        fetch()
-        dispatch(isDeletedPost(false))
-    }, [isDeleted])
-
     const handleDelete = (postId: string) => {
-
         Alert.alert(
             'Удалить пост',
             'Вы уверены?',
-                [
+            [
                 {
                     text: 'Отмена',
                     onPress: () => console.log('Cancel pressed'),
                     style: 'cancel'
                 },
-                    {
-                        text: 'Удалить',
-                        onPress: () => deletePost(postId),
-                        style: 'cancel'
-                    },
-                ],
+                {
+                    text: 'Удалить',
+                    onPress: () => deletePost(postId),
+                    style: 'cancel'
+                },
+            ],
             {cancelable: false}
         )
     }
-
     const deletePost = (postId: string) => {
         firebase.database()
             .ref(`usersPost/${postId}`)
@@ -154,7 +152,7 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
                         'Пост удален',
                         'Ваш пост удален успешно!'
                     )
-                    dispatch(isDeletedPost(true))
+                    //dispatch(isDeletedPost(true))
                 })
                 .catch(err => {
                     console.log(err)
@@ -162,17 +160,19 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
         }
 
     }
-
+    console.log('data', data)
     return (
         <Container>
             <TouchableOpacity style={styles.buttonAddPost} onPress={handleSubmit}>
                 <Ionicons name='add-circle' size={45} color="#2e64e5"/>
             </TouchableOpacity>
-            <FlatList data={data}
-                      renderItem={({item}) => <PostCard item={item} onDelete={handleDelete}/>}
-                      keyExtractor={item => item.id}
-                      showsVerticalScrollIndicator={false}
-            />
+            {loadPostInFeed
+                ? <ActivityIndicator size='large' color='#0000ff'/>
+               : <FlatList data={data}
+                renderItem={({item}) => <PostCard item={item} onDelete={handleDelete}/>}
+                keyExtractor={item => item.id}
+                showsVerticalScrollIndicator={false}
+                />}
 
         </Container>
 

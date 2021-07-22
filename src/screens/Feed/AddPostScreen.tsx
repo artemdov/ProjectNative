@@ -1,34 +1,37 @@
-import React from 'react';
-import {Alert, Image, Platform, StyleSheet, TextInput, View, ActivityIndicator, Text, Animated} from "react-native";
+import React, {useState} from 'react';
+import {Alert, Image, Platform, StyleSheet, TextInput, View, ActivityIndicator, Text} from "react-native";
 import {ContainerWrapper} from "../../styles/AddPostStyles";
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ImagePicker from 'react-native-image-crop-picker';
 import {useDispatch, useSelector} from "react-redux";
 import {
-    changeValuePostSelector,
     getUserSelector,
     isLoadingImageSelector,
     isTransferredSelector,
-    setImageSelector, setKeySelector
+    setImageSelector
 } from "../../store/selectors";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import {CustomButton} from "../../components/common/CustomButton";
 import {width as w, height as h} from '../../consts/size';
-import {changeValuePost, setImage, setKey, setTransferred, upLoadingForImage} from "../../store/actions/feedAction";
+import {
+    setImage,
+    setTransferred,
+    upLoadingForImage
+} from "../../store/actions/feedAction";
 import storage from '@react-native-firebase/storage';
 import {StatusLoadingWrapper} from "../../styles/FeedStyles";
 import firebase from "firebase";
 
 export const AddPostScreen = () => {
+    const [keyValue, setKeyValue] = useState('')
+    const [postValue, setPostValue] = useState('')
 
     const dispatch = useDispatch()
     const newImage = useSelector(setImageSelector)
     const user: any = useSelector(getUserSelector)
     const isTransferred = useSelector(isTransferredSelector)
     const isLoad = useSelector(isLoadingImageSelector)
-    const postValue = useSelector(changeValuePostSelector)
-    const key = useSelector(setKeySelector)
 
     const takePhotoFromCamera = () => {
         ImagePicker.openCamera({
@@ -54,22 +57,22 @@ export const AddPostScreen = () => {
     }
 
     const submitPost = async () => {
-        dispatch(setKey())
         const imageUrl = await uploadImage()
         dispatch(setImage(''))
         firebase.database()
-            .ref(`usersPost/${key}`)
-            .update({
-                id: key,
+            .ref('usersPost')
+            .push({
+                id: `${user.uid}_${Date.now()}`,
                 userId: user.uid,
                 post: postValue,
                 postImg: imageUrl,
                 postTime: firebase.database.ServerValue.TIMESTAMP,
+                liked: null,
                 likes: null,
                 comments: null,
             })
             .then(() => {
-                dispatch(changeValuePost(''))
+                setPostValue('')
                 Alert.alert(
                     'Пост опубликован',
                     'Пост успешно опубликован!'
@@ -78,10 +81,16 @@ export const AddPostScreen = () => {
             .catch((err) => {
                 console.log(err)
             })
+
     }
     const onChangePost = (value: string) => {
-        dispatch(changeValuePost(value))
+        setPostValue(value)
     }
+    const getUsersPostKey = () => {
+        const key: any = firebase.database().ref().push().key
+        return setKeyValue(key)
+    }
+
     const uploadImage = async () => {
         if (!newImage) {
             return null
