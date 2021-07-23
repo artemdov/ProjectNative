@@ -14,6 +14,7 @@ const actionTypes = {
     SET_TRANSFERRED: 'SET_TRANSFERRED',
     SET_POST_DATA: 'SET_POST_DATA',
     IS_LOAD_POST: 'IS_LOAD_POST',
+    SET_LIKE_DATA: 'SET_LIKE_DATA',
 
   }
 };

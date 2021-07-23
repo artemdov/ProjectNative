@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {height as h, width as w} from "../consts/size";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import EvilIcons from "react-native-vector-icons/EvilIcons";
@@ -14,33 +14,75 @@ import {
     UserName
 } from "../styles/FeedStyles";
 import {useDispatch, useSelector} from "react-redux";
-import {getUserSelector} from "../store/selectors";
+import {getUserSelector, setLikesDataSelector} from "../store/selectors";
 import moment from "moment";
-import {Alert} from "react-native";
 import firebase from "firebase";
-import {isLoadingPostValue, setPostData} from "../store/actions/feedAction";
+import {setLikesData} from "../store/actions/feedAction";
+import {Dispatch} from "redux";
 
 
 export const PostCard: React.FC<any> = ({item, onDelete}) => {
-
+    const [isLiked, setIsLiked] = useState(false)
+    const [likesCount, setLikesCount] = useState([])
+    const [commentsCount, setCommentsCount] = useState(0)
+    const likeData: any = useSelector(setLikesDataSelector)
+    const dispatch = useDispatch()
 
     const user: any = useSelector(getUserSelector)
-    const likeToggled = (post: any) => {
-        console.log(post)
-        /*firebase.database()
-            .ref(`usersPost/${key}`)
-            .update({
-                liked: !liked
-            }).then(() => console.log('Data updated.'));*/
-        firebase.database()
-            .ref('usersPost/')
-            .on('value', snapshot => {
-                snapshot.forEach((childSnapshot) => {
-                    console.log('ChlSnapshot', childSnapshot.ref.key)
 
-                    })
+    const likeToggled = () => {
+        firebase.database()
+            .ref(`usersPost/${item.id}`)
+            .update({
+                liked: !item.liked
+            }).then(() => console.log('Data updated.'))
+        if (!item.liked) {
+            firebase.database()
+                .ref(`likes/${item.id}`)
+                .set({
+                    usersLikeId: item.userId,
+                    postId: item.id,
                 })
+                .then(() => {
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+        } else {
+            firebase.database()
+                .ref(`likes/${item.id}`)
+                .remove()
+                .then(() => {
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+        }
+
     }
+    const fetchDataLikes = () => {
+        const likesRef = firebase.database().ref('likes')
+        const onLoadingLikes = likesRef.on('value', (snapshot) => {
+            {
+                const {postId, usersLikeId} = snapshot.val()
+                likeData.push({
+                    usersLikeId,
+                    postId,
+                })
+
+            }
+            dispatch(setLikesData(likeData))
+        })
+        return () => {
+            likesRef.off('value', onLoadingLikes)
+        }
+    }
+    fetchDataLikes()
+
+    console.log('item', item)
+    console.log('likeData', likeData)
+    console.log()
+
 
     const likeIcon = item.liked ? 'heart' : 'heart-outline'
     const likeIconColor = item.liked ? '#2e64e5' : '#333'
@@ -57,19 +99,19 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
             {item.postImg != null ? <PostImg source={{uri: item.postImg}}/> : <Divider style={{marginTop: h / 55}}/>}
             <InteractionWrapper>
                 <Interaction onPress={() => {
-                    likeToggled(item.liked)
+                    likeToggled()
                 }}>
                     <InteractionHeart>
                         <Ionicons name={likeIcon} size={24} color={likeIconColor}/>
                     </InteractionHeart>
                 </Interaction>
-                <InteractionText>{item.likes}</InteractionText>
+                <InteractionText>{likeData.length}</InteractionText>
                 <Interaction>
                     <InteractionComment>
                         <EvilIcons name="comment" size={30} color="#000"/>
                     </InteractionComment>
                 </Interaction>
-                <InteractionText>{item.comments}</InteractionText>
+                <InteractionText>{commentsCount}</InteractionText>
                 {user.uid === item.userId ?
                     <Interaction onPress={() => onDelete(item.id)}>
                         <InteractionHeart>

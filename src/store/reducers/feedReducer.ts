@@ -6,6 +6,7 @@ const initialState = {
   upLoading: false,
   transferred: 0,
   postData: [],
+  likesData: [],
 };
 type initialStateType = typeof initialState;
 
@@ -21,7 +22,8 @@ export const feedReducer = (state = initialState, action: any): initialStateType
       return {...state, transferred: action.payload};
     case actionTypes.feed.SET_POST_DATA:
       return {...state, postData: action.payload};
-
+    case actionTypes.feed.SET_LIKE_DATA:
+      return {...state, likesData: action.payload};
     default:
       return state;
   }

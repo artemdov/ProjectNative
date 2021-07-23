@@ -10,6 +10,12 @@ export const setPostData = (postData: []) =>
         payload: postData,
     } as const);
 
+export const setLikesData = (likesData: []) =>
+    ({
+        type: actionTypes.feed.SET_LIKE_DATA,
+        payload: likesData,
+    } as const);
+
 export const setImage = (image: string | undefined) =>
   ({
     type: actionTypes.feed.SET_IMAGE,

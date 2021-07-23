@@ -11,56 +11,10 @@ import {
     isLoadingPostSelector,
     setPostDataSelector
 } from "../../store/selectors";
-import {isLoadingPostValue, setPostData} from "../../store/actions/feedAction";
+import {isLoadingPostValue, setLikesData, setPostData} from "../../store/actions/feedAction";
 import storage from "@react-native-firebase/storage";
 
 export const FeedScreen: React.FC<any> = ({navigation}) => {
-    const Posts = [
-        {
-            id: '1',
-            usersName: 'Таня',
-            usersImg: require('../../assets/users/user-6.jpg'),
-            postsTime: '2 часа назад',
-            post: 'Привет',
-            postImg: require('../../assets/posts/post-img-1.jpg'),
-            liked: true,
-            likes: '6',
-            comments: '2'
-        },
-        {
-            id: '3',
-            usersName: 'Аня',
-            usersImg: require('../../assets/users/user-3.jpg'),
-            postsTime: '2 часа назад',
-            posts: 'Привет',
-            postImg: require('../../assets/posts/post-img-2.jpg'),
-            liked: false,
-            likes: '14',
-            comments: '5'
-        },
-        {
-            id: '2',
-            usersName: 'Саша',
-            usersImg: require('../../assets/users/user-2.jpg'),
-            postsTime: '3 часа назад',
-            posts: 'Всем привет',
-            postImg: 'none',
-            liked: false,
-            likes: '14',
-            comments: '5'
-        },
-        {
-            id: '4',
-            usersName: 'Влад',
-            usersImg: require('../../assets/users/user-2.jpg'),
-            postsTime: '1 час назад',
-            posts: 'Привет',
-            postImg: require('../../assets/posts/post-img-2.jpg'),
-            liked: true,
-            likes: '6',
-            comments: '2'
-        }
-    ]
     const dispatch = useDispatch()
     const loadPostInFeed = useSelector(isLoadingPostSelector)
     const data: any = useSelector(setPostDataSelector)
@@ -68,11 +22,11 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
 
     const fetch = () => {
         dispatch(isLoadingPostValue(true))
-        const usersPostRef =  firebase.database().ref('usersPost')
+        const usersPostRef = firebase.database().ref('usersPost')
         const onLoadingFeed = usersPostRef.on('value', snapshot => {
             const listData: any = []
             snapshot.forEach((childSnapshot) => {
-                const {id, userId, likes, comments, post, postImg, postTime, liked} = childSnapshot.val()
+                const {id, userId, post, postImg, postTime, liked} = childSnapshot.val()
                 listData.push({
                     id,
                     userId,
@@ -81,11 +35,10 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
                         '-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/' +
                         'AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg',
                     postTime,
+                    liked,
                     post,
                     postImg,
-                    liked,
-                    likes,
-                    comments,
+
                 })
             })
             dispatch(setPostData(listData))
@@ -94,6 +47,7 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
         return () => {
             usersPostRef.off('value', onLoadingFeed)
         }
+
     }
 
     useEffect(() => {
@@ -121,7 +75,7 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
     }
     const deletePost = (postId: string) => {
         firebase.database()
-            .ref(`usersPost/${postId}`)
+            .ref(`usersPost/`)
             .get()
             .then((snapshot) => {
                 if (snapshot.exists()) {
@@ -152,7 +106,6 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
                         'Пост удален',
                         'Ваш пост удален успешно!'
                     )
-                    //dispatch(isDeletedPost(true))
                 })
                 .catch(err => {
                     console.log(err)
@@ -168,10 +121,10 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
             </TouchableOpacity>
             {loadPostInFeed
                 ? <ActivityIndicator size='large' color='#0000ff'/>
-               : <FlatList data={data}
-                renderItem={({item}) => <PostCard item={item} onDelete={handleDelete}/>}
-                keyExtractor={item => item.id}
-                showsVerticalScrollIndicator={false}
+                : <FlatList data={data}
+                            renderItem={({item}) => <PostCard item={item} onDelete={handleDelete}/>}
+                            keyExtractor={item => item.id}
+                            showsVerticalScrollIndicator={false}
                 />}
 
         </Container>

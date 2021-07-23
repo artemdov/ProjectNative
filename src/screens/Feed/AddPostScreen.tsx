@@ -1,24 +1,15 @@
 import React, {useState} from 'react';
-import {Alert, Image, Platform, StyleSheet, TextInput, View, ActivityIndicator, Text} from "react-native";
+import {ActivityIndicator, Alert, Image, Platform, StyleSheet, Text, TextInput, View} from "react-native";
 import {ContainerWrapper} from "../../styles/AddPostStyles";
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ImagePicker from 'react-native-image-crop-picker';
 import {useDispatch, useSelector} from "react-redux";
-import {
-    getUserSelector,
-    isLoadingImageSelector,
-    isTransferredSelector,
-    setImageSelector
-} from "../../store/selectors";
+import {getUserSelector, isLoadingImageSelector, isTransferredSelector, setImageSelector} from "../../store/selectors";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import {CustomButton} from "../../components/common/CustomButton";
-import {width as w, height as h} from '../../consts/size';
-import {
-    setImage,
-    setTransferred,
-    upLoadingForImage
-} from "../../store/actions/feedAction";
+import {height as h, width as w} from '../../consts/size';
+import {setImage, setTransferred, upLoadingForImage} from "../../store/actions/feedAction";
 import storage from '@react-native-firebase/storage';
 import {StatusLoadingWrapper} from "../../styles/FeedStyles";
 import firebase from "firebase";
@@ -26,6 +17,8 @@ import firebase from "firebase";
 export const AddPostScreen = () => {
     const [keyValue, setKeyValue] = useState('')
     const [postValue, setPostValue] = useState('')
+    const [likesCount, setLikesCount] = useState([])
+    const likeCount: any[] = []
 
     const dispatch = useDispatch()
     const newImage = useSelector(setImageSelector)
@@ -57,19 +50,19 @@ export const AddPostScreen = () => {
     }
 
     const submitPost = async () => {
+        const key: any = await firebase.database().ref().push().key
         const imageUrl = await uploadImage()
         dispatch(setImage(''))
-        firebase.database()
-            .ref('usersPost')
-            .push({
-                id: `${user.uid}_${Date.now()}`,
+        await firebase.database()
+            .ref(`usersPost/${key}`)
+            .update({
+                id: key,
                 userId: user.uid,
                 post: postValue,
                 postImg: imageUrl,
                 postTime: firebase.database.ServerValue.TIMESTAMP,
-                liked: null,
-                likes: null,
                 comments: null,
+                liked: false,
             })
             .then(() => {
                 setPostValue('')
@@ -81,14 +74,22 @@ export const AddPostScreen = () => {
             .catch((err) => {
                 console.log(err)
             })
+        /*await firebase.database()
+            .ref(`likes/${key}`)
+            .set({
+                userId: user.uid,
+                postId: key,
+            })
+            .then(() => {
+            })
+            .catch((err) => {
+                console.log(err)
+            })*/
+
 
     }
     const onChangePost = (value: string) => {
         setPostValue(value)
-    }
-    const getUsersPostKey = () => {
-        const key: any = firebase.database().ref().push().key
-        return setKeyValue(key)
     }
 
     const uploadImage = async () => {
