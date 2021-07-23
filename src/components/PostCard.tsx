@@ -22,8 +22,6 @@ import {Dispatch} from "redux";
 
 
 export const PostCard: React.FC<any> = ({item, onDelete}) => {
-    const [isLiked, setIsLiked] = useState(false)
-    const [likesCount, setLikesCount] = useState([])
     const [commentsCount, setCommentsCount] = useState(0)
     const likeData: any = useSelector(setLikesDataSelector)
     const dispatch = useDispatch()
@@ -63,14 +61,14 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
     const fetchDataLikes = () => {
         const likesRef = firebase.database().ref('likes')
         const onLoadingLikes = likesRef.on('value', (snapshot) => {
-            {
+            console.log('snapshot', snapshot.val())
                 const {postId, usersLikeId} = snapshot.val()
                 likeData.push({
                     usersLikeId,
                     postId,
                 })
 
-            }
+
             dispatch(setLikesData(likeData))
         })
         return () => {
