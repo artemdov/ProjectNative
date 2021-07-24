@@ -54,10 +54,8 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
             const likeUserData: any = []
             snapshot.forEach((childSnapshot) => {
                 console.log('snapshot', childSnapshot.val())
-                const {likes} = childSnapshot.val()
-                likeUserData.push({
-                    likes
-                })
+                likeUserData.push(childSnapshot.val())
+                console.log('likeUserData', likeUserData.length)
             })
             dispatch(setLikesData(likeUserData))
         })
@@ -94,7 +92,7 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
                         <Ionicons name={likeIcon} size={24} color={likeIconColor}/>
                     </InteractionHeart>
                 </Interaction>
-                <InteractionText>{item.length}</InteractionText>
+                <InteractionText>{likeData.length}</InteractionText>
                 <Interaction>
                     <InteractionComment>
                         <EvilIcons name="comment" size={30} color="#000"/>
