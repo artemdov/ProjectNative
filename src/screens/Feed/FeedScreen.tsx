@@ -26,7 +26,7 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
         const onLoadingFeed = usersPostRef.on('value', snapshot => {
             const listData: any = []
             snapshot.forEach((childSnapshot) => {
-                const {id, userId, post, postImg, postTime, liked} = childSnapshot.val()
+                const {id, userId, post, postImg, postTime, likes} = childSnapshot.val()
                 listData.push({
                     id,
                     userId,
@@ -35,9 +35,10 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
                         '-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/' +
                         'AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg',
                     postTime,
-                    liked,
                     post,
+                    likes,
                     postImg,
+
 
                 })
             })

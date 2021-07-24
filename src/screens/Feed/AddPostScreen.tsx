@@ -57,12 +57,12 @@ export const AddPostScreen = () => {
             .ref(`usersPost/${key}`)
             .update({
                 id: key,
-                userId: user.uid,
+                userId: user.uid || null,
                 post: postValue,
                 postImg: imageUrl,
                 postTime: firebase.database.ServerValue.TIMESTAMP,
                 comments: null,
-                liked: false,
+                likes: false
             })
             .then(() => {
                 setPostValue('')
@@ -75,10 +75,9 @@ export const AddPostScreen = () => {
                 console.log(err)
             })
         /*await firebase.database()
-            .ref(`likes/${key}`)
+            .ref(`usersPost/${key}/likes/${key}`)
             .set({
-                userId: user.uid,
-                postId: key,
+                liked: false
             })
             .then(() => {
             })
