@@ -28,14 +28,14 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
 
     const user: any = useSelector(getUserSelector)
 
-    const likeToggled = () => {
-        firebase.database()
+    const likeToggled = async () => {
+        await firebase.database()
             .ref(`usersPost/${item.id}`)
             .update({
                 liked: !item.liked
             }).then(() => console.log('Data updated.'))
         if (!item.liked) {
-            firebase.database()
+            await firebase.database()
                 .ref(`likes/${item.id}`)
                 .set({
                     usersLikeId: item.userId,
@@ -47,7 +47,7 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
                     console.log(err)
                 })
         } else {
-            firebase.database()
+            await firebase.database()
                 .ref(`likes/${item.id}`)
                 .remove()
                 .then(() => {
@@ -61,26 +61,42 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
     const fetchDataLikes = () => {
         const likesRef = firebase.database().ref('likes')
         const onLoadingLikes = likesRef.on('value', (snapshot) => {
-            console.log('snapshot', snapshot.val())
-                const {postId, usersLikeId} = snapshot.val()
-                likeData.push({
-                    usersLikeId,
-                    postId,
-                })
+            const likeUserData: any = []
+            snapshot.forEach((childSnapshot) =>{
+                console.log('snapshot', childSnapshot.val())
+                const {postId, usersLikeId} = childSnapshot.val()
+            likeUserData.push({
+                usersLikeId,
+                postId,
+            })
 
+            })
+            dispatch(setLikesData(likeUserData))
 
-            dispatch(setLikesData(likeData))
         })
         return () => {
             likesRef.off('value', onLoadingLikes)
         }
+
     }
-    fetchDataLikes()
+    useEffect(() => {
+        fetchDataLikes()
+    }, [])
+
 
     console.log('item', item)
-    console.log('likeData', likeData)
-    console.log()
+    console.log('likeDataPOST', likeData)
 
+    const filterLikesUserData = []
+    for(let i = 0; i < likeData.length; i++){
+        let likePost = likeData[i]
+        for(let value of likeData){
+            if(likePost == value){
+                filterLikesUserData.push(likePost)
+            }
+        }
+    }
+    console.log('filterLikesUserData.length', filterLikesUserData.length)
 
     const likeIcon = item.liked ? 'heart' : 'heart-outline'
     const likeIconColor = item.liked ? '#2e64e5' : '#333'
@@ -96,14 +112,12 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
             <PostText>{item.post}</PostText>
             {item.postImg != null ? <PostImg source={{uri: item.postImg}}/> : <Divider style={{marginTop: h / 55}}/>}
             <InteractionWrapper>
-                <Interaction onPress={() => {
-                    likeToggled()
-                }}>
+                <Interaction onPress={() => {likeToggled().then(()=>{})}}>
                     <InteractionHeart>
                         <Ionicons name={likeIcon} size={24} color={likeIconColor}/>
                     </InteractionHeart>
                 </Interaction>
-                <InteractionText>{likeData.length}</InteractionText>
+                <InteractionText>{filterLikesUserData.length}</InteractionText>
                 <Interaction>
                     <InteractionComment>
                         <EvilIcons name="comment" size={30} color="#000"/>
