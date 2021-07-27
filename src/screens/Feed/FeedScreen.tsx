@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {StyleSheet, View, FlatList, Button, TouchableOpacity, Animated, Alert, ActivityIndicator} from 'react-native';
+import {StyleSheet, FlatList, TouchableOpacity, Alert, ActivityIndicator} from 'react-native';
 import {width as w, height as h} from '../../consts/size';
 import {Container} from '../../styles/FeedStyles'
 import {PostCard} from "../../components/PostCard";
@@ -11,7 +11,7 @@ import {
     isLoadingPostSelector,
     setPostDataSelector
 } from "../../store/selectors";
-import {isLoadingPostValue, setLikesData, setPostData} from "../../store/actions/feedAction";
+import {isLoadingPostValue, setPostData} from "../../store/actions/feedAction";
 import storage from "@react-native-firebase/storage";
 
 export const FeedScreen: React.FC<any> = ({navigation}) => {
@@ -36,8 +36,8 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
                         'AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg',
                     postTime,
                     post,
-                    likes,
                     postImg,
+                    likes
 
 
                 })
@@ -76,7 +76,7 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
     }
     const deletePost = (postId: string) => {
         firebase.database()
-            .ref(`usersPost/`)
+            .ref(`usersPost/${postId}`)
             .get()
             .then((snapshot) => {
                 if (snapshot.exists()) {
@@ -114,7 +114,6 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
         }
 
     }
-    console.log('data', data)
     return (
         <Container>
             <TouchableOpacity style={styles.buttonAddPost} onPress={handleSubmit}>

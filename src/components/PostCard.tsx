@@ -13,66 +13,64 @@ import {
     UserInfoText,
     UserName
 } from "../styles/FeedStyles";
-import {useDispatch, useSelector} from "react-redux";
-import {getUserSelector, setLikesDataSelector} from "../store/selectors";
+import {useSelector} from "react-redux";
+import {getUserSelector} from "../store/selectors";
 import moment from "moment";
 import firebase from "firebase";
-import {setLikesData} from "../store/actions/feedAction";
-import {Dispatch} from "redux";
 
 
 export const PostCard: React.FC<any> = ({item, onDelete}) => {
+
     const [commentsCount, setCommentsCount] = useState(0)
-    const likeData: any = useSelector(setLikesDataSelector)
-    const dispatch = useDispatch()
+    const [commentsValue, setCommentsValue] = useState(0)
 
     const user: any = useSelector(getUserSelector)
-    console.log('item', item.likes)
-    console.log('likeData', likeData)
-    //const isLike = Object.keys(item.likes)
+    let isLike: any
+    if (item.likes) {
+        isLike = (Object.keys(item.likes))
+    }
 
     const likeToggled = () => {
-        firebase.database()
-            .ref(`usersPost/${item.id}/likes/${item.id}_${user.uid}`)
-            .set({
-                liked: true,
-            }).then(() => {
-        })
-
-        likeData.forEach((likeKey: string) => {
-            if (likeKey === `${item.id}_${user.uid}`) {
-                firebase.database()
-                    .ref(`usersPost/${item.id}/likes/${item.id}_${likeKey}`)
-                    .remove().then(() => {
-                })
-            }
-        })
-    }
-    const fetchDataLikes = () => {
-        const likesRef = firebase.database().ref(`usersPost/${item.id}/likes`)
-        const onLoadingLikes = likesRef.on('value', (snapshot) => {
-            const likeUserData: any = []
-            snapshot.forEach((childSnapshot) => {
-                console.log('snapshot', childSnapshot.val())
-                likeUserData.push(childSnapshot.val())
-                console.log('likeUserData', likeUserData.length)
+        if (!item.likes) {
+            firebase.database()
+                .ref(`usersPost/${item.id}/likes/${user.uid}`)
+                .set({
+                    isLike: true,
+                }).then(() => {
+                if (item.likes) {
+                    isLike.push(Object.keys(item.likes))
+                }
             })
-            dispatch(setLikesData(likeUserData))
-        })
-        return () => {
-            likesRef.off('value', onLoadingLikes)
+        } else {
+            isLike.forEach(async (likeKey: string) => {
+                if (likeKey === `${user.uid}`) {
+                    await firebase.database()
+                        .ref(`usersPost/${item.id}/likes/${user.uid}`)
+                        .remove().then(() => {
+                        })
+                    return
+                } else {
+                    if (likeKey !== `${user.uid}`) {
+                        await firebase.database()
+                            .ref(`usersPost/${item.id}/likes/${user.uid}`)
+                            .set({
+                                isLike: true,
+                            }).then(() => {
+                            })
+                    }
+                }
+            })
         }
 
     }
-    useEffect(() => {
-        fetchDataLikes()
-    }, [])
-
-
-    const likeIcon = user.uid && item.userId === user.uid ? (item.liked ? 'heart' : 'heart-outline')
-        : (item.liked ? 'heart-outline' : 'heart')
-    const likeIconColor = user.uid && item.userId === user.uid ? (item.liked ? '#333' : '#2e64e5')
-        : (item.liked ? '#333' : '#2e64e5')
+    let isLikedHeart
+    if (isLike) {
+        isLike.forEach(async (likeKey: string) => {
+            isLikedHeart = likeKey
+        })
+    }
+    const likeIcon = isLikedHeart && isLikedHeart === `${user.uid}` ? 'heart' : 'heart-outline'
+    const likeIconColor = isLikedHeart && isLikedHeart === `${user.uid}` ? '#2e64e5' : '#333'
     return (
         <Card style={{width: w - 40}}>
             <UserInfo>
@@ -83,7 +81,8 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
                 </UserInfoText>
             </UserInfo>
             <PostText>{item.post}</PostText>
-            {item.postImg != null ? <PostImg source={{uri: item.postImg}}/> : <Divider style={{marginTop: h / 55}}/>}
+            {item.postImg != null ? <PostImg source={{uri: item.postImg}}/> :
+                <Divider style={{marginTop: h / 55}}/>}
             <InteractionWrapper>
                 <Interaction onPress={() => {
                     likeToggled()
@@ -92,7 +91,7 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
                         <Ionicons name={likeIcon} size={24} color={likeIconColor}/>
                     </InteractionHeart>
                 </Interaction>
-                <InteractionText>{likeData.length}</InteractionText>
+                <InteractionText>{isLike ? isLike.length : 0}</InteractionText>
                 <Interaction>
                     <InteractionComment>
                         <EvilIcons name="comment" size={30} color="#000"/>
@@ -102,6 +101,7 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
                 {user.uid && user.uid === item.userId ?
                     <Interaction onPress={() => onDelete(item.id)}>
                         <InteractionHeart>
+
                             <Ionicons name='trash-bin-outline' size={24} color="#000"/>
                         </InteractionHeart>
                     </Interaction> : null}

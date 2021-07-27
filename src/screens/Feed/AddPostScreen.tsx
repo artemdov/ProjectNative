@@ -15,10 +15,7 @@ import {StatusLoadingWrapper} from "../../styles/FeedStyles";
 import firebase from "firebase";
 
 export const AddPostScreen = () => {
-    const [keyValue, setKeyValue] = useState('')
     const [postValue, setPostValue] = useState('')
-    const [likesCount, setLikesCount] = useState([])
-    const likeCount: any[] = []
 
     const dispatch = useDispatch()
     const newImage = useSelector(setImageSelector)
@@ -62,7 +59,7 @@ export const AddPostScreen = () => {
                 postImg: imageUrl,
                 postTime: firebase.database.ServerValue.TIMESTAMP,
                 comments: null,
-                likes: false
+                likes: null
             })
             .then(() => {
                 setPostValue('')
@@ -74,18 +71,6 @@ export const AddPostScreen = () => {
             .catch((err) => {
                 console.log(err)
             })
-        /*await firebase.database()
-            .ref(`usersPost/${key}/likes/${key}`)
-            .set({
-                liked: false
-            })
-            .then(() => {
-            })
-            .catch((err) => {
-                console.log(err)
-            })*/
-
-
     }
     const onChangePost = (value: string) => {
         setPostValue(value)

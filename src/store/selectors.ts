@@ -14,7 +14,6 @@ export const isTransferredSelector = (state: AppRootStateType) =>
     state.feed.transferred;
 export const setPostDataSelector = (state: AppRootStateType) =>
     state.feed.postData;
-export const setLikesDataSelector = (state: AppRootStateType) =>
-    state.feed.likesData;
+
 
 
