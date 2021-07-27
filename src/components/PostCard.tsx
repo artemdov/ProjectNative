@@ -17,12 +17,12 @@ import {useSelector} from "react-redux";
 import {getUserSelector} from "../store/selectors";
 import moment from "moment";
 import firebase from "firebase";
+import {CommentInput} from "./CommentInput";
 
 
 export const PostCard: React.FC<any> = ({item, onDelete}) => {
 
     const [commentsCount, setCommentsCount] = useState(0)
-    const [commentsValue, setCommentsValue] = useState(0)
 
     const user: any = useSelector(getUserSelector)
     let isLike: any
@@ -50,19 +50,22 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
                         })
                     return
                 } else {
-                    if (likeKey !== `${user.uid}`) {
-                        await firebase.database()
-                            .ref(`usersPost/${item.id}/likes/${user.uid}`)
-                            .set({
-                                isLike: true,
-                            }).then(() => {
-                            })
-                    }
+                    await firebase.database()
+                        .ref(`usersPost/${item.id}/likes/${user.uid}`)
+                        .set({
+                            isLike: true,
+                        }).then(() => {
+                        })
+
                 }
             })
         }
 
     }
+    const toggleHandler = () => {
+        likeToggled()
+    }
+    const commentHandler = () => {}
     let isLikedHeart
     if (isLike) {
         isLike.forEach(async (likeKey: string) => {
@@ -84,15 +87,13 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
             {item.postImg != null ? <PostImg source={{uri: item.postImg}}/> :
                 <Divider style={{marginTop: h / 55}}/>}
             <InteractionWrapper>
-                <Interaction onPress={() => {
-                    likeToggled()
-                }}>
+                <Interaction onPress={toggleHandler}>
                     <InteractionHeart>
                         <Ionicons name={likeIcon} size={24} color={likeIconColor}/>
                     </InteractionHeart>
                 </Interaction>
                 <InteractionText>{isLike ? isLike.length : 0}</InteractionText>
-                <Interaction>
+                <Interaction onPress={commentHandler}>
                     <InteractionComment>
                         <EvilIcons name="comment" size={30} color="#000"/>
                     </InteractionComment>
@@ -101,11 +102,11 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
                 {user.uid && user.uid === item.userId ?
                     <Interaction onPress={() => onDelete(item.id)}>
                         <InteractionHeart>
-
                             <Ionicons name='trash-bin-outline' size={24} color="#000"/>
                         </InteractionHeart>
                     </Interaction> : null}
             </InteractionWrapper>
+            <CommentInput/>
         </Card>
     )
 }

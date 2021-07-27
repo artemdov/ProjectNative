@@ -22,11 +22,11 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
 
     const fetch = () => {
         dispatch(isLoadingPostValue(true))
-        const usersPostRef = firebase.database().ref('usersPost')
+        const usersPostRef = firebase.database().ref('usersPost').orderByChild('postTime')
         const onLoadingFeed = usersPostRef.on('value', snapshot => {
             const listData: any = []
             snapshot.forEach((childSnapshot) => {
-                const {id, userId, post, postImg, postTime, likes} = childSnapshot.val()
+                const {id, userId, post, postImg, postTime, likes, comments} = childSnapshot.val()
                 listData.push({
                     id,
                     userId,
@@ -37,8 +37,8 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
                     postTime,
                     post,
                     postImg,
-                    likes
-
+                    likes,
+                    comments
 
                 })
             })
