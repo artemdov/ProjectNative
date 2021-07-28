@@ -18,9 +18,10 @@ import {getUserSelector} from "../store/selectors";
 import moment from "moment";
 import firebase from "firebase";
 import {CommentInput} from "./CommentInput";
+import {Comment} from "./Comment";
 
 
-export const PostCard: React.FC<any> = ({item, onDelete}) => {
+export const PostCard: React.FC<any> = ({item, onDelete, comments}) => {
 
     const [commentsCount, setCommentsCount] = useState(0)
 
@@ -65,7 +66,8 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
     const toggleHandler = () => {
         likeToggled()
     }
-    const commentHandler = () => {}
+    const commentHandler = () => {
+    }
     let isLikedHeart
     if (isLike) {
         isLike.forEach(async (likeKey: string) => {
@@ -106,7 +108,10 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
                         </InteractionHeart>
                     </Interaction> : null}
             </InteractionWrapper>
-            <CommentInput/>
+            <CommentInput item={item}/>
+            {comments ? comments.map((comment: any) => <Comment userName={comment.userName}
+                                                                commentValue={comment.comment}/>)
+                      : <></>}
         </Card>
     )
 }

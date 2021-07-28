@@ -122,7 +122,7 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
             {loadPostInFeed
                 ? <ActivityIndicator size='large' color='#0000ff'/>
                 : <FlatList data={data}
-                            renderItem={({item}) => <PostCard item={item} onDelete={handleDelete}/>}
+                            renderItem={({item, comments}: any) => <PostCard  item={item} comments={comments} onDelete={handleDelete}/>}
                             keyExtractor={item => item.id}
                             showsVerticalScrollIndicator={false}
                 />}

@@ -1,11 +1,18 @@
 import React, {useState} from 'react';
 import {View, StyleSheet, Text, TextInput, Button} from 'react-native';
 import {height as h, width as w} from "../consts/size";
+import {useSelector} from "react-redux";
+import {getUserSelector} from "../store/selectors";
 
-export const CommentInput: React.FC<any> = () => {
+export const CommentInput: React.FC<any> = ({item}) => {
+    console.log('item', item)
     const [commentsValue, setCommentsValue] = useState('')
     const onChangeCommentsValue = (value: string) => {
         setCommentsValue(value)
+    }
+
+    const addComment = () => {
+
     }
 
     return (
@@ -18,7 +25,7 @@ export const CommentInput: React.FC<any> = () => {
             />
             <View style={styles.button}>
                 <Button onPress={() => {
-                }} title='Отправить'/>
+                }}  title='Отправить'/>
             </View>
         </View>
     );
@@ -32,7 +39,7 @@ const styles = StyleSheet.create({
 
     },
     button: {
-        margin: w / 30
+        margin: w / 30,
 
     },
     input: {
