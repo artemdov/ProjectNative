@@ -9,6 +9,11 @@ export const setPostData = (postData: []) =>
         type: actionTypes.feed.SET_POST_DATA,
         payload: postData,
     } as const);
+export const setCommentsData = (commentsData: []) =>
+    ({
+        type: actionTypes.feed.SET_COMMENTS_DATA,
+        payload: commentsData,
+    } as const);
 
 export const setImage = (image: string | undefined) =>
   ({

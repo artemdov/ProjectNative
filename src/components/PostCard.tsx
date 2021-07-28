@@ -13,19 +13,51 @@ import {
     UserInfoText,
     UserName
 } from "../styles/FeedStyles";
-import {useSelector} from "react-redux";
-import {getUserSelector} from "../store/selectors";
+import {useDispatch, useSelector} from "react-redux";
+import {getUserSelector, setCommentDataSelector} from "../store/selectors";
 import moment from "moment";
 import firebase from "firebase";
 import {CommentInput} from "./CommentInput";
 import {Comment} from "./Comment";
+import {setCommentsData} from "../store/actions/feedAction";
 
 
-export const PostCard: React.FC<any> = ({item, onDelete, comments}) => {
+export const PostCard: React.FC<any> = ({item, comments, onDelete}) => {
 
-    const [commentsCount, setCommentsCount] = useState(0)
-
+    const dispatch = useDispatch()
+    const dataComments = useSelector(setCommentDataSelector)
     const user: any = useSelector(getUserSelector)
+    console.log('dataCOMMENT', dataComments)
+
+    const fetchComments = () => {
+        const usersPostRef = firebase.database().ref(`comments/`)
+        const onLoadingFeed = usersPostRef.on('value', snapshot => {
+            const commentsMap: any = []
+            snapshot.forEach((childSnapshot) => {
+                const {comment, createdAt, postId, userId} = childSnapshot.val()
+                commentsMap.push({
+                    comment,
+                    createdAt,
+                    postId,
+                    userId,
+                    usersName: 'Имя',
+                    usersImg: 'https://lh5.googleusercontent.com/' +
+                        '-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/' +
+                        'AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg',
+                })
+            })
+            dispatch(setCommentsData(commentsMap))
+
+        })
+        return () => {
+            usersPostRef.off('value', onLoadingFeed)
+        }
+
+    }
+    useEffect(() => {
+        fetchComments()
+    }, [])
+
     let isLike: any
     if (item.likes) {
         isLike = (Object.keys(item.likes))
@@ -100,7 +132,7 @@ export const PostCard: React.FC<any> = ({item, onDelete, comments}) => {
                         <EvilIcons name="comment" size={30} color="#000"/>
                     </InteractionComment>
                 </Interaction>
-                <InteractionText>{commentsCount}</InteractionText>
+                <InteractionText>{0}</InteractionText>
                 {user.uid && user.uid === item.userId ?
                     <Interaction onPress={() => onDelete(item.id)}>
                         <InteractionHeart>
@@ -108,10 +140,19 @@ export const PostCard: React.FC<any> = ({item, onDelete, comments}) => {
                         </InteractionHeart>
                     </Interaction> : null}
             </InteractionWrapper>
+
             <CommentInput item={item}/>
-            {comments ? comments.map((comment: any) => <Comment userName={comment.userName}
-                                                                commentValue={comment.comment}/>)
-                      : <></>}
+            {dataComments.map((comment: any) => {
+                console.log('comment', comment)
+            })}
+
+
+            {dataComments ? dataComments.map((comment: any) =>
+
+                    <Comment userImg={item.userImg}
+                             userName={item.userName}
+                             commentValue={comment.comment}/>)
+                : <></>}
         </Card>
     )
 }

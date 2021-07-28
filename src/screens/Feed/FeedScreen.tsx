@@ -19,14 +19,14 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
     const loadPostInFeed = useSelector(isLoadingPostSelector)
     const data: any = useSelector(setPostDataSelector)
     const handleSubmit = () => navigation.navigate(screenNames.ADD_POST_SCREEN)
-
+    console.log('data', data)
     const fetch = () => {
         dispatch(isLoadingPostValue(true))
-        const usersPostRef = firebase.database().ref('usersPost').orderByChild('postTime')
+        const usersPostRef = firebase.database().ref('usersPost')
         const onLoadingFeed = usersPostRef.on('value', snapshot => {
             const listData: any = []
             snapshot.forEach((childSnapshot) => {
-                const {id, userId, post, postImg, postTime, likes, comments} = childSnapshot.val()
+                const {id, userId, post, postImg, postTime, likes} = childSnapshot.val()
                 listData.push({
                     id,
                     userId,
@@ -38,7 +38,6 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
                     post,
                     postImg,
                     likes,
-                    comments
 
                 })
             })
@@ -122,10 +121,11 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
             {loadPostInFeed
                 ? <ActivityIndicator size='large' color='#0000ff'/>
                 : <FlatList data={data}
-                            renderItem={({item, comments}: any) => <PostCard  item={item} comments={comments} onDelete={handleDelete}/>}
+                            renderItem={({item}) => <PostCard item={item}  onDelete={handleDelete}/>}
                             keyExtractor={item => item.id}
                             showsVerticalScrollIndicator={false}
                 />}
+
 
         </Container>
 

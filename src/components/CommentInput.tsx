@@ -1,11 +1,15 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, StyleSheet, Text, TextInput, Button} from 'react-native';
 import {height as h, width as w} from "../consts/size";
 import {useSelector} from "react-redux";
 import {getUserSelector} from "../store/selectors";
+import firebase from "firebase";
+import {isLoadingPostValue, setPostData} from "../store/actions/feedAction";
 
 export const CommentInput: React.FC<any> = ({item}) => {
-    console.log('item', item)
+    const commentKey: any =  firebase.database().ref().push().key
+    const user: any = useSelector(getUserSelector)
+
     const [commentsValue, setCommentsValue] = useState('')
     const onChangeCommentsValue = (value: string) => {
         setCommentsValue(value)
@@ -13,6 +17,22 @@ export const CommentInput: React.FC<any> = ({item}) => {
 
     const addComment = () => {
 
+        firebase.database()
+            .ref(`comments/${commentKey}`)
+            .update({
+                comment: commentsValue,
+                createdAt: firebase.database.ServerValue.TIMESTAMP,
+                postId: item.id,
+                userId: user.uid,
+                usersName: 'Имя',
+                    usersImg: 'https://lh5.googleusercontent.com/' +
+                        '-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/' +
+                        'AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg',
+
+            }).then(() => {
+            setCommentsValue('')
+            console.log('comment added')
+        })
     }
 
     return (
@@ -24,8 +44,7 @@ export const CommentInput: React.FC<any> = ({item}) => {
                        onChangeText={onChangeCommentsValue}
             />
             <View style={styles.button}>
-                <Button onPress={() => {
-                }}  title='Отправить'/>
+                <Button onPress={addComment} title='Отправить'/>
             </View>
         </View>
     );

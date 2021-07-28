@@ -3,10 +3,13 @@ import {View, StyleSheet, Text, TextInput, Button} from 'react-native';
 import {height as h, width as w} from "../consts/size";
 import {useSelector} from "react-redux";
 
-export const Comment: React.FC<any> = ({userName, comment}) => {
+export const Comment: React.FC<any> = ({userImg, userName, comment}) => {
 
     return (
         <View style={styles.commentBlock}>
+            <View style={styles.userName}>
+                {userImg}
+            </View>
             <View style={styles.userName}>
                 {userName}
             </View>
