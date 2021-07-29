@@ -15,8 +15,7 @@ const actionTypes = {
     SET_POST_DATA: 'SET_POST_DATA',
     IS_LOAD_POST: 'IS_LOAD_POST',
     SET_COMMENTS_DATA: 'SET_COMMENTS_DATA',
-
-  }
+  },
 };
 
 export default actionTypes;

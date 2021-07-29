@@ -1,23 +1,19 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {CustomButton} from '../../components/common/CustomButton';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {onSubmitLogOut} from '../../store/actions/authAction';
 import screenNames from '../../navigation/ScreenNames';
 import {width as w, height as h} from '../../consts/size';
-import {getUserSelector} from "../../store/selectors";
 
 export const ProfileScreen: React.FC<any> = ({navigation}) => {
   const dispatch = useDispatch();
-  const user: any = useSelector(getUserSelector)
-
 
   const onPressLogout = () => {
     dispatch(onSubmitLogOut());
     navigation.navigate(screenNames.LANDING_SCREEN);
   };
 
-  // @ts-ignore
   return (
     <View style={styles.blockMainScreen}>
       <Text style={styles.header}>Привет</Text>
@@ -33,7 +29,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#8a2be2',
     flexDirection: 'column',
     alignItems: 'center',
-    width: w ,
+    width: w,
     height: h,
   },
   header: {

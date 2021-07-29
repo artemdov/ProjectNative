@@ -9,7 +9,10 @@ const initialState = {
 };
 type initialStateType = typeof initialState;
 
-export const authReducer = (state = initialState, action: any): initialStateType => {
+export const authReducer = (
+  state = initialState,
+  action: any,
+): initialStateType => {
   switch (action.type) {
     case actionTypes.auth.SET_USER:
       return {...state, user: action.payload};

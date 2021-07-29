@@ -7,15 +7,12 @@ export const isLoadingSelector = (state: AppRootStateType) =>
 export const getUserSelector = (state: AppRootStateType) => state.auth.user;
 export const setImageSelector = (state: AppRootStateType) => state.feed.image;
 export const isLoadingImageSelector = (state: AppRootStateType) =>
-    state.feed.upLoading;
+  state.feed.upLoading;
 export const isLoadingPostSelector = (state: AppRootStateType) =>
-    state.feed.isLoadingPost;
+  state.feed.isLoadingPost;
 export const isTransferredSelector = (state: AppRootStateType) =>
-    state.feed.transferred;
+  state.feed.transferred;
 export const setPostDataSelector = (state: AppRootStateType) =>
-    state.feed.postData;
+  state.feed.postData;
 export const setCommentDataSelector = (state: AppRootStateType) =>
-    state.feed.commentsData;
-
-
-
+  state.feed.commentsData;
