@@ -4,6 +4,8 @@ export const isLoggedInSelector = (state: AppRootStateType) =>
   state.auth.isLoggedIn;
 export const isLoadingSelector = (state: AppRootStateType) =>
   state.auth.loading;
+export const viewCommentMenuSelector = (state: AppRootStateType) =>
+    state.feed.commentMenu;
 export const getUserSelector = (state: AppRootStateType) => state.auth.user;
 export const setImageSelector = (state: AppRootStateType) => state.feed.image;
 export const isLoadingImageSelector = (state: AppRootStateType) =>
