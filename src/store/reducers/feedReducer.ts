@@ -7,7 +7,7 @@ const initialState = {
   commentMenu: false,
   transferred: 0,
   postData: [],
-  commentsData: [],
+  comments: [],
 };
 type initialStateType = typeof initialState;
 
@@ -28,8 +28,8 @@ export const feedReducer = (
       return {...state, transferred: action.payload};
     case actionTypes.feed.SET_POST_DATA:
       return {...state, postData: action.payload};
-    case actionTypes.feed.SET_COMMENTS_DATA:
-      return {...state, commentsData: action.payload};
+    case actionTypes.feed.SET_COMMENTS:
+      return {...state, comments: action.payload};
     default:
       return state;
   }

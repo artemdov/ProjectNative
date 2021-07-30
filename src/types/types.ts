@@ -52,10 +52,6 @@ export type OnSubmitRegistrationDataType = {
   password: string;
   confirmPassword: string;
 };
-export type RootParamList = {
-  FEED_SCREEN: undefined;
-  PROFILE_SCREEN: undefined;
-};
 export type AppRootStateType = ReturnType<typeof rootReducer>;
 export type AuthActionType =
   | ReturnType<typeof setIsLoggedIn>

@@ -2,7 +2,7 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {FeedScreen} from '../../screens/Feed/FeedScreen';
 import {AddPostScreen} from '../../screens/Feed/AddPostScreen';
-import {withoutHeader} from '../options';
+import {addPostOptions, withoutHeader} from '../options';
 import screenNames from '../ScreenNames';
 
 const Stack = createStackNavigator();
@@ -17,16 +17,7 @@ export const FeedPostStack: React.FC<any> = () => (
     <Stack.Screen
       name={screenNames.ADD_POST_SCREEN}
       component={AddPostScreen}
-      options={{
-        title: 'Добавить пост',
-        headerTitleAlign: 'center',
-        headerStyle: {
-          backgroundColor: '#2e64e515',
-          shadowColor: '#2e64e515',
-          elevation: 0,
-        },
-        headerBackTitleVisible: false,
-      }}
+      options={addPostOptions}
     />
   </Stack.Navigator>
 );

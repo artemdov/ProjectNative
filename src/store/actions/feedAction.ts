@@ -5,10 +5,10 @@ export const setPostData = (postData: []) =>
     type: actionTypes.feed.SET_POST_DATA,
     payload: postData,
   } as const);
-export const setCommentsData = (commentsData: []) =>
+export const setComments = (comments: []) =>
   ({
-    type: actionTypes.feed.SET_COMMENTS_DATA,
-    payload: commentsData,
+    type: actionTypes.feed.SET_COMMENTS,
+    payload: comments,
   } as const);
 
 export const setImage = (image: string | undefined) =>

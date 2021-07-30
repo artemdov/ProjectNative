@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {height as h, width as w} from '../consts/size';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
@@ -21,19 +21,20 @@ import {
 import {useDispatch, useSelector} from 'react-redux';
 import {
   getUserSelector,
-  setCommentDataSelector,
+  setCommentSelector,
   viewCommentMenuSelector,
 } from '../store/selectors';
 import moment from 'moment';
 import firebase from 'firebase';
 import {CommentInput} from './CommentInput';
 import {Comment} from './Comment';
-import {setCommentsData, viewCommentMenu} from '../store/actions/feedAction';
+import {setComments, viewCommentMenu} from '../store/actions/feedAction';
 import {View} from 'react-native';
 
 export const PostCard: React.FC<any> = ({item, onDelete}) => {
+  let [likes, setLikes] = useState<any>([]);
   const dispatch = useDispatch();
-  const dataComments = useSelector(setCommentDataSelector);
+  const comments = useSelector(setCommentSelector);
   const user: any = useSelector(getUserSelector);
   const commentMenu = useSelector(viewCommentMenuSelector);
 
@@ -55,7 +56,7 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
             'AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg',
         });
       });
-      dispatch(setCommentsData(commentsMap));
+      dispatch(setComments(commentsMap));
     });
     return () => {
       usersPostRef.off('value', onLoadingFeed);
@@ -64,11 +65,16 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
   useEffect(() => {
     fetchComments();
   }, []);
-
-  let isLike: any;
-  if (item.likes) {
-    isLike = Object.keys(item.likes);
-  }
+  useEffect(() => {
+    changePostLikes();
+  }, [item.likes]);
+  const changePostLikes = () => {
+    if (item.likes) {
+      setLikes(Object.keys(item.likes));
+    } else {
+      setLikes([]);
+    }
+  };
 
   const likeToggled = () => {
     if (!item.likes) {
@@ -78,13 +84,9 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
         .set({
           isLike: true,
         })
-        .then(() => {
-          if (item.likes) {
-            isLike.push(Object.keys(item.likes));
-          }
-        });
+        .then(() => {});
     } else {
-      isLike.forEach(async (likeKey: string) => {
+      likes.forEach(async (likeKey: string) => {
         if (likeKey === `${user.uid}`) {
           await firebase
             .database()
@@ -98,8 +100,7 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
             .ref(`usersPost/${item.id}/likes/${user.uid}`)
             .set({
               isLike: true,
-            })
-            .then(() => {});
+            });
         }
       });
     }
@@ -110,24 +111,23 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
   const commentHandler = () => {
     dispatch(viewCommentMenu(!commentMenu));
   };
-  let isLikedHeart;
-  if (isLike) {
-    isLike.forEach(async (likeKey: string) => {
-      isLikedHeart = likeKey;
-    });
-  }
-  const likeIcon =
-    isLikedHeart && isLikedHeart === `${user.uid}` ? 'heart' : 'heart-outline';
-  const likeIconColor =
-    isLikedHeart && isLikedHeart === `${user.uid}` ? '#2e64e5' : '#333';
+  const deletePostHandler = () => onDelete(item.id);
+  const isPostLiked =
+    likes && likes.find((userId: string) => userId === user.uid);
+  const likeIcon = isPostLiked ? 'heart' : 'heart-outline';
+  const likeIconColor = isPostLiked ? '#2e64e5' : '#333';
   const commentCount = [];
-  dataComments.forEach((comment: any) => {
+  comments.forEach((comment: any) => {
     for (let value in comment) {
       if (item.id === comment[value]) {
         commentCount.push(item.id);
       }
     }
   });
+  //comments массив объектов, forEach я достаю каждый объект и for in я перебираю значения именно айдишники комментов, а не другие значения.
+  // Это показывает количество комментариев к определенному посту
+  console.log('likes', likes.length);
+  console.log('likes', likes);
 
   return (
     <Card style={{width: w - 40}}>
@@ -139,7 +139,7 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
         </UserInfoText>
       </UserInfo>
       <PostText>{item.post}</PostText>
-      {item.postImg != null ? (
+      {item.postImg ? (
         <PostImg source={{uri: item.postImg}} />
       ) : (
         <Divider style={{marginTop: h / 55}} />
@@ -150,26 +150,26 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
             <Ionicons name={likeIcon} size={24} color={likeIconColor} />
           </InteractionHeart>
         </Interaction>
-        <InteractionText>{isLike ? isLike.length : 0}</InteractionText>
+        <InteractionText>{likes.length}</InteractionText>
         <Interaction onPress={commentHandler}>
           <InteractionComment>
             <EvilIcons name="comment" size={30} color="#000" />
           </InteractionComment>
         </Interaction>
         <InteractionText>{commentCount.length}</InteractionText>
-        {user.uid && user.uid === item.userId ? (
-          <Interaction onPress={() => onDelete(item.id)}>
+        {user.uid && user.uid === item.userId && (
+          <Interaction onPress={deletePostHandler}>
             <InteractionHeart>
               <Ionicons name="trash-bin-outline" size={24} color="#000" />
             </InteractionHeart>
           </Interaction>
-        ) : null}
+        )}
       </InteractionWrapper>
       {commentMenu && (
         <View>
           <CommentInput item={item} />
-          {dataComments &&
-            dataComments.map((comment: any) => {
+          {comments &&
+            comments.map((comment: any) => {
               if (item.id === comment.postId) {
                 return (
                   <Comment
