@@ -112,6 +112,8 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
     isLikedHeart && isLikedHeart === `${user.uid}` ? 'heart' : 'heart-outline';
   const likeIconColor =
     isLikedHeart && isLikedHeart === `${user.uid}` ? '#2e64e5' : '#333';
+  console.log('dataComments', dataComments)
+  console.log('item', item)
   return (
     <Card style={{width: w - 40}}>
       <UserInfo>
@@ -150,15 +152,18 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
       </InteractionWrapper>
 
       <CommentInput item={item} />
-
       {dataComments ? (
-        dataComments.map((comment: any) => (
-          <Comment
-            userImg={comment.userImg}
-            userName={comment.userName}
-            commentValue={comment.comment}
-          />
-        ))
+        dataComments.map((comment: any) => {
+          if (item.id === comment.postId) {
+           return <Comment
+                usersImg={comment.usersImg}
+                usersName={comment.usersName}
+                createdAt = {comment.createdAt}
+                comment={comment.comment}
+            />
+          }
+
+        })
       ) : (
         <></>
       )}

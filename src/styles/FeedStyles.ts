@@ -18,7 +18,7 @@ export const UserInfo = styled.View`
 export const UserImg = styled.Image`
   width: 50px;
   height: 50px;
-  borderradius: 25px;
+  border-radius: 25px;
 `;
 export const UserInfoText = styled.View`
   flex-direction: column;

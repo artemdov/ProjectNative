@@ -1,30 +1,46 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, Image} from 'react-native';
 import {height as h, width as w} from '../consts/size';
+import moment from "moment";
 
-export const Comment: React.FC<any> = ({userImg, userName, comment}) => {
-  return (
-    <View style={styles.commentBlock}>
-      <View style={styles.userName}>{userImg}</View>
-      <View style={styles.userName}>{userName}</View>
-      <View>{comment}</View>
-    </View>
-  );
+export const Comment: React.FC<any> = ({usersImg, usersName, comment, createdAt}) => {
+    return (
+        <View style={styles.wrapper}>
+            <View style={styles.commentBlock}>
+                <Image style={styles.image} source={{uri: usersImg}}/>
+                <Text style={styles.userName}>{`${usersName}:`}</Text>
+                <Text style={styles.comment}>{comment}</Text>
+            </View>
+            <Text style={styles.time}>{moment(createdAt).fromNow()}</Text>
+
+        </View>
+    );
 };
 const styles = StyleSheet.create({
-  commentBlock: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-end',
-  },
-  userName: {
-    margin: w / 30,
-  },
-  input: {
-    fontSize: w / 23,
-    margin: w / 30,
-    borderBottomWidth: 1,
-    paddingVertical: h / 150,
-    paddingRight: w / 4,
-  },
+    commentBlock: {
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        margin: w / 60,
+    },
+    wrapper: {
+        marginLeft: w / 40,
+        marginBottom: w / 30
+    },
+    userName: {
+        marginLeft: w / 90,
+        fontWeight: 'bold',
+    },
+    image: {
+        width: w / 15,
+        height: h / 28,
+        borderRadius: 20
+    },
+    comment: {
+        marginLeft: w / 90,
+
+    },
+    time: {
+        fontSize: w / 40
+    },
 });
