@@ -10,7 +10,6 @@ import {onSubmitLogIn} from '../../store/actions/authAction';
 import {width as w, height as h} from '../../consts/size';
 
 export const LoginScreen = () => {
-
   const dispatch = useDispatch();
   const onSubmit = (values: any) => {
     dispatch(onSubmitLogIn(values));

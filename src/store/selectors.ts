@@ -14,7 +14,7 @@ export const isLoadingPostSelector = (state: AppRootStateType) =>
   state.feed.isLoadingPost;
 export const isTransferredSelector = (state: AppRootStateType) =>
   state.feed.transferred;
-export const setPostDataSelector = (state: AppRootStateType) =>
-  state.feed.postData;
-export const setCommentSelector = (state: AppRootStateType) =>
+export const getPostDataSelector = (state: AppRootStateType) =>
+  state.feed.posts;
+export const getCommentSelector = (state: AppRootStateType) =>
   state.feed.comments;

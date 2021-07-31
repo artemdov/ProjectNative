@@ -5,9 +5,9 @@ import {
   TouchableOpacity,
   Alert,
   ActivityIndicator,
+  View,
 } from 'react-native';
 import {width as w} from '../../consts/size';
-import {Container} from '../../styles/FeedStyles';
 import {PostCard} from '../../components/PostCard';
 import screenNames from '../../navigation/ScreenNames';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -15,18 +15,18 @@ import firebase from 'firebase';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   isLoadingPostSelector,
-  setPostDataSelector,
+  getPostDataSelector,
 } from '../../store/selectors';
-import {isLoadingPostValue, setPostData} from '../../store/actions/feedAction';
+import {isLoadingPosts, setPostData} from '../../store/actions/feedAction';
 import storage from '@react-native-firebase/storage';
 
 export const FeedScreen: React.FC<any> = ({navigation}) => {
   const dispatch = useDispatch();
-  const loadPostInFeed = useSelector(isLoadingPostSelector);
-  const data: any = useSelector(setPostDataSelector);
+  const isLoadingPost = useSelector(isLoadingPostSelector);
+  const data: any = useSelector(getPostDataSelector);
   const handleSubmit = () => navigation.navigate(screenNames.ADD_POST_SCREEN);
   const fetch = () => {
-    dispatch(isLoadingPostValue(true));
+    dispatch(isLoadingPosts(true));
     const usersPostRef = firebase.database().ref('usersPost');
     const onLoadingFeed = usersPostRef.on('value', snapshot => {
       const listData: any = [];
@@ -48,7 +48,7 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
         });
       });
       dispatch(setPostData(listData));
-      dispatch(isLoadingPostValue(false));
+      dispatch(isLoadingPosts(false));
     });
     return () => {
       usersPostRef.off('value', onLoadingFeed);
@@ -58,7 +58,10 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
   useEffect(() => {
     fetch();
   }, []);
-
+  const keyExtractorHandler = (item: {id: string}) => item.id;
+  const renderItemHandler = ({item}: any) => (
+    <PostCard item={item} onDelete={handleDelete} />
+  );
   const handleDelete = (postId: string) => {
     Alert.alert(
       'Удалить пост',
@@ -117,27 +120,30 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
     };
   };
   return (
-    <Container>
+    <View style={styles.container}>
       <TouchableOpacity style={styles.buttonAddPost} onPress={handleSubmit}>
         <Ionicons name="add-circle" size={45} color="#2e64e5" />
       </TouchableOpacity>
-      {loadPostInFeed ? (
+      {isLoadingPost ? (
         <ActivityIndicator size="large" color="#0000ff" />
       ) : (
         <FlatList
           data={data}
-          renderItem={({item}) => (
-            <PostCard item={item} onDelete={handleDelete} />
-          )}
-          keyExtractor={item => item.id}
+          renderItem={renderItemHandler}
+          keyExtractor={keyExtractorHandler}
           showsVerticalScrollIndicator={false}
         />
       )}
-    </Container>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+  },
   buttonAddPost: {
     margin: 5,
     marginLeft: w / 1.2,

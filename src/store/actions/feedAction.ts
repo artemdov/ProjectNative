@@ -18,18 +18,18 @@ export const setImage = (image: string | undefined) =>
   } as const);
 export const viewCommentMenu = (commentMenu: boolean) =>
   ({
-    type: actionTypes.feed.COMMENT_MENU,
+    type: actionTypes.feed.SET_COMMENTS_MENU,
     payload: commentMenu,
   } as const);
 export const upLoadingForImage = (uploading: boolean) =>
   ({
-    type: actionTypes.feed.UPLOAD,
+    type: actionTypes.feed.SET_UPLOADING,
     payload: uploading,
   } as const);
 
-export const isLoadingPostValue = (isLoadingPost: boolean) =>
+export const isLoadingPosts = (isLoadingPost: boolean) =>
   ({
-    type: actionTypes.feed.IS_LOAD_POST,
+    type: actionTypes.feed.SET_IS_LOADING_POST,
     payload: isLoadingPost,
   } as const);
 export const setTransferred = (transferred: number) =>

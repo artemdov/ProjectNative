@@ -2,26 +2,10 @@ import React, {useEffect, useState} from 'react';
 import {height as h, width as w} from '../consts/size';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
-import {
-  Card,
-  Divider,
-  Interaction,
-  InteractionComment,
-  InteractionHeart,
-  InteractionText,
-  InteractionWrapper,
-  PostImg,
-  PostText,
-  PostTime,
-  UserImg,
-  UserInfo,
-  UserInfoText,
-  UserName,
-} from '../styles/FeedStyles';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   getUserSelector,
-  setCommentSelector,
+  getCommentSelector,
   viewCommentMenuSelector,
 } from '../store/selectors';
 import moment from 'moment';
@@ -29,12 +13,12 @@ import firebase from 'firebase';
 import {CommentInput} from './CommentInput';
 import {Comment} from './Comment';
 import {setComments, viewCommentMenu} from '../store/actions/feedAction';
-import {View} from 'react-native';
+import {StyleSheet, View, TouchableOpacity, Text, Image} from 'react-native';
 
 export const PostCard: React.FC<any> = ({item, onDelete}) => {
   let [likes, setLikes] = useState<any>([]);
   const dispatch = useDispatch();
-  const comments = useSelector(setCommentSelector);
+  const comments = useSelector(getCommentSelector);
   const user: any = useSelector(getUserSelector);
   const commentMenu = useSelector(viewCommentMenuSelector);
 
@@ -94,7 +78,8 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
             .remove()
             .then(() => {});
           return;
-        } else {
+        }
+        if (likeKey !== `${user.uid}`) {
           await firebase
             .database()
             .ref(`usersPost/${item.id}/likes/${user.uid}`)
@@ -124,47 +109,44 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
       }
     }
   });
-  //comments массив объектов, forEach я достаю каждый объект и for in я перебираю значения именно айдишники комментов, а не другие значения.
+  //comments массив объектов, forEach я достаю каждый объект, for in я перебираю значения и item.id проверяю что именно айдишники комментов, а не другие значения.
   // Это показывает количество комментариев к определенному посту
-  console.log('likes', likes.length);
-  console.log('likes', likes);
-
   return (
-    <Card style={{width: w - 40}}>
-      <UserInfo>
-        <UserImg source={{uri: item.usersImg}} />
-        <UserInfoText>
-          <UserName>{item.usersName}</UserName>
-          <PostTime>{moment(item.postTime).fromNow()}</PostTime>
-        </UserInfoText>
-      </UserInfo>
-      <PostText>{item.post}</PostText>
+    <View style={styles.card}>
+      <View style={styles.userInfo}>
+        <Image style={styles.userImg} source={{uri: item.usersImg}} />
+        <View style={styles.userInfoText}>
+          <Text style={styles.userName}>{item.usersName}</Text>
+          <Text style={styles.postTime}>{moment(item.postTime).fromNow()}</Text>
+        </View>
+      </View>
+      <Text style={styles.postText}>{item.post}</Text>
       {item.postImg ? (
-        <PostImg source={{uri: item.postImg}} />
+        <Image style={styles.postImg} source={{uri: item.postImg}} />
       ) : (
-        <Divider style={{marginTop: h / 55}} />
+        <View style={styles.divider} />
       )}
-      <InteractionWrapper>
-        <Interaction onPress={toggleHandler}>
-          <InteractionHeart>
+      <View style={styles.interactionWrapper}>
+        <TouchableOpacity onPress={toggleHandler}>
+          <View style={styles.interactionHeart}>
             <Ionicons name={likeIcon} size={24} color={likeIconColor} />
-          </InteractionHeart>
-        </Interaction>
-        <InteractionText>{likes.length}</InteractionText>
-        <Interaction onPress={commentHandler}>
-          <InteractionComment>
+          </View>
+        </TouchableOpacity>
+        <Text style={styles.interactionText}>{likes.length}</Text>
+        <TouchableOpacity onPress={commentHandler}>
+          <View style={styles.interactionComment}>
             <EvilIcons name="comment" size={30} color="#000" />
-          </InteractionComment>
-        </Interaction>
-        <InteractionText>{commentCount.length}</InteractionText>
+          </View>
+        </TouchableOpacity>
+        <Text style={styles.interactionText}>{commentCount.length}</Text>
         {user.uid && user.uid === item.userId && (
-          <Interaction onPress={deletePostHandler}>
-            <InteractionHeart>
+          <TouchableOpacity onPress={deletePostHandler}>
+            <View style={styles.interactionHeart}>
               <Ionicons name="trash-bin-outline" size={24} color="#000" />
-            </InteractionHeart>
-          </Interaction>
+            </View>
+          </TouchableOpacity>
         )}
-      </InteractionWrapper>
+      </View>
       {commentMenu && (
         <View>
           <CommentInput item={item} />
@@ -184,6 +166,83 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
             })}
         </View>
       )}
-    </Card>
+    </View>
   );
 };
+const styles = StyleSheet.create({
+  card: {
+    backgroundColor: '#f8f8f8',
+    marginBottom: 20,
+    borderRadius: 10,
+    width: w - 40,
+  },
+  userInfo: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    padding: 15,
+  },
+
+  userImg: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+  },
+
+  userInfoText: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    marginLeft: 10,
+  },
+
+  userName: {
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+
+  postTime: {
+    fontSize: 12,
+    color: '#666',
+  },
+  postText: {
+    fontSize: 14,
+    paddingLeft: 15,
+    paddingRight: 15,
+  },
+  postImg: {
+    width: '100%',
+    height: 250,
+    marginTop: 15,
+  },
+  divider: {
+    borderBottomColor: '#dddddd',
+    borderBottomWidth: 1,
+    width: '93%',
+    alignSelf: 'center',
+    marginTop: h / 55,
+  },
+  interactionWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    padding: 15,
+  },
+  interactionHeart: {
+    padding: 5,
+    color: '#333',
+    marginTop: 5,
+  },
+
+  interactionComment: {
+    padding: 5,
+    color: '#333',
+    marginTop: 5,
+  },
+  interactionText: {
+    marginTop: 10,
+    fontSize: 18,
+    marginRight: 8,
+  },
+  statusLoadingWrapper: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});

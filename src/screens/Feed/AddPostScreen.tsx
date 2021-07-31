@@ -9,7 +9,6 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import {ContainerWrapper} from '../../styles/AddPostStyles';
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -29,10 +28,9 @@ import {
   upLoadingForImage,
 } from '../../store/actions/feedAction';
 import storage from '@react-native-firebase/storage';
-import {StatusLoadingWrapper} from '../../styles/FeedStyles';
 import firebase from 'firebase';
 
-export const AddPostScreen = () => {
+export const AddPostScreen: React.FC<any> = ({navigation}) => {
   const [postValue, setPostValue] = useState('');
 
   const dispatch = useDispatch();
@@ -67,6 +65,7 @@ export const AddPostScreen = () => {
   const submitPost = async () => {
     const key: any = await firebase.database().ref().push().key;
     const imageUrl = await uploadImage();
+    console.log('imageURL', imageUrl);
     dispatch(setImage(''));
     await firebase
       .database()
@@ -78,9 +77,10 @@ export const AddPostScreen = () => {
         postImg: imageUrl,
         postTime: firebase.database.ServerValue.TIMESTAMP,
         comments: null,
-        likes: null,
+        likes: [],
       })
       .then(() => {
+        navigation.goBack();
         setPostValue('');
         Alert.alert('Пост опубликован', 'Пост успешно опубликован!');
       })
@@ -97,7 +97,10 @@ export const AddPostScreen = () => {
       return null;
     }
     const uploadUri = newImage;
-    const fileName = uploadUri.substring(uploadUri.lastIndexOf('/') + 1);
+    let fileName = uploadUri.substring(uploadUri.lastIndexOf('/') + 1);
+    const extension = fileName.split('.').pop();
+    const name = fileName.split('.').slice(0, -1).join('.');
+    fileName = name + Date.now() + '.' + extension;
     const storageRef = storage().ref(`photos/${fileName}`);
     const task = storageRef.putFile(uploadUri);
     task.on('state_changed', taskSnapshot => {
@@ -122,7 +125,7 @@ export const AddPostScreen = () => {
   };
 
   return (
-    <ContainerWrapper>
+    <View style={styles.containerWrapper}>
       <KeyboardAwareScrollView>
         {newImage ? (
           <Image source={{uri: newImage}} style={styles.imageStyle} />
@@ -135,10 +138,10 @@ export const AddPostScreen = () => {
           />
         )}
         {isLoad ? (
-          <StatusLoadingWrapper>
+          <View style={styles.statusLoadingWrapper}>
             <Text>{isTransferred} % Загружено!</Text>
             <ActivityIndicator size="large" color="#0000ff" />
-          </StatusLoadingWrapper>
+          </View>
         ) : (
           <View style={styles.customButton}>
             <CustomButton title="Отправить" onPress={submitPost} />
@@ -169,10 +172,17 @@ export const AddPostScreen = () => {
           </ActionButton.Item>
         </ActionButton>
       </KeyboardAwareScrollView>
-    </ContainerWrapper>
+    </View>
   );
 };
 const styles = StyleSheet.create({
+  containerWrapper: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    backgroundColor: '#2e64e515',
+  },
   actionButtonIcon: {
     fontSize: h / 30,
     height: 22,
@@ -200,5 +210,9 @@ const styles = StyleSheet.create({
     marginTop: h / 20,
     borderBottomWidth: 1,
     paddingVertical: h / 150 - 20,
+  },
+  statusLoadingWrapper: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

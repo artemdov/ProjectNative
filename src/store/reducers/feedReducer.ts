@@ -6,7 +6,7 @@ const initialState = {
   upLoading: false,
   commentMenu: false,
   transferred: 0,
-  postData: [],
+  posts: [],
   comments: [],
 };
 type initialStateType = typeof initialState;
@@ -18,16 +18,16 @@ export const feedReducer = (
   switch (action.type) {
     case actionTypes.feed.SET_IMAGE:
       return {...state, image: action.payload};
-    case actionTypes.feed.UPLOAD:
+    case actionTypes.feed.SET_UPLOADING:
       return {...state, upLoading: action.payload};
-    case actionTypes.feed.IS_LOAD_POST:
+    case actionTypes.feed.SET_IS_LOADING_POST:
       return {...state, isLoadingPost: action.payload};
-    case actionTypes.feed.COMMENT_MENU:
+    case actionTypes.feed.SET_COMMENTS_MENU:
       return {...state, commentMenu: action.payload};
     case actionTypes.feed.SET_TRANSFERRED:
       return {...state, transferred: action.payload};
     case actionTypes.feed.SET_POST_DATA:
-      return {...state, postData: action.payload};
+      return {...state, posts: action.payload};
     case actionTypes.feed.SET_COMMENTS:
       return {...state, comments: action.payload};
     default:
