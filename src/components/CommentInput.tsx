@@ -1,5 +1,11 @@
 import React, {useState} from 'react';
-import {View, StyleSheet, TextInput, Button} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  TextInput,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 import {height as h, width as w} from '../consts/size';
 import {useSelector} from 'react-redux';
 import {getUserSelector} from '../store/selectors';
@@ -44,9 +50,9 @@ export const CommentInput: React.FC<any> = ({item}) => {
         value={commentsValue}
         onChangeText={onChangeCommentsValue}
       />
-      <View style={styles.button}>
-        <Button onPress={addComment} title="Отправить" />
-      </View>
+      <TouchableOpacity onPress={addComment} style={styles.button}>
+        <Text style={styles.buttonName}>Отправить</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -57,7 +63,12 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   button: {
+    backgroundColor: '#5a8efd',
     margin: w / 30,
+    padding: w / 60,
+  },
+  buttonName: {
+    fontSize: w / 35,
   },
   input: {
     fontSize: w / 23,
