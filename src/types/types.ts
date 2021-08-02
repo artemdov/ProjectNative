@@ -47,6 +47,9 @@ export type OnSubmitLoginType = {
   email: string;
   password: string;
 };
+export type focusedType = {
+  focused?: boolean;
+};
 export type OnSubmitRegistrationDataType = {
   email: string;
   password: string;
