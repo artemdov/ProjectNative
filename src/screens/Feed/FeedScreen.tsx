@@ -13,20 +13,17 @@ import screenNames from '../../navigation/ScreenNames';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import firebase from 'firebase';
 import {useDispatch, useSelector} from 'react-redux';
-import {
-  isLoadingPostSelector,
-  getPostDataSelector,
-} from '../../store/selectors';
-import {isLoadingPosts, setPostData} from '../../store/actions/feedAction';
+import {isLoadingPostSelector, getPostsSelector} from '../../store/selectors';
+import {setIsLoadingPost, setPosts} from '../../store/actions/feedAction';
 import storage from '@react-native-firebase/storage';
 
 export const FeedScreen: React.FC<any> = ({navigation}) => {
   const dispatch = useDispatch();
   const isLoadingPost = useSelector(isLoadingPostSelector);
-  const data: any = useSelector(getPostDataSelector);
+  const data: any = useSelector(getPostsSelector);
   const handleSubmit = () => navigation.navigate(screenNames.ADD_POST_SCREEN);
   const fetch = () => {
-    dispatch(isLoadingPosts(true));
+    dispatch(setIsLoadingPost(true));
     const usersPostRef = firebase.database().ref('usersPost');
     const onLoadingFeed = usersPostRef.on('value', snapshot => {
       const listData: any = [];
@@ -47,8 +44,8 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
           likes,
         });
       });
-      dispatch(setPostData(listData));
-      dispatch(isLoadingPosts(false));
+      dispatch(setPosts(listData));
+      dispatch(setIsLoadingPost(false));
     });
     return () => {
       usersPostRef.off('value', onLoadingFeed);

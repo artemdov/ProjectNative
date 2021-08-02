@@ -5,22 +5,22 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   getUserSelector,
-  getCommentSelector,
-  viewCommentMenuSelector,
+  getCommentsSelector,
+  isViewCommentMenuSelector,
 } from '../store/selectors';
 import moment from 'moment';
 import firebase from 'firebase';
 import {CommentInput} from './CommentInput';
 import {Comment} from './Comment';
-import {setComments, viewCommentMenu} from '../store/actions/feedAction';
+import {setComments, setIsViewCommentMenu} from '../store/actions/feedAction';
 import {StyleSheet, View, TouchableOpacity, Text, Image} from 'react-native';
 
 export const PostCard: React.FC<any> = ({item, onDelete}) => {
   let [likes, setLikes] = useState<any>([]);
   const dispatch = useDispatch();
-  const comments = useSelector(getCommentSelector);
+  const comments = useSelector(getCommentsSelector);
   const user: any = useSelector(getUserSelector);
-  const commentMenu = useSelector(viewCommentMenuSelector);
+  const commentMenu = useSelector(isViewCommentMenuSelector);
 
   const fetchComments = () => {
     const usersPostRef = firebase.database().ref('comments/');
@@ -94,7 +94,7 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
     likeToggled();
   };
   const commentHandler = () => {
-    dispatch(viewCommentMenu(!commentMenu));
+    dispatch(setIsViewCommentMenu(!commentMenu));
   };
   const deletePostHandler = () => onDelete(item.id);
   const isPostLiked =
@@ -109,8 +109,6 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
       }
     }
   });
-  //comments массив объектов, forEach я достаю каждый объект, for in я перебираю значения и item.id проверяю что именно айдишники комментов, а не другие значения.
-  // Это показывает количество комментариев к определенному посту
   return (
     <View style={styles.card}>
       <View style={styles.userInfo}>

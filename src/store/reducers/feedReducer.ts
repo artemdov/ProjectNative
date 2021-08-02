@@ -22,11 +22,11 @@ export const feedReducer = (
       return {...state, upLoading: action.payload};
     case actionTypes.feed.SET_IS_LOADING_POST:
       return {...state, isLoadingPost: action.payload};
-    case actionTypes.feed.SET_COMMENTS_MENU:
+    case actionTypes.feed.SET_IS_COMMENT_MENU:
       return {...state, commentMenu: action.payload};
     case actionTypes.feed.SET_TRANSFERRED:
       return {...state, transferred: action.payload};
-    case actionTypes.feed.SET_POST_DATA:
+    case actionTypes.feed.SET_POSTS:
       return {...state, posts: action.payload};
     case actionTypes.feed.SET_COMMENTS:
       return {...state, comments: action.payload};

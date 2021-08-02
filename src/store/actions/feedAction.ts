@@ -1,9 +1,9 @@
 import actionTypes from '../actionTypes';
 
-export const setPostData = (postData: []) =>
+export const setPosts = (posts: []) =>
   ({
-    type: actionTypes.feed.SET_POST_DATA,
-    payload: postData,
+    type: actionTypes.feed.SET_POSTS,
+    payload: posts,
   } as const);
 export const setComments = (comments: []) =>
   ({
@@ -16,18 +16,17 @@ export const setImage = (image: string | undefined) =>
     type: actionTypes.feed.SET_IMAGE,
     payload: image,
   } as const);
-export const viewCommentMenu = (commentMenu: boolean) =>
+export const setIsViewCommentMenu = (isCommentMenu: boolean) =>
   ({
-    type: actionTypes.feed.SET_COMMENTS_MENU,
-    payload: commentMenu,
+    type: actionTypes.feed.SET_IS_COMMENT_MENU,
+    payload: isCommentMenu,
   } as const);
 export const upLoadingForImage = (uploading: boolean) =>
   ({
     type: actionTypes.feed.SET_UPLOADING,
     payload: uploading,
   } as const);
-
-export const isLoadingPosts = (isLoadingPost: boolean) =>
+export const setIsLoadingPost = (isLoadingPost: boolean) =>
   ({
     type: actionTypes.feed.SET_IS_LOADING_POST,
     payload: isLoadingPost,

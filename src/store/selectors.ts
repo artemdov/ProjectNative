@@ -4,7 +4,7 @@ export const isLoggedInSelector = (state: AppRootStateType) =>
   state.auth.isLoggedIn;
 export const isLoadingSelector = (state: AppRootStateType) =>
   state.auth.loading;
-export const viewCommentMenuSelector = (state: AppRootStateType) =>
+export const isViewCommentMenuSelector = (state: AppRootStateType) =>
   state.feed.commentMenu;
 export const getUserSelector = (state: AppRootStateType) => state.auth.user;
 export const setImageSelector = (state: AppRootStateType) => state.feed.image;
@@ -14,7 +14,6 @@ export const isLoadingPostSelector = (state: AppRootStateType) =>
   state.feed.isLoadingPost;
 export const isTransferredSelector = (state: AppRootStateType) =>
   state.feed.transferred;
-export const getPostDataSelector = (state: AppRootStateType) =>
-  state.feed.posts;
-export const getCommentSelector = (state: AppRootStateType) =>
+export const getPostsSelector = (state: AppRootStateType) => state.feed.posts;
+export const getCommentsSelector = (state: AppRootStateType) =>
   state.feed.comments;

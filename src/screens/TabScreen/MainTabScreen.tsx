@@ -9,13 +9,13 @@ import {FeedPostStack} from '../../navigation/routes/FeedPostStack';
 
 const Tab = createBottomTabNavigator<any>();
 const notFocused = 0.51;
-const tabBarProfileIconHandler: any = ({focused}: any) => (
+const profileTabBarIcon: any = ({focused}: any) => (
   <Image
     style={[styles.icon, {opacity: focused ? 1 : notFocused}]}
     source={require('../../assets/icon_profile.png')}
   />
 );
-const tabBarFeedIconHandler: any = ({focused}: any) => (
+const FeedTabBarIcon: any = ({focused}: any) => (
   <Image
     style={[styles.icon, {opacity: focused ? 1 : notFocused}]}
     source={require('../../assets/icon_feed.png')}
@@ -29,7 +29,7 @@ export const MainTabScreen = () => (
       component={ProfileScreen}
       options={{
         tabBarLabel: 'Профиль',
-        tabBarIcon: tabBarProfileIconHandler,
+        tabBarIcon: profileTabBarIcon,
       }}
     />
     <Tab.Screen
@@ -37,7 +37,7 @@ export const MainTabScreen = () => (
       component={FeedPostStack}
       options={{
         tabBarLabel: 'Лента',
-        tabBarIcon: tabBarFeedIconHandler,
+        tabBarIcon: FeedTabBarIcon,
       }}
     />
   </Tab.Navigator>
