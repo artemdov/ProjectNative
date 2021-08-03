@@ -12,7 +12,7 @@ import moment from 'moment';
 import firebase from 'firebase';
 import {CommentInput} from './CommentInput';
 import {Comment} from './Comment';
-import {setComments, setCommentViewVisible} from '../store/actions/feedAction';
+import {setComments, setCommentMenuVisible} from '../store/actions/feedAction';
 import {StyleSheet, View, TouchableOpacity, Text, Image} from 'react-native';
 
 export const PostCard: React.FC<any> = ({item, onDelete}) => {
@@ -52,15 +52,13 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
   }, []);
 
   useEffect(() => {
-    changePostLikes();
-  }, []);
-  const changePostLikes = () => {
     if (item.likes) {
       setLikes(Object.keys(item.likes));
     } else {
       setLikes([]);
     }
-  };
+  }, []);
+
   const likeToggled = () => {
     if (likes.length === 0) {
       firebase
@@ -104,21 +102,22 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
     likeToggled();
   };
   const commentHandler = () => {
-    dispatch(setCommentViewVisible(!isCommentVisibleMenu));
+    dispatch(setCommentMenuVisible(!isCommentVisibleMenu));
   };
   const deletePostHandler = () => onDelete(item.id);
   const isPostLiked =
     likes && likes.find((userId: string) => userId === user.uid);
   const likeIcon = isPostLiked ? 'heart' : 'heart-outline';
   const likeIconColor = isPostLiked ? '#2e64e5' : '#333';
-  const commentsUsers = [];
+  const commentsIdUsers: any[] = [];
   comments.forEach((comment: any) => {
     for (let value in comment) {
       if (item.id === comment[value]) {
-        commentsUsers.push(item.id);
+        commentsIdUsers.push(item.id);
       }
     }
   });
+
   return (
     <View style={styles.card}>
       <View style={styles.userInfo}>
@@ -146,7 +145,7 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
             <EvilIcons name="comment" size={30} color="#000" />
           </View>
         </TouchableOpacity>
-        <Text style={styles.interactionText}>{commentsUsers.length}</Text>
+        <Text style={styles.interactionText}>{commentsIdUsers.length}</Text>
         {user.uid && user.uid === item.userId && (
           <TouchableOpacity onPress={deletePostHandler}>
             <View style={styles.interactionHeart}>

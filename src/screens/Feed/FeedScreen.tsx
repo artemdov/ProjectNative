@@ -21,7 +21,8 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
   const dispatch = useDispatch();
   const isLoadingPost = useSelector(isLoadingPostSelector);
   const data: any = useSelector(getPostsSelector);
-  const handleSubmit = () => navigation.navigate(screenNames.ADD_POST_SCREEN);
+  const addPostSwitcher = () =>
+    navigation.navigate(screenNames.ADD_POST_SCREEN);
   const fetch = () => {
     dispatch(setIsLoadingPost(true));
     const postsRef = firebase.database().ref('usersPost');
@@ -55,8 +56,8 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
   useEffect(() => {
     fetch();
   }, []);
-  const keyExtractorHandler = (item: {id: string}) => item.id;
-  const renderItemHandler = ({item}: any) => (
+  const keyExtractor = (item: {id: string}) => item.id;
+  const renderItem = ({item}: any) => (
     <PostCard item={item} onDelete={handleDelete} />
   );
   const handleDelete = (postId: string) => {
@@ -118,7 +119,7 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
   };
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.buttonAddPost} onPress={handleSubmit}>
+      <TouchableOpacity style={styles.buttonAddPost} onPress={addPostSwitcher}>
         <Ionicons name="add-circle" size={45} color="#2e64e5" />
       </TouchableOpacity>
       {isLoadingPost ? (
@@ -126,8 +127,8 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
       ) : (
         <FlatList
           data={data}
-          renderItem={renderItemHandler}
-          keyExtractor={keyExtractorHandler}
+          renderItem={renderItem}
+          keyExtractor={keyExtractor}
           showsVerticalScrollIndicator={false}
         />
       )}

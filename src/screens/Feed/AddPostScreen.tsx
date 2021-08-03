@@ -25,7 +25,7 @@ import {height as h, width as w} from '../../consts/size';
 import {
   setImage,
   setTransferred,
-  upLoadingForImage,
+  upLoadingImage,
 } from '../../store/actions/feedAction';
 import storage from '@react-native-firebase/storage';
 import firebase from 'firebase';
@@ -37,7 +37,7 @@ export const AddPostScreen: React.FC<any> = ({navigation}) => {
   const newImage = useSelector(setImageSelector);
   const user: any = useSelector(getUserSelector);
   const isTransferred = useSelector(isTransferredSelector);
-  const isLoad = useSelector(isLoadingImageSelector);
+  const isLoadingImage = useSelector(isLoadingImageSelector);
 
   const takePhotoFromCamera = () => {
     ImagePicker.openCamera({
@@ -112,11 +112,11 @@ export const AddPostScreen: React.FC<any> = ({navigation}) => {
       );
     });
     try {
-      dispatch(upLoadingForImage(true));
+      dispatch(upLoadingImage(true));
       dispatch(setTransferred(0));
       await task;
       const url = await storageRef.getDownloadURL();
-      dispatch(upLoadingForImage(false));
+      dispatch(upLoadingImage(false));
       return url;
     } catch (err) {
       Alert.alert(err);
@@ -137,7 +137,7 @@ export const AddPostScreen: React.FC<any> = ({navigation}) => {
             style={styles.photoFeed}
           />
         )}
-        {isLoad ? (
+        {isLoadingImage ? (
           <View style={styles.statusLoadingWrapper}>
             <Text>{isTransferred} % Загружено!</Text>
             <ActivityIndicator size="large" color="#0000ff" />

@@ -16,7 +16,7 @@ export const CommentInput: React.FC<any> = ({item}) => {
   const user: any = useSelector(getUserSelector);
 
   const [commentValue, setCommentValue] = useState('');
-  const onChangeCommentsValue = (value: string) => {
+  const onChangeCommentValue = (value: string) => {
     setCommentValue(value);
   };
 
@@ -48,7 +48,7 @@ export const CommentInput: React.FC<any> = ({item}) => {
         placeholder="Комментарий"
         multiline
         value={commentValue}
-        onChangeText={onChangeCommentsValue}
+        onChangeText={onChangeCommentValue}
       />
       <TouchableOpacity onPress={addComment} style={styles.button}>
         <Text style={styles.buttonName}>Отправить</Text>

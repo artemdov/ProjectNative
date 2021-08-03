@@ -4,7 +4,7 @@ const initialState = {
   image: '',
   isLoadingPost: false,
   upLoading: false,
-  isCommentVisible: false,
+  isCommentsMenuVisible: false,
   transferred: 0,
   posts: [],
   comments: [],
@@ -22,8 +22,8 @@ export const feedReducer = (
       return {...state, upLoading: action.payload};
     case actionTypes.feed.SET_IS_LOADING_POST:
       return {...state, isLoadingPost: action.payload};
-    case actionTypes.feed.SET_IS_COMMENT_VISIBLE:
-      return {...state, isCommentVisible: action.payload};
+    case actionTypes.feed.SET_IS_COMMENT_MENU_VISIBLE:
+      return {...state, isCommentsMenuVisible: action.payload};
     case actionTypes.feed.SET_TRANSFERRED:
       return {...state, transferred: action.payload};
     case actionTypes.feed.SET_POSTS:
