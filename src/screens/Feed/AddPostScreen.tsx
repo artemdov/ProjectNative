@@ -74,15 +74,15 @@ export const AddPostScreen: React.FC<any> = ({navigation}) => {
         id: key,
         userId: user.uid || null,
         post: postValue,
+        userName: user.uid,
         postImg: imageUrl,
         postTime: firebase.database.ServerValue.TIMESTAMP,
         comments: null,
         likes: [],
       })
       .then(() => {
-        navigation.goBack();
         setPostValue('');
-        Alert.alert('Пост опубликован', 'Пост успешно опубликован!');
+        navigation.goBack();
       })
       .catch(err => {
         console.log(err);

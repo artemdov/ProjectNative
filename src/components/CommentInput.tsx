@@ -15,9 +15,9 @@ export const CommentInput: React.FC<any> = ({item}) => {
   const commentKey: any = firebase.database().ref().push().key;
   const user: any = useSelector(getUserSelector);
 
-  const [commentsValue, setCommentsValue] = useState('');
+  const [commentValue, setCommentValue] = useState('');
   const onChangeCommentsValue = (value: string) => {
-    setCommentsValue(value);
+    setCommentValue(value);
   };
 
   const addComment = () => {
@@ -25,18 +25,18 @@ export const CommentInput: React.FC<any> = ({item}) => {
       .database()
       .ref(`comments/${commentKey}`)
       .update({
-        comment: commentsValue,
+        comment: commentValue,
         createdAt: firebase.database.ServerValue.TIMESTAMP,
         postId: item.id,
         userId: user.uid,
-        usersName: 'Имя',
-        usersImg:
+        userName: user.uid,
+        userImage:
           'https://lh5.googleusercontent.com/' +
           '-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/' +
           'AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg',
       })
       .then(() => {
-        setCommentsValue('');
+        setCommentValue('');
         console.log('comment added');
       });
   };
@@ -47,7 +47,7 @@ export const CommentInput: React.FC<any> = ({item}) => {
         style={styles.input}
         placeholder="Комментарий"
         multiline
-        value={commentsValue}
+        value={commentValue}
         onChangeText={onChangeCommentsValue}
       />
       <TouchableOpacity onPress={addComment} style={styles.button}>

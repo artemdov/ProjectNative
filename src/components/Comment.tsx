@@ -4,16 +4,16 @@ import {height as h, width as w} from '../consts/size';
 import moment from 'moment';
 
 export const Comment: React.FC<any> = ({
-  usersImg,
-  usersName,
+  userImage: userImage,
+  userName: userName,
   comment,
   createdAt,
 }) => {
   return (
     <View style={styles.wrapper}>
       <View style={styles.commentBlock}>
-        <Image style={styles.image} source={{uri: usersImg}} />
-        <Text style={styles.userName}>{`${usersName}:`}</Text>
+        <Image style={styles.image} source={{uri: userImage}} />
+        <Text style={styles.userName}>{`${userName}:`}</Text>
         <Text style={styles.comment}>{comment}</Text>
       </View>
       <Text style={styles.time}>{moment(createdAt).fromNow()}</Text>

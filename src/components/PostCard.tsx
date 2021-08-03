@@ -6,13 +6,13 @@ import {useDispatch, useSelector} from 'react-redux';
 import {
   getUserSelector,
   getCommentsSelector,
-  isViewCommentMenuSelector,
+  isCommentVisibleSelector,
 } from '../store/selectors';
 import moment from 'moment';
 import firebase from 'firebase';
 import {CommentInput} from './CommentInput';
 import {Comment} from './Comment';
-import {setComments, setIsViewCommentMenu} from '../store/actions/feedAction';
+import {setComments, setCommentViewVisible} from '../store/actions/feedAction';
 import {StyleSheet, View, TouchableOpacity, Text, Image} from 'react-native';
 
 export const PostCard: React.FC<any> = ({item, onDelete}) => {
@@ -20,21 +20,22 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
   const dispatch = useDispatch();
   const comments = useSelector(getCommentsSelector);
   const user: any = useSelector(getUserSelector);
-  const commentMenu = useSelector(isViewCommentMenuSelector);
+  const isCommentVisibleMenu = useSelector(isCommentVisibleSelector);
 
   const fetchComments = () => {
-    const usersPostRef = firebase.database().ref('comments/');
-    const onLoadingFeed = usersPostRef.on('value', snapshot => {
+    const postCommentsRef = firebase.database().ref('comments/');
+    const onLoadingComments = postCommentsRef.on('value', snapshot => {
       const commentsMap: any = [];
       snapshot.forEach(childSnapshot => {
-        const {comment, createdAt, postId, userId} = childSnapshot.val();
+        const {comment, createdAt, postId, userId, userName} =
+          childSnapshot.val();
         commentsMap.push({
           comment,
           createdAt,
           postId,
           userId,
-          usersName: 'Имя',
-          usersImg:
+          userName,
+          userImage:
             'https://lh5.googleusercontent.com/' +
             '-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/' +
             'AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg',
@@ -43,15 +44,12 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
       dispatch(setComments(commentsMap));
     });
     return () => {
-      usersPostRef.off('value', onLoadingFeed);
+      postCommentsRef.off('value', onLoadingComments);
     };
   };
   useEffect(() => {
-    fetchComments();
-  }, []);
-  useEffect(() => {
     changePostLikes();
-  }, [item.likes]);
+  }, []);
   const changePostLikes = () => {
     if (item.likes) {
       setLikes(Object.keys(item.likes));
@@ -59,16 +57,18 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
       setLikes([]);
     }
   };
-
   const likeToggled = () => {
-    if (!item.likes) {
+    if (likes.length === 0) {
       firebase
         .database()
         .ref(`usersPost/${item.id}/likes/${user.uid}`)
         .set({
           isLike: true,
         })
-        .then(() => {});
+        .then(() => {
+          setLikes([...likes, `${user.uid}`]);
+          console.log('likes1', likes);
+        });
     } else {
       likes.forEach(async (likeKey: string) => {
         if (likeKey === `${user.uid}`) {
@@ -76,8 +76,10 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
             .database()
             .ref(`usersPost/${item.id}/likes/${user.uid}`)
             .remove()
-            .then(() => {});
-          return;
+            .then(() => {
+              setLikes(likes.filter((item: any) => item !== user.uid));
+              console.log('likes2', likes);
+            });
         }
         if (likeKey !== `${user.uid}`) {
           await firebase
@@ -85,6 +87,10 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
             .ref(`usersPost/${item.id}/likes/${user.uid}`)
             .set({
               isLike: true,
+            })
+            .then(() => {
+              setLikes([...likes, `${user.uid}`]);
+              console.log('likes3', likes);
             });
         }
       });
@@ -94,27 +100,27 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
     likeToggled();
   };
   const commentHandler = () => {
-    dispatch(setIsViewCommentMenu(!commentMenu));
+    dispatch(setCommentViewVisible(!isCommentVisibleMenu));
   };
   const deletePostHandler = () => onDelete(item.id);
   const isPostLiked =
     likes && likes.find((userId: string) => userId === user.uid);
   const likeIcon = isPostLiked ? 'heart' : 'heart-outline';
   const likeIconColor = isPostLiked ? '#2e64e5' : '#333';
-  const commentCount = [];
+  const commentsUsers = [];
   comments.forEach((comment: any) => {
     for (let value in comment) {
       if (item.id === comment[value]) {
-        commentCount.push(item.id);
+        commentsUsers.push(item.id);
       }
     }
   });
   return (
     <View style={styles.card}>
       <View style={styles.userInfo}>
-        <Image style={styles.userImg} source={{uri: item.usersImg}} />
+        <Image style={styles.userImg} source={{uri: item.userImage}} />
         <View style={styles.userInfoText}>
-          <Text style={styles.userName}>{item.usersName}</Text>
+          <Text style={styles.userName}>{item.userName}</Text>
           <Text style={styles.postTime}>{moment(item.postTime).fromNow()}</Text>
         </View>
       </View>
@@ -136,7 +142,7 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
             <EvilIcons name="comment" size={30} color="#000" />
           </View>
         </TouchableOpacity>
-        <Text style={styles.interactionText}>{commentCount.length}</Text>
+        <Text style={styles.interactionText}>{commentsUsers.length}</Text>
         {user.uid && user.uid === item.userId && (
           <TouchableOpacity onPress={deletePostHandler}>
             <View style={styles.interactionHeart}>
@@ -145,7 +151,7 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
           </TouchableOpacity>
         )}
       </View>
-      {commentMenu && (
+      {isCommentVisibleMenu && (
         <View>
           <CommentInput item={item} />
           {comments &&
@@ -154,8 +160,8 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
                 return (
                   <Comment
                     key={comment.createdAt}
-                    usersImg={comment.usersImg}
-                    usersName={comment.usersName}
+                    userImage={comment.userImage}
+                    userName={comment.userName}
                     createdAt={comment.createdAt}
                     comment={comment.comment}
                   />

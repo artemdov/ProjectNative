@@ -24,17 +24,17 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
   const handleSubmit = () => navigation.navigate(screenNames.ADD_POST_SCREEN);
   const fetch = () => {
     dispatch(setIsLoadingPost(true));
-    const usersPostRef = firebase.database().ref('usersPost');
-    const onLoadingFeed = usersPostRef.on('value', snapshot => {
+    const postsRef = firebase.database().ref('usersPost');
+    const onLoadingFeed = postsRef.on('value', snapshot => {
       const listData: any = [];
       snapshot.forEach(childSnapshot => {
-        const {id, userId, post, postImg, postTime, likes} =
+        const {id, userId, post, postImg, postTime, likes, userName} =
           childSnapshot.val();
         listData.push({
           id,
           userId,
-          usersName: 'Имя',
-          usersImg:
+          userName,
+          userImage:
             'https://lh5.googleusercontent.com/' +
             '-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/' +
             'AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg',
@@ -48,7 +48,7 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
       dispatch(setIsLoadingPost(false));
     });
     return () => {
-      usersPostRef.off('value', onLoadingFeed);
+      postsRef.off('value', onLoadingFeed);
     };
   };
 

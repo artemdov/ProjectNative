@@ -16,10 +16,10 @@ export const setImage = (image: string | undefined) =>
     type: actionTypes.feed.SET_IMAGE,
     payload: image,
   } as const);
-export const setIsViewCommentMenu = (isCommentMenu: boolean) =>
+export const setCommentViewVisible = (isCommentVisible: boolean) =>
   ({
-    type: actionTypes.feed.SET_IS_COMMENT_MENU,
-    payload: isCommentMenu,
+    type: actionTypes.feed.SET_IS_COMMENT_VISIBLE,
+    payload: isCommentVisible,
   } as const);
 export const upLoadingForImage = (uploading: boolean) =>
   ({
