@@ -48,6 +48,10 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
     };
   };
   useEffect(() => {
+    fetchComments();
+  }, []);
+
+  useEffect(() => {
     changePostLikes();
   }, []);
   const changePostLikes = () => {
