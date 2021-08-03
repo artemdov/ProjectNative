@@ -98,9 +98,6 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
       });
     }
   };
-  const toggleHandler = () => {
-    likeToggled();
-  };
   const commentHandler = () => {
     dispatch(setCommentMenuVisible(!isCommentVisibleMenu));
   };
@@ -134,7 +131,7 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
         <View style={styles.divider} />
       )}
       <View style={styles.interactionWrapper}>
-        <TouchableOpacity onPress={toggleHandler}>
+        <TouchableOpacity onPress={likeToggled}>
           <View style={styles.interactionHeart}>
             <Ionicons name={likeIcon} size={24} color={likeIconColor} />
           </View>
