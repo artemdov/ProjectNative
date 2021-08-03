@@ -106,11 +106,11 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
     likes && likes.find((userId: string) => userId === user.uid);
   const likeIcon = isPostLiked ? 'heart' : 'heart-outline';
   const likeIconColor = isPostLiked ? '#2e64e5' : '#333';
-  const commentsIdUsers: any[] = [];
+  const commentsFromIdUsers: any[] = [];
   comments.forEach((comment: any) => {
     for (let value in comment) {
       if (item.id === comment[value]) {
-        commentsIdUsers.push(item.id);
+        commentsFromIdUsers.push(item.id);
       }
     }
   });
@@ -142,7 +142,7 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
             <EvilIcons name="comment" size={30} color="#000" />
           </View>
         </TouchableOpacity>
-        <Text style={styles.interactionText}>{commentsIdUsers.length}</Text>
+        <Text style={styles.interactionText}>{commentsFromIdUsers.length}</Text>
         {user.uid && user.uid === item.userId && (
           <TouchableOpacity onPress={deletePostHandler}>
             <View style={styles.interactionHeart}>
