@@ -17,3 +17,4 @@ export const isTransferredSelector = (state: AppRootStateType) =>
 export const getPostsSelector = (state: AppRootStateType) => state.feed.posts;
 export const getCommentsSelector = (state: AppRootStateType) =>
   state.feed.comments;
+
