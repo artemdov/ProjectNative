@@ -47,6 +47,7 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
       postCommentsRef.off('value', onLoadingComments);
     };
   };
+
   useEffect(() => {
     fetchComments();
   }, []);
@@ -98,19 +99,25 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
       });
     }
   };
+
   const commentHandler = () => {
     dispatch(setCommentMenuVisible(!isCommentVisibleMenu));
   };
+
   const deletePostHandler = () => onDelete(item.id);
+
   const isPostLiked =
     likes && likes.find((userId: string) => userId === user.uid);
+
   const likeIcon = isPostLiked ? 'heart' : 'heart-outline';
+
   const likeIconColor = isPostLiked ? '#2e64e5' : '#333';
-  const commentsFromIdUsers: any[] = [];
+
+  const commentsFromUsersId: any[] = [];
   comments.forEach((comment: any) => {
     for (let value in comment) {
       if (item.id === comment[value]) {
-        commentsFromIdUsers.push(item.id);
+        commentsFromUsersId.push(item.id);
       }
     }
   });
@@ -142,7 +149,7 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
             <EvilIcons name="comment" size={30} color="#000" />
           </View>
         </TouchableOpacity>
-        <Text style={styles.interactionText}>{commentsFromIdUsers.length}</Text>
+        <Text style={styles.interactionText}>{commentsFromUsersId.length}</Text>
         {user.uid && user.uid === item.userId && (
           <TouchableOpacity onPress={deletePostHandler}>
             <View style={styles.interactionHeart}>

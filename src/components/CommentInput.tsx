@@ -16,6 +16,7 @@ export const CommentInput: React.FC<any> = ({item}) => {
   const user: any = useSelector(getUserSelector);
 
   const [commentValue, setCommentValue] = useState('');
+
   const onChangeCommentValue = (value: string) => {
     setCommentValue(value);
   };

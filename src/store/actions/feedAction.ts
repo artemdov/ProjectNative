@@ -1,17 +1,18 @@
 import actionTypes from '../actionTypes';
+import {CommentType, PostType} from '../../types/types';
 
-export const setPosts = (posts: []) =>
+export const setPosts = (posts: PostType[]) =>
   ({
     type: actionTypes.feed.SET_POSTS,
     payload: posts,
   } as const);
-export const setComments = (comments: []) =>
+export const setComments = (comments: CommentType[]) =>
   ({
     type: actionTypes.feed.SET_COMMENTS,
     payload: comments,
   } as const);
 
-export const setImage = (image: string | undefined) =>
+export const setImage = (image?: string) =>
   ({
     type: actionTypes.feed.SET_IMAGE,
     payload: image,

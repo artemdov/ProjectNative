@@ -8,9 +8,11 @@ export const LandingScreen: React.FC<any> = ({navigation}) => {
   const onPressSubmit = () => {
     navigation.navigate(screenNames.LOGIN_SCREEN);
   };
+
   const onPressRegister = () => {
     navigation.navigate(screenNames.REGISTRATION_SCREEN);
   };
+
   return (
     <View style={styles.blockMainScreen}>
       <Text style={styles.header}>Добро пожаловать в приложение</Text>

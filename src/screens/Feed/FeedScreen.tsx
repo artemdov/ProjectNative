@@ -21,8 +21,9 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
   const dispatch = useDispatch();
   const isLoadingPost = useSelector(isLoadingPostSelector);
   const data: any = useSelector(getPostsSelector);
-  const addPostSwitcher = () =>
-    navigation.navigate(screenNames.ADD_POST_SCREEN);
+
+  const onPressAddPost = () => navigation.navigate(screenNames.ADD_POST_SCREEN);
+
   const fetch = () => {
     dispatch(setIsLoadingPost(true));
     const postsRef = firebase.database().ref('usersPost');
@@ -56,10 +57,13 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
   useEffect(() => {
     fetch();
   }, []);
+
   const keyExtractor = (item: {id: string}) => item.id;
+
   const renderItem = ({item}: any) => (
     <PostCard item={item} onDelete={handleDelete} />
   );
+
   const handleDelete = (postId: string) => {
     Alert.alert(
       'Удалить пост',
@@ -79,6 +83,7 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
       {cancelable: false},
     );
   };
+
   const deletePost = (postId: string) => {
     firebase
       .database()
@@ -117,9 +122,10 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
         });
     };
   };
+
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.buttonAddPost} onPress={addPostSwitcher}>
+      <TouchableOpacity style={styles.buttonAddPost} onPress={onPressAddPost}>
         <Ionicons name="add-circle" size={45} color="#2e64e5" />
       </TouchableOpacity>
       {isLoadingPost ? (

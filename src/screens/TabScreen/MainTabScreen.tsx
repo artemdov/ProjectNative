@@ -9,12 +9,14 @@ import {FeedPostStack} from '../../navigation/routes/FeedPostStack';
 
 const Tab = createBottomTabNavigator<any>();
 const notFocused = 0.51;
+
 const profileTabBarIcon: React.FC<any> = ({focused}) => (
   <Image
     style={[styles.icon, {opacity: focused ? 1 : notFocused}]}
     source={require('../../assets/icon_profile.png')}
   />
 );
+
 const FeedTabBarIcon: React.FC<any> = ({focused}) => (
   <Image
     style={[styles.icon, {opacity: focused ? 1 : notFocused}]}

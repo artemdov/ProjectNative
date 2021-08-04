@@ -32,7 +32,6 @@ import firebase from 'firebase';
 
 export const AddPostScreen: React.FC<any> = ({navigation}) => {
   const [postValue, setPostValue] = useState('');
-
   const dispatch = useDispatch();
   const newImage = useSelector(getImageSelector);
   const user: any = useSelector(getUserSelector);
@@ -50,6 +49,7 @@ export const AddPostScreen: React.FC<any> = ({navigation}) => {
       dispatch(setImage(imageUri));
     });
   };
+
   const choosePhotoFromLibrary = () => {
     ImagePicker.openPicker({
       width: 300,
@@ -65,7 +65,6 @@ export const AddPostScreen: React.FC<any> = ({navigation}) => {
   const submitPost = async () => {
     const key: any = await firebase.database().ref().push().key;
     const imageUrl = await uploadImage();
-    console.log('imageURL', imageUrl);
     dispatch(setImage(''));
     await firebase
       .database()
@@ -88,6 +87,7 @@ export const AddPostScreen: React.FC<any> = ({navigation}) => {
         console.log(err);
       });
   };
+
   const onChangePost = (value: string) => {
     setPostValue(value);
   };
