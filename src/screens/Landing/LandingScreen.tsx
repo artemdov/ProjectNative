@@ -1,16 +1,18 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {CustomButton} from '../../components/common/CustomButton';
-import {height as h} from '../../consts/size';
+import {width as w, height as h} from '../../consts/size';
 import screenNames from '../../navigation/ScreenNames';
 
 export const LandingScreen: React.FC<any> = ({navigation}) => {
   const onPressSubmit = () => {
     navigation.navigate(screenNames.LOGIN_SCREEN);
   };
+
   const onPressRegister = () => {
     navigation.navigate(screenNames.REGISTRATION_SCREEN);
   };
+
   return (
     <View style={styles.blockMainScreen}>
       <Text style={styles.header}>Добро пожаловать в приложение</Text>
@@ -29,13 +31,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#8a2be2',
     flexDirection: 'column',
     alignItems: 'center',
-    width: '100%',
-    height: '100%',
+    width: w,
+    height: h,
   },
   header: {
     textAlign: 'center',
-    fontSize: 30,
-    marginTop: 110,
+    fontSize: h / 26,
+    marginTop: h / 9,
     color: '#ffff',
   },
   buttonEnter: {

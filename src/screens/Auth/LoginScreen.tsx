@@ -7,6 +7,7 @@ import {LoginSchema} from '../../consts/validation';
 import {Formik} from 'formik';
 import {useDispatch} from 'react-redux';
 import {onSubmitLogIn} from '../../store/actions/authAction';
+import {width as w, height as h} from '../../consts/size';
 
 export const LoginScreen = () => {
   const dispatch = useDispatch();
@@ -66,15 +67,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#8a2be2',
   },
   blockSecondScreen: {
-    width: '100%',
-    height: '100%',
+    width: w,
+    height: h,
   },
   header: {
     textAlign: 'center',
-    fontSize: 30,
-    marginTop: 60,
+    fontSize: h / 26,
+    marginTop: h / 9,
     color: '#ffff',
-    marginBottom: 50,
+    marginBottom: h / 20,
   },
   containerInput: {
     marginBottom: 60,

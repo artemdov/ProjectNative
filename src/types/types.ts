@@ -47,6 +47,26 @@ export type OnSubmitLoginType = {
   email: string;
   password: string;
 };
+export type PostType = {
+  id: string;
+  userId: string;
+  userName?: string;
+  userImage?: string;
+  postTime: number;
+  post?: string;
+  postImg?: string;
+  likes?: {
+    isLike: boolean;
+  };
+};
+export type CommentType = {
+  comment?: string;
+  createdAt: number;
+  postId: string;
+  userId: string;
+  userName?: string;
+  userImage: string;
+};
 export type OnSubmitRegistrationDataType = {
   email: string;
   password: string;

@@ -4,7 +4,7 @@ import {CustomButton} from '../../components/common/CustomButton';
 import {useDispatch} from 'react-redux';
 import {onSubmitLogOut} from '../../store/actions/authAction';
 import screenNames from '../../navigation/ScreenNames';
-import {height as h} from '../../consts/size';
+import {width as w, height as h} from '../../consts/size';
 
 export const ProfileScreen: React.FC<any> = ({navigation}) => {
   const dispatch = useDispatch();
@@ -16,7 +16,7 @@ export const ProfileScreen: React.FC<any> = ({navigation}) => {
 
   return (
     <View style={styles.blockMainScreen}>
-      <Text style={styles.header}>Профиль</Text>
+      <Text style={styles.header}>Привет</Text>
       <View style={styles.buttonEnter}>
         <CustomButton title={'Выход'} onPress={onPressLogout} />
       </View>
@@ -29,13 +29,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#8a2be2',
     flexDirection: 'column',
     alignItems: 'center',
-    width: '100%',
-    height: '100%',
+    width: w,
+    height: h,
   },
   header: {
     textAlign: 'center',
-    fontSize: 30,
-    marginTop: 110,
+    fontSize: h / 30,
+    marginTop: h / 7,
     color: '#ffff',
   },
   buttonEnter: {
