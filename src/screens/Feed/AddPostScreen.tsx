@@ -17,7 +17,7 @@ import {
   getUserSelector,
   isLoadingImageSelector,
   isTransferredSelector,
-  setImageSelector,
+  getImageSelector,
 } from '../../store/selectors';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {CustomButton} from '../../components/common/CustomButton';
@@ -34,7 +34,7 @@ export const AddPostScreen: React.FC<any> = ({navigation}) => {
   const [postValue, setPostValue] = useState('');
 
   const dispatch = useDispatch();
-  const newImage = useSelector(setImageSelector);
+  const newImage = useSelector(getImageSelector);
   const user: any = useSelector(getUserSelector);
   const isTransferred = useSelector(isTransferredSelector);
   const isLoadingImage = useSelector(isLoadingImageSelector);

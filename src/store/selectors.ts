@@ -7,7 +7,7 @@ export const isLoadingSelector = (state: AppRootStateType) =>
 export const isCommentVisibleSelector = (state: AppRootStateType) =>
   state.feed.isCommentsMenuVisible;
 export const getUserSelector = (state: AppRootStateType) => state.auth.user;
-export const setImageSelector = (state: AppRootStateType) => state.feed.image;
+export const getImageSelector = (state: AppRootStateType) => state.feed.image;
 export const isLoadingImageSelector = (state: AppRootStateType) =>
   state.feed.upLoading;
 export const isLoadingPostSelector = (state: AppRootStateType) =>
