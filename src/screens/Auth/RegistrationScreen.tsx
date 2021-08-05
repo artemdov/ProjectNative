@@ -8,7 +8,7 @@ import {RegistrationSchema} from '../../consts/validation';
 import {useDispatch} from 'react-redux';
 import {onSubmitRegistration} from '../../store/actions/authAction';
 import screenNames from '../../navigation/ScreenNames';
-import {width as w, height as h} from '../../consts/size';
+import {width as w, height as h, rem, vrem} from '../../consts/size';
 
 export const RegistrationScreen: React.FC<any> = ({navigation}) => {
   const dispatch = useDispatch();
@@ -19,7 +19,7 @@ export const RegistrationScreen: React.FC<any> = ({navigation}) => {
 
   return (
     <KeyboardAwareScrollView style={styles.containerKeyboard}>
-      <View style={styles.blockSecondScreen}>
+      <View>
         <Text style={styles.header}>Заполните поля и нажмите "Продолжить"</Text>
         <Formik
           initialValues={{email: '', password: '', confirmPassword: ''}}
@@ -34,7 +34,6 @@ export const RegistrationScreen: React.FC<any> = ({navigation}) => {
             handleSubmit,
           }) => (
             <View style={styles.wrapperElements}>
-              <View style={styles.containerInput}>
                 <CustomTextInput
                   label={'Email'}
                   error={!!errors.email && touched.email}
@@ -61,8 +60,9 @@ export const RegistrationScreen: React.FC<any> = ({navigation}) => {
                   onBlur={handleBlur('confirmPassword')}
                   secureTextEntry={true}
                 />
-              </View>
+              <View style={styles.button}>
               <CustomButton title={'Продолжить'} onPress={handleSubmit} />
+              </View>
             </View>
           )}
         </Formik>
@@ -75,22 +75,18 @@ const styles = StyleSheet.create({
   containerKeyboard: {
     backgroundColor: '#8a2be2',
   },
-  blockSecondScreen: {
-    width: w,
-    height: h,
-  },
   header: {
     textAlign: 'center',
-    fontSize: h / 26,
-    marginTop: h / 30,
+    fontSize: rem(26),
+    marginVertical: vrem(50),
     color: '#ffff',
-    marginBottom: 20,
   },
-  containerInput: {
-    marginBottom: h / 20,
+  button: {
+    marginTop: vrem(55),
   },
   wrapperElements: {
-    flexDirection: 'column',
-    alignItems: 'center',
+    height: '70%',
+    paddingHorizontal: rem(15),
+    paddingVertical: vrem(60),
   },
 });
