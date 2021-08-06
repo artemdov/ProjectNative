@@ -194,8 +194,9 @@ const styles = StyleSheet.create({
     marginBottom: rem(6),
   },
   imageStyle: {
-    width: w / 1.1,
-    height: h / 2,
+    width: rem(350),
+    height: rem(350),
+    marginTop: rem(5),
     borderRadius: 10,
   },
   actionButtonStyle: {
