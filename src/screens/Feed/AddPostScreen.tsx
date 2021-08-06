@@ -190,7 +190,8 @@ const styles = StyleSheet.create({
   photoFeed: {
     opacity: 0.8,
     borderRadius: 10,
-    marginBottom: rem(12),
+    paddingHorizontal: rem(26),
+    marginBottom: rem(6),
   },
   imageStyle: {
     width: w / 1.1,
@@ -198,17 +199,18 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   actionButtonStyle: {
-    marginBottom: rem(115),
+    marginBottom: rem(110),
   },
   customButton: {
-    width: '100%',
-    marginTop: rem(13),
+    marginTop: rem(11),
+
   },
   input: {
     fontSize: rem(12),
-    marginTop: rem(48),
+    marginTop: rem(40),
     borderBottomWidth: 1,
-    paddingVertical: vrem(2),
+    paddingVertical: vrem(1),
+
   },
   statusLoadingWrapper: {
     alignItems: 'center',
