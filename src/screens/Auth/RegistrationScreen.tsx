@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     color: '#ffff',
   },
   button: {
-    marginTop: vrem(55),
+    marginTop: vrem(45),
   },
   wrapperElements: {
     height: '65%',
