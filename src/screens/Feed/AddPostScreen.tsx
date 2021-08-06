@@ -195,7 +195,7 @@ const styles = StyleSheet.create({
   },
   imageStyle: {
     width: rem(350),
-    height: rem(350),
+    height: vrem(350),
     marginTop: rem(5),
     borderRadius: 10,
   },

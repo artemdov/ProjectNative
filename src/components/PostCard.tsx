@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {height as h, rem, width as w} from '../consts/size';
+import {height as h, rem, vrem, width as w} from '../consts/size';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import {useDispatch, useSelector} from 'react-redux';
@@ -216,7 +216,7 @@ const styles = StyleSheet.create({
   },
   postImg: {
     width: '100%',
-    height: rem(250),
+    height: vrem(300),
     marginTop: rem(14),
   },
   divider: {

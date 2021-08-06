@@ -126,7 +126,7 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.buttonAddPost} onPress={onPressAddPost}>
-        <Ionicons name="add-circle" size={45} color="#2e64e5" />
+        <Ionicons name="add-circle" size={rem(45)} color="#2e64e5" />
       </TouchableOpacity>
       {isLoadingPost ? (
         <ActivityIndicator size="large" color="#0000ff" />
