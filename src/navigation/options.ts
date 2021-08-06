@@ -1,11 +1,11 @@
-import {rem} from '../consts/size';
+import {rem, vrem} from '../consts/size';
 
 export const myOptions = {
   title: 'Вход',
   headerTintColor: '#fff',
   headerStyle: {
     backgroundColor: '#0c0c30',
-    height: rem(55),
+    height: 50,
   },
   headerTitleStyle: {
     fontSize: rem(20),
@@ -13,8 +13,8 @@ export const myOptions = {
 };
 export const bottomTabBarOptions = {
   labelStyle: {
-    fontSize: rem(13),
-    lineHeight: rem(12),
+    fontSize: rem(12),
+    lineHeight: 13,
     marginBottom: rem(4),
     letterSpacing: -0.33,
   },
