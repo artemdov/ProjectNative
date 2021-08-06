@@ -8,7 +8,7 @@ import {RegistrationSchema} from '../../consts/validation';
 import {useDispatch} from 'react-redux';
 import {onSubmitRegistration} from '../../store/actions/authAction';
 import screenNames from '../../navigation/ScreenNames';
-import {width as w, height as h, rem, vrem} from '../../consts/size';
+import {rem, vrem} from '../../consts/size';
 
 export const RegistrationScreen: React.FC<any> = ({navigation}) => {
   const dispatch = useDispatch();
@@ -85,8 +85,8 @@ const styles = StyleSheet.create({
     marginTop: vrem(55),
   },
   wrapperElements: {
-    height: '70%',
+    height: '65%',
     paddingHorizontal: rem(15),
-    paddingVertical: vrem(60),
+    paddingVertical: vrem(65),
   },
 });

@@ -1,21 +1,21 @@
-import {height as h} from '../consts/size';
+import {rem} from '../consts/size';
 
 export const myOptions = {
   title: 'Вход',
   headerTintColor: '#fff',
   headerStyle: {
     backgroundColor: '#0c0c30',
-    height: h / 15,
+    height: rem(45),
   },
   headerTitleStyle: {
-    fontSize: h / 30,
+    fontSize: rem(20),
   },
 };
 export const bottomTabBarOptions = {
   labelStyle: {
-    fontSize: 12,
-    lineHeight: 13,
-    marginBottom: 10,
+    fontSize: rem(13),
+    lineHeight: rem(12),
+    marginBottom: rem(4),
     letterSpacing: -0.33,
   },
   activeTintColor: '#ffffff',

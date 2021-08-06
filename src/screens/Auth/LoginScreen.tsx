@@ -7,7 +7,7 @@ import {LoginSchema} from '../../consts/validation';
 import {Formik} from 'formik';
 import {useDispatch} from 'react-redux';
 import {onSubmitLogIn} from '../../store/actions/authAction';
-import {width as w, height as h, rem, vrem} from '../../consts/size';
+import {rem, vrem} from '../../consts/size';
 
 export const LoginScreen = () => {
   const dispatch = useDispatch();
@@ -78,6 +78,6 @@ const styles = StyleSheet.create({
   wrapperElements: {
     height: '70%',
     paddingHorizontal: rem(15),
-    paddingVertical: vrem(70),
+    paddingVertical: vrem(68),
   },
 });

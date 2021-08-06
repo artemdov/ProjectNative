@@ -6,7 +6,7 @@ import {
   Text,
   TouchableOpacity,
 } from 'react-native';
-import {height as h, width as w} from '../consts/size';
+import {height as h, rem, width as w} from '../consts/size';
 import {useSelector} from 'react-redux';
 import {getUserSelector} from '../store/selectors';
 import firebase from 'firebase';
@@ -59,23 +59,25 @@ export const CommentInput: React.FC<any> = ({item}) => {
 };
 const styles = StyleSheet.create({
   container: {
+    width: rem(240),
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-end',
   },
   button: {
     backgroundColor: '#5a8efd',
-    margin: w / 30,
-    padding: w / 60,
+    marginVertical: rem(9),
+    marginHorizontal: rem(35),
+    padding: rem(8),
   },
   buttonName: {
-    fontSize: w / 35,
+    fontSize: rem(12),
   },
   input: {
-    fontSize: w / 23,
-    margin: w / 30,
+    fontSize: rem(16),
+    margin: rem(12),
     borderBottomWidth: 1,
-    paddingVertical: h / 150,
-    paddingRight: w / 4,
+    paddingVertical: rem(5),
+    paddingRight: rem(95),
   },
 });

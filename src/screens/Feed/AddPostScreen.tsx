@@ -21,7 +21,7 @@ import {
 } from '../../store/selectors';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {CustomButton} from '../../components/common/CustomButton';
-import {height as h, width as w} from '../../consts/size';
+import {height as h, rem, vrem, width as w} from '../../consts/size';
 import {
   setImage,
   setTransferred,
@@ -132,7 +132,7 @@ export const AddPostScreen: React.FC<any> = ({navigation}) => {
         ) : (
           <Icon
             name="camera"
-            size={w - 80}
+            size={rem(300)}
             color="#fff"
             style={styles.photoFeed}
           />
@@ -155,7 +155,7 @@ export const AddPostScreen: React.FC<any> = ({navigation}) => {
           onChangeText={onChangePost}
         />
         <ActionButton
-          size={w / 7}
+          size={rem(50)}
           style={styles.actionButtonStyle}
           buttonColor="rgba(231,76,60,1)">
           <ActionButton.Item
@@ -184,15 +184,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#2e64e515',
   },
   actionButtonIcon: {
-    fontSize: h / 30,
-    height: 22,
+    fontSize: rem(22),
     color: '#ffffff',
   },
   photoFeed: {
     opacity: 0.8,
     borderRadius: 10,
-    marginBottom: h / 40,
-    marginLeft: w / 15,
+    marginBottom: rem(12),
   },
   imageStyle: {
     width: w / 1.1,
@@ -200,16 +198,17 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   actionButtonStyle: {
-    marginBottom: h / 5,
+    marginBottom: rem(115),
   },
   customButton: {
-    marginTop: h / 15,
+    width: '100%',
+    marginTop: rem(13),
   },
   input: {
-    fontSize: w / 30,
-    marginTop: h / 20,
+    fontSize: rem(12),
+    marginTop: rem(48),
     borderBottomWidth: 1,
-    paddingVertical: h / 150 - 20,
+    paddingVertical: vrem(2),
   },
   statusLoadingWrapper: {
     alignItems: 'center',

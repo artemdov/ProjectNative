@@ -7,7 +7,7 @@ import {
   ActivityIndicator,
   View,
 } from 'react-native';
-import {width as w} from '../../consts/size';
+import {rem} from '../../consts/size';
 import {PostCard} from '../../components/PostCard';
 import screenNames from '../../navigation/ScreenNames';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -149,7 +149,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonAddPost: {
-    margin: 5,
-    marginLeft: w / 1.2,
+    margin: rem(3),
   },
 });
