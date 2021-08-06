@@ -5,7 +5,7 @@ export const myOptions = {
   headerTintColor: '#fff',
   headerStyle: {
     backgroundColor: '#0c0c30',
-    height: rem(45),
+    height: rem(55),
   },
   headerTitleStyle: {
     fontSize: rem(20),
