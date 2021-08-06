@@ -216,7 +216,7 @@ const styles = StyleSheet.create({
   },
   postImg: {
     width: '100%',
-    height: rem(200),
+    height: rem(250),
     marginTop: rem(14),
   },
   divider: {
