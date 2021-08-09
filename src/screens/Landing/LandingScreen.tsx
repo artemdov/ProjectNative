@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
   buttonWrapper: {
     width: '100%',
     paddingHorizontal: rem(15),
-    top: rem(80),
+    top: vrem(90),
   },
   buttonEnter: {
     paddingVertical: vrem(15),
