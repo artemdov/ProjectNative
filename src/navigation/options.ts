@@ -1,4 +1,4 @@
-import {rem, vrem} from '../consts/size';
+import {rem} from '../consts/size';
 
 export const myOptions = {
   title: 'Вход',
@@ -14,7 +14,7 @@ export const myOptions = {
 export const bottomTabBarOptions = {
   labelStyle: {
     fontSize: rem(12),
-    lineHeight: 13,
+    lineHeight: rem(14),
     marginBottom: rem(4),
     letterSpacing: -0.33,
   },

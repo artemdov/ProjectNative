@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Text, StyleSheet, Image} from 'react-native';
-import {height as h, rem, width as w} from '../consts/size';
+import {height as h, rem, vrem, width as w} from '../consts/size';
 import moment from 'moment';
 
 export const Comment: React.FC<any> = ({
@@ -14,8 +14,8 @@ export const Comment: React.FC<any> = ({
       <View style={styles.commentBlock}>
         <Image style={styles.image} source={{uri: userImage}} />
         <View style={styles.wrapperNameWithComment}>
-        <Text style={styles.userName}>{`${userName}:`}</Text>
-        <Text style={styles.comment}>{comment}</Text>
+          <Text style={styles.userName}>{`${userName}:`}</Text>
+          <Text style={styles.comment}>{comment}</Text>
         </View>
       </View>
       <Text style={styles.time}>{moment(createdAt).fromNow()}</Text>
@@ -45,11 +45,11 @@ const styles = StyleSheet.create({
   image: {
     width: rem(30),
     height: rem(30),
-    borderRadius: 20,
+    borderRadius: vrem(20),
   },
   comment: {
     marginLeft: rem(3),
-    padding: rem(5)
+    padding: rem(5),
   },
   time: {
     fontSize: rem(10),

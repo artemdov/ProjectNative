@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
     width: rem(350),
     height: vrem(350),
     marginTop: rem(5),
-    borderRadius: 10,
+    borderRadius: vrem(15),
   },
   actionButtonStyle: {
     marginBottom: rem(110),

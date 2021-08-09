@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {height as h, rem, vrem, width as w} from '../consts/size';
+import {rem, vrem} from '../consts/size';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import {useDispatch, useSelector} from 'react-redux';
@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: '#f8f8f8',
     marginBottom: rem(15),
-    borderRadius: 10,
+    borderRadius: vrem(15),
     width: rem(360),
   },
   userInfo: {
@@ -195,7 +195,7 @@ const styles = StyleSheet.create({
   userImg: {
     width: rem(50),
     height: rem(50),
-    borderRadius: 25,
+    borderRadius: vrem(30),
   },
   userInfoText: {
     flexDirection: 'column',
@@ -216,7 +216,7 @@ const styles = StyleSheet.create({
   },
   postImg: {
     width: '100%',
-    height: vrem(300),
+    height: 250,
     marginTop: rem(14),
   },
   divider: {
@@ -251,4 +251,3 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
-
