@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import {CustomButton} from '../../components/common/CustomButton';
 import {CustomTextInput} from '../../components/common/CustomTextInput';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
@@ -18,22 +18,25 @@ export const RegistrationScreen: React.FC<any> = ({navigation}) => {
   };
 
   return (
-    <KeyboardAwareScrollView style={styles.containerKeyboard}>
-      <View>
-        <Text style={styles.header}>Заполните поля и нажмите "Продолжить"</Text>
-        <Formik
-          initialValues={{email: '', password: '', confirmPassword: ''}}
-          onSubmit={onSubmit}
-          validationSchema={RegistrationSchema}>
-          {({
-            values,
-            errors,
-            touched,
-            handleChange,
-            handleBlur,
-            handleSubmit,
-          }) => (
-            <View style={styles.wrapperElements}>
+    <SafeAreaView>
+      <KeyboardAwareScrollView style={styles.containerKeyboard}>
+        <View>
+          <Text style={styles.header}>
+            Заполните поля и нажмите "Продолжить"
+          </Text>
+          <Formik
+            initialValues={{email: '', password: '', confirmPassword: ''}}
+            onSubmit={onSubmit}
+            validationSchema={RegistrationSchema}>
+            {({
+              values,
+              errors,
+              touched,
+              handleChange,
+              handleBlur,
+              handleSubmit,
+            }) => (
+              <View style={styles.wrapperElements}>
                 <CustomTextInput
                   label={'Email'}
                   error={!!errors.email && touched.email}
@@ -60,14 +63,15 @@ export const RegistrationScreen: React.FC<any> = ({navigation}) => {
                   onBlur={handleBlur('confirmPassword')}
                   secureTextEntry={true}
                 />
-              <View style={styles.button}>
-              <CustomButton title={'Продолжить'} onPress={handleSubmit} />
+                <View style={styles.button}>
+                  <CustomButton title={'Продолжить'} onPress={handleSubmit} />
+                </View>
               </View>
-            </View>
-          )}
-        </Formik>
-      </View>
-    </KeyboardAwareScrollView>
+            )}
+          </Formik>
+        </View>
+      </KeyboardAwareScrollView>
+    </SafeAreaView>
   );
 };
 
@@ -82,7 +86,7 @@ const styles = StyleSheet.create({
     color: '#ffff',
   },
   button: {
-    marginTop: vrem(45),
+    marginTop: vrem(42),
   },
   wrapperElements: {
     height: '65%',

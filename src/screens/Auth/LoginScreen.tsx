@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, SafeAreaView} from 'react-native';
 import {CustomButton} from '../../components/common/CustomButton';
 import {CustomTextInput} from '../../components/common/CustomTextInput';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
@@ -16,24 +16,25 @@ export const LoginScreen = () => {
   };
 
   return (
-    <KeyboardAwareScrollView style={styles.containerKeyboard}>
-      <View>
-        <Text style={styles.header}>
-          Войдите, чтобы начать использовать приложение
-        </Text>
-        <Formik
-          initialValues={{email: '', password: ''}}
-          onSubmit={onSubmit}
-          validationSchema={LoginSchema}>
-          {({
-            values,
-            errors,
-            touched,
-            handleChange,
-            handleBlur,
-            handleSubmit,
-          }) => (
-            <View style={styles.wrapperElements}>
+    <SafeAreaView>
+      <KeyboardAwareScrollView style={styles.containerKeyboard}>
+        <View>
+          <Text style={styles.header}>
+            Войдите, чтобы начать использовать приложение
+          </Text>
+          <Formik
+            initialValues={{email: '', password: ''}}
+            onSubmit={onSubmit}
+            validationSchema={LoginSchema}>
+            {({
+              values,
+              errors,
+              touched,
+              handleChange,
+              handleBlur,
+              handleSubmit,
+            }) => (
+              <View style={styles.wrapperElements}>
                 <CustomTextInput
                   label={'Email'}
                   error={!!errors.email && touched.email}
@@ -52,13 +53,14 @@ export const LoginScreen = () => {
                   secureTextEntry={true}
                 />
                 <View style={styles.button}>
-              <CustomButton title={'Вход'} onPress={handleSubmit} />
+                  <CustomButton title={'Вход'} onPress={handleSubmit} />
                 </View>
-            </View>
-          )}
-        </Formik>
-      </View>
-    </KeyboardAwareScrollView>
+              </View>
+            )}
+          </Formik>
+        </View>
+      </KeyboardAwareScrollView>
+    </SafeAreaView>
   );
 };
 

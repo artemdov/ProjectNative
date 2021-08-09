@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   Alert,
   ActivityIndicator,
-  View,
+  SafeAreaView,
 } from 'react-native';
 import {rem} from '../../consts/size';
 import {PostCard} from '../../components/PostCard';
@@ -124,7 +124,7 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <TouchableOpacity style={styles.buttonAddPost} onPress={onPressAddPost}>
         <Ionicons name="add-circle" size={rem(45)} color="#2e64e5" />
       </TouchableOpacity>
@@ -138,7 +138,7 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
           showsVerticalScrollIndicator={false}
         />
       )}
-    </View>
+    </SafeAreaView>
   );
 };
 

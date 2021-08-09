@@ -4,6 +4,7 @@ import {
   Alert,
   Image,
   Platform,
+  SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
@@ -125,7 +126,7 @@ export const AddPostScreen: React.FC<any> = ({navigation}) => {
   };
 
   return (
-    <View style={styles.containerWrapper}>
+    <SafeAreaView style={styles.containerWrapper}>
       <KeyboardAwareScrollView>
         {newImage ? (
           <Image source={{uri: newImage}} style={styles.imageStyle} />
@@ -172,7 +173,7 @@ export const AddPostScreen: React.FC<any> = ({navigation}) => {
           </ActionButton.Item>
         </ActionButton>
       </KeyboardAwareScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({
@@ -204,14 +205,12 @@ const styles = StyleSheet.create({
   },
   customButton: {
     marginTop: rem(11),
-
   },
   input: {
     fontSize: rem(12),
     marginTop: rem(40),
     borderBottomWidth: 1,
     paddingVertical: vrem(1),
-
   },
   statusLoadingWrapper: {
     alignItems: 'center',
