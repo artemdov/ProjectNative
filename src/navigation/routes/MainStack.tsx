@@ -8,7 +8,7 @@ import {MainTabScreen} from '../../screens/TabScreen/MainTabScreen';
 
 const Stack = createStackNavigator<any>();
 
-const MainStack = () => {
+export const MainStack = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -29,4 +29,3 @@ const MainStack = () => {
     </Stack.Navigator>
   );
 };
-export default MainStack;

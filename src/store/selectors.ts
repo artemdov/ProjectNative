@@ -1,6 +1,4 @@
 import {AppRootStateType} from '../types/types';
-import {Animated} from "react-native";
-import stagger = Animated.stagger;
 
 export const isLoggedInSelector = (state: AppRootStateType) =>
   state.auth.isLoggedIn;
