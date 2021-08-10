@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Text, StyleSheet, Image} from 'react-native';
-import {height as h, rem, vrem, width as w} from '../consts/size';
+import {rem} from '../consts/size';
 import moment from 'moment';
 
 export const Comment: React.FC<any> = ({
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
   image: {
     width: rem(30),
     height: rem(30),
-    borderRadius: vrem(20),
+    borderRadius: rem(20),
   },
   comment: {
     marginLeft: rem(3),

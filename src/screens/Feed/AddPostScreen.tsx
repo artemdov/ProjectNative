@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
   },
   photoFeed: {
     opacity: 0.8,
-    borderRadius: 10,
+    borderRadius: rem(10),
     paddingHorizontal: rem(26),
     marginBottom: rem(6),
   },
@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
     width: rem(350),
     height: vrem(350),
     marginTop: rem(5),
-    borderRadius: vrem(15),
+    borderRadius: rem(15),
   },
   actionButtonStyle: {
     marginBottom: rem(110),

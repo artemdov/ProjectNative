@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: '#f8f8f8',
     marginBottom: rem(15),
-    borderRadius: vrem(15),
+    borderRadius: rem(15),
     width: rem(360),
   },
   userInfo: {
@@ -195,7 +195,7 @@ const styles = StyleSheet.create({
   userImg: {
     width: rem(50),
     height: rem(50),
-    borderRadius: vrem(30),
+    borderRadius: rem(30),
   },
   userInfoText: {
     flexDirection: 'column',
