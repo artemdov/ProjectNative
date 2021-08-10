@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import {CustomButton} from '../../components/common/CustomButton';
 import {CustomTextInput} from '../../components/common/CustomTextInput';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
@@ -8,7 +8,7 @@ import {RegistrationSchema} from '../../consts/validation';
 import {useDispatch} from 'react-redux';
 import {onSubmitRegistration} from '../../store/actions/authAction';
 import screenNames from '../../navigation/ScreenNames';
-import {width as w, height as h} from '../../consts/size';
+import {rem, vrem} from '../../consts/size';
 
 export const RegistrationScreen: React.FC<any> = ({navigation}) => {
   const dispatch = useDispatch();
@@ -18,23 +18,25 @@ export const RegistrationScreen: React.FC<any> = ({navigation}) => {
   };
 
   return (
-    <KeyboardAwareScrollView style={styles.containerKeyboard}>
-      <View style={styles.blockSecondScreen}>
-        <Text style={styles.header}>Заполните поля и нажмите "Продолжить"</Text>
-        <Formik
-          initialValues={{email: '', password: '', confirmPassword: ''}}
-          onSubmit={onSubmit}
-          validationSchema={RegistrationSchema}>
-          {({
-            values,
-            errors,
-            touched,
-            handleChange,
-            handleBlur,
-            handleSubmit,
-          }) => (
-            <View style={styles.wrapperElements}>
-              <View style={styles.containerInput}>
+    <SafeAreaView>
+      <KeyboardAwareScrollView style={styles.containerKeyboard}>
+        <View>
+          <Text style={styles.header}>
+            Заполните поля и нажмите "Продолжить"
+          </Text>
+          <Formik
+            initialValues={{email: '', password: '', confirmPassword: ''}}
+            onSubmit={onSubmit}
+            validationSchema={RegistrationSchema}>
+            {({
+              values,
+              errors,
+              touched,
+              handleChange,
+              handleBlur,
+              handleSubmit,
+            }) => (
+              <View style={styles.wrapperElements}>
                 <CustomTextInput
                   label={'Email'}
                   error={!!errors.email && touched.email}
@@ -61,13 +63,15 @@ export const RegistrationScreen: React.FC<any> = ({navigation}) => {
                   onBlur={handleBlur('confirmPassword')}
                   secureTextEntry={true}
                 />
+                <View style={styles.button}>
+                  <CustomButton title={'Продолжить'} onPress={handleSubmit} />
+                </View>
               </View>
-              <CustomButton title={'Продолжить'} onPress={handleSubmit} />
-            </View>
-          )}
-        </Formik>
-      </View>
-    </KeyboardAwareScrollView>
+            )}
+          </Formik>
+        </View>
+      </KeyboardAwareScrollView>
+    </SafeAreaView>
   );
 };
 
@@ -75,22 +79,18 @@ const styles = StyleSheet.create({
   containerKeyboard: {
     backgroundColor: '#8a2be2',
   },
-  blockSecondScreen: {
-    width: w,
-    height: h,
-  },
   header: {
     textAlign: 'center',
-    fontSize: h / 26,
-    marginTop: h / 30,
+    fontSize: rem(26),
+    marginVertical: vrem(50),
     color: '#ffff',
-    marginBottom: 20,
   },
-  containerInput: {
-    marginBottom: h / 20,
+  button: {
+    marginTop: vrem(42),
   },
   wrapperElements: {
-    flexDirection: 'column',
-    alignItems: 'center',
+    height: '65%',
+    paddingHorizontal: rem(15),
+    paddingVertical: vrem(65),
   },
 });

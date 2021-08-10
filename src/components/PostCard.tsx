@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {height as h, width as w} from '../consts/size';
+import {rem, vrem} from '../consts/size';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import {useDispatch, useSelector} from 'react-redux';
@@ -183,74 +183,68 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
 const styles = StyleSheet.create({
   card: {
     backgroundColor: '#f8f8f8',
-    marginBottom: 20,
-    borderRadius: 10,
-    width: w - 40,
+    marginBottom: rem(15),
+    borderRadius: rem(15),
+    width: rem(360),
   },
   userInfo: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    padding: 15,
+    padding: rem(15),
   },
-
   userImg: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
+    width: rem(50),
+    height: rem(50),
+    borderRadius: rem(30),
   },
-
   userInfoText: {
     flexDirection: 'column',
     justifyContent: 'center',
-    marginLeft: 10,
+    marginLeft: rem(10),
   },
-
   userName: {
-    fontSize: 14,
+    fontSize: rem(14),
     fontWeight: 'bold',
   },
-
   postTime: {
-    fontSize: 12,
+    fontSize: rem(12),
     color: '#666',
   },
   postText: {
-    fontSize: 14,
-    paddingLeft: 15,
-    paddingRight: 15,
+    fontSize: rem(14),
+    paddingHorizontal: rem(15),
   },
   postImg: {
     width: '100%',
     height: 250,
-    marginTop: 15,
+    marginTop: rem(14),
   },
   divider: {
     borderBottomColor: '#dddddd',
     borderBottomWidth: 1,
     width: '93%',
     alignSelf: 'center',
-    marginTop: h / 55,
+    marginTop: rem(10),
   },
   interactionWrapper: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    padding: 15,
+    padding: rem(10),
   },
   interactionHeart: {
-    padding: 5,
+    padding: rem(5),
     color: '#333',
-    marginTop: 5,
+    marginTop: rem(5),
   },
-
   interactionComment: {
-    padding: 5,
+    padding: rem(5),
     color: '#333',
-    marginTop: 5,
+    marginTop: rem(5),
   },
   interactionText: {
-    marginTop: 10,
-    fontSize: 18,
-    marginRight: 8,
+    marginTop: rem(10),
+    fontSize: rem(18),
+    marginRight: rem(8),
   },
   statusLoadingWrapper: {
     alignItems: 'center',

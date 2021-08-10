@@ -1,7 +1,7 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import {CustomButton} from '../../components/common/CustomButton';
-import {width as w, height as h} from '../../consts/size';
+import {rem, vrem} from '../../consts/size';
 import screenNames from '../../navigation/ScreenNames';
 
 export const LandingScreen: React.FC<any> = ({navigation}) => {
@@ -14,37 +14,43 @@ export const LandingScreen: React.FC<any> = ({navigation}) => {
   };
 
   return (
-    <View style={styles.blockMainScreen}>
+    <SafeAreaView style={styles.blockMainScreen}>
       <Text style={styles.header}>Добро пожаловать в приложение</Text>
-      <View style={styles.buttonEnter}>
-        <CustomButton title={'Вход'} onPress={onPressSubmit} />
+      <View style={styles.buttonWrapper}>
+        <View style={styles.buttonEnter}>
+          <CustomButton title={'Вход'} onPress={onPressSubmit} />
+        </View>
+        <View style={styles.buttonRegistration}>
+          <CustomButton title={'Регистрация'} onPress={onPressRegister} />
+        </View>
       </View>
-      <View style={styles.buttonRegistration}>
-        <CustomButton title={'Регистрация'} onPress={onPressRegister} />
-      </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   blockMainScreen: {
+    flex: 1,
     backgroundColor: '#8a2be2',
     flexDirection: 'column',
     alignItems: 'center',
-    width: w,
-    height: h,
+    justifyContent: 'center',
   },
   header: {
     textAlign: 'center',
-    fontSize: h / 26,
-    marginTop: h / 9,
+    fontSize: rem(26),
+    marginBottom: vrem(190),
     color: '#ffff',
   },
+  buttonWrapper: {
+    width: '100%',
+    paddingHorizontal: rem(15),
+    top: vrem(90),
+  },
   buttonEnter: {
-    marginTop: h / 2,
+    paddingVertical: vrem(15),
   },
   buttonRegistration: {
-    marginTop: 12,
-    paddingBottom: 120,
+    marginTop: vrem(12),
   },
 });

@@ -5,9 +5,9 @@ import {
   TouchableOpacity,
   Alert,
   ActivityIndicator,
-  View,
+  SafeAreaView,
 } from 'react-native';
-import {width as w} from '../../consts/size';
+import {rem} from '../../consts/size';
 import {PostCard} from '../../components/PostCard';
 import screenNames from '../../navigation/ScreenNames';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -124,9 +124,9 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <TouchableOpacity style={styles.buttonAddPost} onPress={onPressAddPost}>
-        <Ionicons name="add-circle" size={45} color="#2e64e5" />
+        <Ionicons name="add-circle" size={rem(45)} color="#2e64e5" />
       </TouchableOpacity>
       {isLoadingPost ? (
         <ActivityIndicator size="large" color="#0000ff" />
@@ -138,7 +138,7 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
           showsVerticalScrollIndicator={false}
         />
       )}
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -149,7 +149,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonAddPost: {
-    margin: 5,
-    marginLeft: w / 1.2,
+    margin: rem(3),
   },
 });

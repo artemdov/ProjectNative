@@ -4,7 +4,7 @@ import {ProfileScreen} from '../Profile/ProfileScreen';
 import screenNames from '../../navigation/ScreenNames';
 import {bottomTabBarOptions} from '../../navigation/options';
 import {Image, StyleSheet} from 'react-native';
-import {width as w, height as h} from '../../consts/size';
+import {width as w, height as h, rem} from '../../consts/size';
 import {FeedPostStack} from '../../navigation/routes/FeedPostStack';
 
 const Tab = createBottomTabNavigator<any>();
@@ -47,8 +47,8 @@ export const MainTabScreen = () => (
 
 const styles = StyleSheet.create({
   icon: {
-    width: w / 15,
-    height: h / 35,
-    marginTop: 5,
+    width: rem(25),
+    height: rem(22),
+    margin: rem(3),
   },
 });

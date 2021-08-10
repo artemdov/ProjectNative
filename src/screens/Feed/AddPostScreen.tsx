@@ -4,6 +4,7 @@ import {
   Alert,
   Image,
   Platform,
+  SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
@@ -21,7 +22,7 @@ import {
 } from '../../store/selectors';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {CustomButton} from '../../components/common/CustomButton';
-import {height as h, width as w} from '../../consts/size';
+import {height as h, rem, vrem, width as w} from '../../consts/size';
 import {
   setImage,
   setTransferred,
@@ -125,14 +126,14 @@ export const AddPostScreen: React.FC<any> = ({navigation}) => {
   };
 
   return (
-    <View style={styles.containerWrapper}>
+    <SafeAreaView style={styles.containerWrapper}>
       <KeyboardAwareScrollView>
         {newImage ? (
           <Image source={{uri: newImage}} style={styles.imageStyle} />
         ) : (
           <Icon
             name="camera"
-            size={w - 80}
+            size={rem(300)}
             color="#fff"
             style={styles.photoFeed}
           />
@@ -155,7 +156,7 @@ export const AddPostScreen: React.FC<any> = ({navigation}) => {
           onChangeText={onChangePost}
         />
         <ActionButton
-          size={w / 7}
+          size={rem(50)}
           style={styles.actionButtonStyle}
           buttonColor="rgba(231,76,60,1)">
           <ActionButton.Item
@@ -172,7 +173,7 @@ export const AddPostScreen: React.FC<any> = ({navigation}) => {
           </ActionButton.Item>
         </ActionButton>
       </KeyboardAwareScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({
@@ -184,32 +185,32 @@ const styles = StyleSheet.create({
     backgroundColor: '#2e64e515',
   },
   actionButtonIcon: {
-    fontSize: h / 30,
-    height: 22,
+    fontSize: rem(22),
     color: '#ffffff',
   },
   photoFeed: {
     opacity: 0.8,
-    borderRadius: 10,
-    marginBottom: h / 40,
-    marginLeft: w / 15,
+    borderRadius: rem(10),
+    paddingHorizontal: rem(26),
+    marginBottom: rem(6),
   },
   imageStyle: {
-    width: w / 1.1,
-    height: h / 2,
-    borderRadius: 10,
+    width: rem(350),
+    height: vrem(350),
+    marginTop: rem(5),
+    borderRadius: rem(15),
   },
   actionButtonStyle: {
-    marginBottom: h / 5,
+    marginBottom: rem(110),
   },
   customButton: {
-    marginTop: h / 15,
+    marginTop: rem(11),
   },
   input: {
-    fontSize: w / 30,
-    marginTop: h / 20,
+    fontSize: rem(12),
+    marginTop: rem(40),
     borderBottomWidth: 1,
-    paddingVertical: h / 150 - 20,
+    paddingVertical: vrem(1),
   },
   statusLoadingWrapper: {
     alignItems: 'center',

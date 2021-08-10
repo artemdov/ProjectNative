@@ -1,11 +1,11 @@
 import React from 'react';
-import {ActivityIndicator, StyleSheet, View} from 'react-native';
+import {ActivityIndicator, SafeAreaView, StyleSheet} from 'react-native';
 
 export const LoadingScreen: React.FC<any> = () => {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <ActivityIndicator color="#000000" size="large" />
-    </View>
+    </SafeAreaView>
   );
 };
 
