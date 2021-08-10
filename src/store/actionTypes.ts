@@ -17,6 +17,9 @@ const actionTypes = {
     SET_COMMENTS: 'SET_COMMENTS',
     SET_IS_COMMENT_MENU_VISIBLE: 'SET_IS_COMMENT_MENU_VISIBLE',
   },
+  data: {
+    SET_API_DATA: 'SET_API_DATA',
+  },
 };
 
 export default actionTypes;
