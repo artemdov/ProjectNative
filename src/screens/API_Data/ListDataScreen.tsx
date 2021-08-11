@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {ScrollView, StyleSheet, View} from 'react-native';
-import {ImageBlock} from '../../components/ImageBlock';
+import {ImageList} from '../../components/ImageList';
 import screenNames from '../../navigation/ScreenNames';
 import {getAPIDataSelector} from '../../store/selectors';
 import {getAPIData} from '../../store/actions/API_DataAction';
@@ -21,7 +21,7 @@ export const ListDataScreen: React.FC<any> = ({navigation}) => {
         <View>
           {data &&
             data.map((item: any) => (
-              <ImageBlock
+              <ImageList
                 key={item.id}
                 data={item}
                 onPress={() => {

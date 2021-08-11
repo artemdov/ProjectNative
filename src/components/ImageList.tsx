@@ -1,17 +1,27 @@
 import React from 'react';
 import {StyleSheet, Image, TouchableOpacity, Text, View} from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
+import {rem} from '../consts/size';
 
-export const ImageBlock: React.FC<any> = ({data, onPress}) => {
+export const ImageList: React.FC<any> = ({data, onPress}) => {
   const imageName = data.title;
   const imageURL = data.image_id;
   const image = `https://www.artic.edu/iiif/2/${imageURL}/full/843,/0/default.jpg`;
   const {imageMame, imageBlock, ImageContainer, imageView} = styles;
-
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={ImageContainer}>
         <View style={imageView}>
-          <Image style={imageBlock} source={{uri: image}} />
+          {imageURL ? (
+            <Image style={imageBlock} source={{uri: image}} />
+          ) : (
+            <Icon
+              name="md-image-outline"
+              size={rem(300)}
+              color="#818181"
+              style={styles.photoFeed}
+            />
+          )}
         </View>
         <Text style={imageMame}>{imageName}</Text>
       </View>
@@ -20,8 +30,14 @@ export const ImageBlock: React.FC<any> = ({data, onPress}) => {
 };
 
 const styles = StyleSheet.create({
+  photoFeed: {
+    opacity: 0.2,
+    borderRadius: rem(10),
+    paddingHorizontal: rem(26),
+    marginBottom: rem(6),
+  },
   ImageContainer: {
-    width: '50%',
+    width: '100%',
     paddingVertical: 10,
   },
   imageMame: {

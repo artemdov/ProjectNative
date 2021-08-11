@@ -1,19 +1,35 @@
 import React from 'react';
 import {StyleSheet, Image, View} from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
+import {rem} from '../consts/size';
 
-export const ImageDescription: React.FC<any> = ({image}) => {
+export const ImageDescriptionBlock: React.FC<any> = ({image, imageURL}) => {
   const {imageBlock, ImageContainer, mainContainer} = styles;
-
   return (
     <View style={mainContainer}>
       <View style={ImageContainer}>
-        <Image style={imageBlock} source={{uri: image}} />
+        {imageURL ? (
+          <Image style={imageBlock} source={{uri: image}} />
+        ) : (
+          <Icon
+            name="md-image-outline"
+            size={rem(300)}
+            color="#818181"
+            style={styles.photoFeed}
+          />
+        )}
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  photoFeed: {
+    opacity: 0.2,
+    borderRadius: rem(10),
+    paddingHorizontal: rem(26),
+    marginBottom: rem(6),
+  },
   mainContainer: {
     paddingVertical: 10,
   },
