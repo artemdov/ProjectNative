@@ -1,6 +1,6 @@
 import actionTypes from '../actionTypes';
 import {Dispatch} from 'redux';
-import {API} from "../../api/api";
+import {API} from '../../api/api';
 
 export const setAPIData = (data: any) =>
   ({
@@ -8,7 +8,7 @@ export const setAPIData = (data: any) =>
     payload: data,
   } as const);
 
- export const getAPIData = () => async (dispatch: Dispatch) => {
-     let response = await API.getData()
-     dispatch(setAPIData(response.data))
- }
+export const getAPIData = () => async (dispatch: Dispatch) => {
+  let response = await API.getData();
+  dispatch(setAPIData(response.data));
+};

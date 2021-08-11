@@ -6,7 +6,7 @@ import {bottomTabBarOptions} from '../../navigation/options';
 import {Image, StyleSheet} from 'react-native';
 import {rem} from '../../consts/size';
 import {FeedPostStack} from '../../navigation/routes/FeedPostStack';
-import {APIDataStack} from "../../navigation/routes/APIDataStack";
+import {APIDataStack} from '../../navigation/routes/APIDataStack';
 
 const Tab = createBottomTabNavigator<any>();
 const notFocused = 0.51;
