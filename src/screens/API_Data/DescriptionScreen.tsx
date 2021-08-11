@@ -4,7 +4,6 @@ import {
   ScrollView,
   Text,
   View,
-  Image,
   TouchableOpacity,
 } from 'react-native';
 import screenNames from '../../navigation/ScreenNames';
@@ -12,7 +11,6 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {ImageDescription} from '../../components/ImageDescription';
 
 export const DescriptionScreen: React.FC<any> = ({navigation, route}) => {
-  console.log('route', route);
   const imageName = route.params.title;
   const historyItem = route.params.publication_history;
   const imageURL = route.params.image_id;

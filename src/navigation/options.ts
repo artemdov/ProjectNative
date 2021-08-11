@@ -11,6 +11,17 @@ export const myOptions = {
     fontSize: rem(20),
   },
 };
+export const APIDataScreenOptions = {
+  title: '',
+  headerTintColor: '#fff',
+  headerStyle: {
+    backgroundColor: '#0c0c30',
+    height: 50,
+  },
+  headerTitleStyle: {
+    fontSize: rem(20),
+  },
+};
 export const bottomTabBarOptions = {
   labelStyle: {
     fontSize: rem(12),

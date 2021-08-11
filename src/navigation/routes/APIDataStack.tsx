@@ -1,6 +1,6 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import {withoutHeader} from '../options';
+import {APIDataScreenOptions, withoutHeader} from '../options';
 import screenNames from '../ScreenNames';
 import {ListDataScreen} from '../../screens/API_Data/ListDataScreen';
 import {DescriptionScreen} from '../../screens/API_Data/DescriptionScreen';
@@ -17,7 +17,7 @@ export const APIDataStack: React.FC<any> = () => (
     <Stack.Screen
       name={screenNames.DESCRIPTION_SCREEN}
       component={DescriptionScreen}
-      options={withoutHeader()}
+      options={APIDataScreenOptions}
     />
   </Stack.Navigator>
 );
