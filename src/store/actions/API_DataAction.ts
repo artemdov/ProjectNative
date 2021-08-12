@@ -8,6 +8,12 @@ export const setAPIData = (data: any) =>
     payload: data,
   } as const);
 
+export const upLoadingAPIData = (uploadingAPIData: boolean) =>
+  ({
+    type: actionTypes.data.SET_UPLOADING_API_DATA,
+    payload: uploadingAPIData,
+  } as const);
+
 export const getAPIData = () => async (dispatch: Dispatch) => {
   let response = await API.getData();
   dispatch(setAPIData(response.data));

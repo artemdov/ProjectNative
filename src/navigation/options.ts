@@ -15,7 +15,7 @@ export const APIDataScreenOptions = {
   title: '',
   headerTintColor: '#fff',
   headerStyle: {
-    backgroundColor: '#0c0c30',
+    backgroundColor: '#4f016d',
     height: 50,
   },
   headerTitleStyle: {

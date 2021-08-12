@@ -16,13 +16,13 @@ export const CustomTextInput: React.FC<CustomTextInputType> = ({
   return (
     <View style={[styles.container, error && styles.errorWrapperContainer]}>
       {label && <Text style={styles.textInputHeader}>{label}</Text>}
-        <TextInput
-          style={styles.textInput}
-          onChangeText={onChangePassword}
-          onBlur={onBlur}
-          value={value}
-          {...props}
-        />
+      <TextInput
+        style={styles.textInput}
+        onChangeText={onChangePassword}
+        onBlur={onBlur}
+        value={value}
+        {...props}
+      />
       {error && <Text style={styles.errorMessage}>{errorMessage}</Text>}
     </View>
   );
@@ -44,7 +44,6 @@ const styles = StyleSheet.create({
   errorWrapperContainer: {
     borderColor: '#ff1818',
     paddingBottom: rem(35),
-
   },
   textInput: {
     color: '#40e0d0',

@@ -19,6 +19,7 @@ const actionTypes = {
   },
   data: {
     SET_API_DATA: 'SET_API_DATA',
+    SET_UPLOADING_API_DATA: 'SET_UPLOADING_API_DATA',
   },
 };
 

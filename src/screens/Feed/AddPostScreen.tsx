@@ -22,7 +22,7 @@ import {
 } from '../../store/selectors';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {CustomButton} from '../../components/common/CustomButton';
-import {height as h, rem, vrem, width as w} from '../../consts/size';
+import {rem, vrem} from '../../consts/size';
 import {
   setImage,
   setTransferred,

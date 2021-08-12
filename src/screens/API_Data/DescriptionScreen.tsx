@@ -7,14 +7,14 @@ export const DescriptionScreen: React.FC<any> = ({route}) => {
   const imageName = route.params.title;
   const historyItem =
     route.params.publication_history || route.params.artist_display;
-  const imageURL = route.params.image_id;
-  const image = `https://www.artic.edu/iiif/2/${imageURL}/full/843,/0/default.jpg`;
+  const imageId = route.params.image_id;
+  const imageURL = `https://www.artic.edu/iiif/2/${imageId}/full/843,/0/default.jpg`;
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
         <View>
-          <ImageDescriptionBlock image={image} imageURL={imageURL} />
+          <ImageDescriptionBlock imageURL={imageURL} imageId={imageId} />
           <Text
             numberOfLines={1}
             ellipsizeMode="tail"
@@ -30,6 +30,7 @@ export const DescriptionScreen: React.FC<any> = ({route}) => {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     backgroundColor: '#fff',
     paddingBottom: vrem(14),
   },
@@ -40,7 +41,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     paddingTop: vrem(3),
     paddingHorizontal: rem(10),
-    width: '100%',
   },
   textDescription: {
     fontSize: rem(14),
