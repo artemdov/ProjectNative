@@ -21,7 +21,6 @@ export const ListDataScreen: React.FC<any> = ({navigation}) => {
   const isLoadingAPIData = useSelector(isLoadingAPIDataSelector);
   const data = APIData.data;
   const dispatch = useDispatch();
-  console.log(data);
 
   const fetchAPIData = async () => {
     dispatch(upLoadingAPIData(true));
