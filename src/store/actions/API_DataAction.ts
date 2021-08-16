@@ -2,7 +2,7 @@ import actionTypes from '../actionTypes';
 import {Dispatch} from 'redux';
 import {API} from '../../api/api';
 
-export const setAPIData = (data: any) =>
+export const setAPIData = (data: []) =>
   ({
     type: actionTypes.artWorkData.SET_API_DATA,
     payload: data,

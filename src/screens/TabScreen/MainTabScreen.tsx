@@ -6,7 +6,7 @@ import {bottomTabBarOptions} from '../../navigation/options';
 import {Image, StyleSheet} from 'react-native';
 import {rem} from '../../consts/size';
 import {FeedPostStack} from '../../navigation/routes/FeedPostStack';
-import {APIDataStack} from '../../navigation/routes/APIDataStack';
+import {ArtWorkAPIStack} from '../../navigation/routes/ArtWorkAPIStack';
 
 const Tab = createBottomTabNavigator<any>();
 const notFocused = 0.51;
@@ -50,8 +50,8 @@ export const MainTabScreen = () => (
       }}
     />
     <Tab.Screen
-      name={screenNames.API_DATA_STACK}
-      component={APIDataStack}
+      name={screenNames.ARTWORK_API_STACK}
+      component={ArtWorkAPIStack}
       options={{
         tabBarLabel: 'Данные',
         tabBarIcon: APIDataTabBarIcon,

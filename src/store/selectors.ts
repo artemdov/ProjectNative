@@ -17,9 +17,9 @@ export const isTransferredSelector = (state: AppRootStateType) =>
 export const getPostsSelector = (state: AppRootStateType) => state.feed.posts;
 export const getCommentsSelector = (state: AppRootStateType) =>
   state.feed.comments;
-export const getAPIDataSelector = (state: AppRootStateType) =>
+export const getArtWorkAPISelector = (state: AppRootStateType) =>
   state.data.artWorkData;
-export const isLoadingAPIDataSelector = (state: AppRootStateType) =>
+export const isLoadingArtWorkAPISelector = (state: AppRootStateType) =>
   state.data.uploadingAPIData;
 export const getQueryValueSelector = (state: AppRootStateType) =>
   state.data.value;

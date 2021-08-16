@@ -7,7 +7,7 @@ import {ArtworkDetailScreen} from '../../screens/API_Data/ArtworkDetailScreen';
 
 const Stack = createStackNavigator();
 
-export const APIDataStack: React.FC<any> = () => (
+export const ArtWorkAPIStack: React.FC<any> = () => (
   <Stack.Navigator>
     <Stack.Screen
       name={screenNames.ARTWORK_LIST_SCREEN}

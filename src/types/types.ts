@@ -4,11 +4,23 @@ import {rootReducer} from '../store/store';
 import {
   errorMessage,
   setLoadingStatus,
-  onSubmitLogIn,
-  onSubmitRegistration,
   setIsLoggedIn,
   setUser,
 } from '../store/actions/authAction';
+import {
+  changeValue,
+  setAPIData,
+  upLoadingAPIData,
+} from '../store/actions/API_DataAction';
+import {
+  setCommentMenuVisible,
+  setComments,
+  setImage,
+  setIsLoadingPost,
+  setPosts,
+  setTransferred,
+  upLoadingImage,
+} from '../store/actions/feedAction';
 
 export type myOptionsType = {
   title: string;
@@ -59,25 +71,6 @@ export type PostType = {
     isLike: boolean;
   };
 };
-export type APIDataType = {
-  pagination: {
-    total: number;
-    limit: number;
-    offset: number;
-    total_pages: number;
-    current_page: number;
-    next_url: string;
-  };
-  data: [];
-  info: {
-    license_text: string;
-    license_links: [];
-  };
-  config: {
-    iiif_url: string;
-    website_url: string;
-  };
-};
 export type CommentType = {
   comment?: string;
   createdAt: number;
@@ -92,10 +85,28 @@ export type OnSubmitRegistrationDataType = {
   confirmPassword: string;
 };
 export type AppRootStateType = ReturnType<typeof rootReducer>;
-export type AuthActionType =
+
+type AuthActionType =
   | ReturnType<typeof setIsLoggedIn>
   | ReturnType<typeof errorMessage>
-  | ReturnType<typeof onSubmitRegistration>
-  | ReturnType<typeof onSubmitLogIn>
   | ReturnType<typeof setLoadingStatus>
   | ReturnType<typeof setUser>;
+
+type ArtWorkAPIActionType =
+  | ReturnType<typeof setAPIData>
+  | ReturnType<typeof upLoadingAPIData>
+  | ReturnType<typeof changeValue>;
+
+type feedActionType =
+  | ReturnType<typeof setPosts>
+  | ReturnType<typeof setComments>
+  | ReturnType<typeof setImage>
+  | ReturnType<typeof setCommentMenuVisible>
+  | ReturnType<typeof upLoadingImage>
+  | ReturnType<typeof setIsLoadingPost>
+  | ReturnType<typeof setTransferred>;
+
+export type ActionsType =
+  | ArtWorkAPIActionType
+  | AuthActionType
+  | feedActionType;

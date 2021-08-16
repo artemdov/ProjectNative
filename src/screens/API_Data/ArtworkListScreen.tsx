@@ -12,9 +12,9 @@ import {
 import {ImageList} from '../../components/ImageList';
 import screenNames from '../../navigation/ScreenNames';
 import {
-  getAPIDataSelector,
+  getArtWorkAPISelector,
   getQueryValueSelector,
-  isLoadingAPIDataSelector,
+  isLoadingArtWorkAPISelector,
 } from '../../store/selectors';
 import {
   changeValue,
@@ -26,10 +26,9 @@ import {rem, vrem} from '../../consts/size';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export const ArtworkListScreen: React.FC<any> = ({navigation}) => {
-  const APIData = useSelector(getAPIDataSelector);
-  const isLoadingAPIData = useSelector(isLoadingAPIDataSelector);
+  const APIData = useSelector(getArtWorkAPISelector);
+  const isLoadingAPIData = useSelector(isLoadingArtWorkAPISelector);
   const queryValue = useSelector(getQueryValueSelector);
-  console.log('APIData', APIData);
   const dispatch = useDispatch();
 
   const onChangeValue = (value: string) => {
@@ -58,7 +57,7 @@ export const ArtworkListScreen: React.FC<any> = ({navigation}) => {
       <View style={styles.block}>
         <TextInput
           style={styles.input}
-          placeholder={'Search'}
+          placeholder={'Поиск...'}
           value={queryValue}
           onChangeText={onChangeValue}
         />
@@ -96,6 +95,7 @@ export const ArtworkListScreen: React.FC<any> = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginHorizontal: rem(5),
   },
   imagesList: {
     marginTop: rem(20),
@@ -109,31 +109,34 @@ const styles = StyleSheet.create({
   },
   block: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.2,
+    elevation: 2,
     marginTop: vrem(30),
-    marginHorizontal: rem(50),
-    width: rem(280),
+    paddingHorizontal: rem(20),
+    width: '100%',
     height: vrem(60),
-    backgroundColor: '#8d8484',
-    borderRadius: rem(20),
+    backgroundColor: '#4f016d',
+    borderRadius: rem(25),
   },
   input: {
     backgroundColor: '#fff',
     fontSize: rem(15),
-    paddingRight: rem(160),
+    marginLeft: rem(12),
+    paddingRight: rem(190),
     paddingVertical: vrem(5),
-    marginLeft: rem(15),
   },
   searchButton: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: rem(10),
-    marginBottom: vrem(5),
-    width: rem(38),
-    height: vrem(50),
+    marginLeft: rem(50),
+    width: rem(39),
+    height: vrem(57),
     borderRadius: rem(20),
-    backgroundColor: '#8d8484',
+    backgroundColor: '#4f016d',
   },
   iconSearch: {
     fontSize: rem(40),
