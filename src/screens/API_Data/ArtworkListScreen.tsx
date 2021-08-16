@@ -26,11 +26,10 @@ import {rem, vrem} from '../../consts/size';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export const ArtworkListScreen: React.FC<any> = ({navigation}) => {
-  const APIData: any = useSelector(getAPIDataSelector);
+  const APIData = useSelector(getAPIDataSelector);
   const isLoadingAPIData = useSelector(isLoadingAPIDataSelector);
   const queryValue = useSelector(getQueryValueSelector);
-  const data = APIData.data;
-  console.log(data);
+  console.log('APIData', APIData);
   const dispatch = useDispatch();
 
   const onChangeValue = (value: string) => {
@@ -41,9 +40,13 @@ export const ArtworkListScreen: React.FC<any> = ({navigation}) => {
   };
 
   const fetchAPIData = async () => {
-    dispatch(upLoadingAPIData(true));
-    await dispatch(getAPIData());
-    dispatch(upLoadingAPIData(false));
+    try {
+      dispatch(upLoadingAPIData(true));
+      await dispatch(getAPIData());
+      dispatch(upLoadingAPIData(false));
+    } catch (er) {
+      console.log(er);
+    }
   };
 
   useEffect(() => {
@@ -74,13 +77,16 @@ export const ArtworkListScreen: React.FC<any> = ({navigation}) => {
           />
         ) : (
           <View style={styles.imagesList}>
-            {data &&
-              data.map((item: any) => (
+            {APIData &&
+              APIData.map((item: any) => (
                 <ImageList
                   key={item.id}
                   data={item}
                   onPress={() => {
-                    navigation.navigate(screenNames.DESCRIPTION_SCREEN, item);
+                    navigation.navigate(
+                      screenNames.ARTWORK_DETAIL_SCREEN,
+                      item,
+                    );
                   }}
                 />
               ))}

@@ -59,6 +59,25 @@ export type PostType = {
     isLike: boolean;
   };
 };
+export type APIDataType = {
+  pagination: {
+    total: number;
+    limit: number;
+    offset: number;
+    total_pages: number;
+    current_page: number;
+    next_url: string;
+  };
+  data: [];
+  info: {
+    license_text: string;
+    license_links: [];
+  };
+  config: {
+    iiif_url: string;
+    website_url: string;
+  };
+};
 export type CommentType = {
   comment?: string;
   createdAt: number;

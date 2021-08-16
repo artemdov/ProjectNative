@@ -1,7 +1,7 @@
 import actionTypes from '../actionTypes';
 
 const initialState = {
-  data: [],
+  artWorkData: [],
   value: '',
   uploadingAPIData: false,
 };
@@ -12,11 +12,11 @@ export const APIDataReducer = (
   action: any,
 ): initialStateType => {
   switch (action.type) {
-    case actionTypes.data.SET_API_DATA:
-      return {...state, data: action.payload};
-    case actionTypes.data.SET_UPLOADING_API_DATA:
+    case actionTypes.artWorkData.SET_API_DATA:
+      return {...state, artWorkData: action.payload};
+    case actionTypes.artWorkData.SET_UPLOADING_API_DATA:
       return {...state, uploadingAPIData: action.payload};
-    case actionTypes.data.SEARCH_VALUE_QUERY:
+    case actionTypes.artWorkData.SEARCH_VALUE_QUERY:
       return {...state, value: action.payload};
     default:
       return state;

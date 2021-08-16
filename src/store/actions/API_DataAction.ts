@@ -4,26 +4,26 @@ import {API} from '../../api/api';
 
 export const setAPIData = (data: any) =>
   ({
-    type: actionTypes.data.SET_API_DATA,
+    type: actionTypes.artWorkData.SET_API_DATA,
     payload: data,
   } as const);
 
 export const upLoadingAPIData = (uploadingAPIData: boolean) =>
   ({
-    type: actionTypes.data.SET_UPLOADING_API_DATA,
+    type: actionTypes.artWorkData.SET_UPLOADING_API_DATA,
     payload: uploadingAPIData,
   } as const);
 
 export const changeValue = (value: string) =>
   ({
-    type: actionTypes.data.SEARCH_VALUE_QUERY,
+    type: actionTypes.artWorkData.SEARCH_VALUE_QUERY,
     payload: value,
   } as const);
 
 export const getAPIData = () => async (dispatch: Dispatch) => {
   try {
     let response = await API.getData();
-    dispatch(setAPIData(response.data));
+    dispatch(setAPIData(response.data.data));
   } catch (er) {
     console.log(er);
   }
@@ -32,7 +32,7 @@ export const getQueryData = (value: string) => async (dispatch: Dispatch) => {
   try {
     let response = await API.getQueryData(value);
     dispatch(changeValue(value));
-    dispatch(setAPIData(response.data));
+    dispatch(setAPIData(response.data.data));
     dispatch(changeValue(''));
   } catch (er) {
     console.log(er);
