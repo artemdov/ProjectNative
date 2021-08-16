@@ -1,9 +1,9 @@
 import React from 'react';
 import {StyleSheet, ScrollView, Text, View, SafeAreaView} from 'react-native';
-import {ImageDescriptionBlock} from '../../components/ImageDescriptionBlock';
+import {ImageDetailScreenBlock} from '../../components/ImageDetailScreenBlock';
 import {rem, vrem} from '../../consts/size';
 
-export const DescriptionScreen: React.FC<any> = ({route}) => {
+export const ArtworkDetailScreen: React.FC<any> = ({route}) => {
   const imageName = route.params.title;
   const historyItem =
     route.params.publication_history || route.params.artist_display;
@@ -14,7 +14,7 @@ export const DescriptionScreen: React.FC<any> = ({route}) => {
     <SafeAreaView style={styles.container}>
       <ScrollView>
         <View>
-          <ImageDescriptionBlock imageURL={imageURL} imageId={imageId} />
+          <ImageDetailScreenBlock imageURL={imageURL} imageId={imageId} />
           <Text
             numberOfLines={1}
             ellipsizeMode="tail"

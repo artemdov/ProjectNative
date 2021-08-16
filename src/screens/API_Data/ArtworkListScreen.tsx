@@ -25,7 +25,7 @@ import {
 import {rem, vrem} from '../../consts/size';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-export const ListDataScreen: React.FC<any> = ({navigation}) => {
+export const ArtworkListScreen: React.FC<any> = ({navigation}) => {
   const APIData: any = useSelector(getAPIDataSelector);
   const isLoadingAPIData = useSelector(isLoadingAPIDataSelector);
   const queryValue = useSelector(getQueryValueSelector);

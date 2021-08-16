@@ -3,7 +3,7 @@ import {StyleSheet, Image, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {rem, vrem} from '../consts/size';
 
-export const ImageDescriptionBlock: React.FC<any> = ({imageURL, imageId}) => {
+export const ImageDetailScreenBlock: React.FC<any> = ({imageURL, imageId}) => {
   return (
     <View style={styles.ImageContainer}>
       {imageId ? (
