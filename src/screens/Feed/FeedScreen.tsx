@@ -152,6 +152,8 @@ const styles = StyleSheet.create({
     margin: rem(3),
   },
   loader: {
-    marginVertical: rem(200),
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

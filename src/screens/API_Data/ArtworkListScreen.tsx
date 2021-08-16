@@ -68,14 +68,10 @@ export const ArtworkListScreen: React.FC<any> = ({navigation}) => {
           </View>
         </TouchableOpacity>
       </View>
-      <ScrollView>
-        {isLoadingAPIData ? (
-          <ActivityIndicator
-            style={styles.loader}
-            size="large"
-            color="#0000ff"
-          />
-        ) : (
+      {isLoadingAPIData ? (
+        <ActivityIndicator style={styles.loader} size="large" color="#0000ff" />
+      ) : (
+        <ScrollView>
           <View style={styles.imagesList}>
             {APIData &&
               APIData.map((item: any) => (
@@ -91,8 +87,8 @@ export const ArtworkListScreen: React.FC<any> = ({navigation}) => {
                 />
               ))}
           </View>
-        )}
-      </ScrollView>
+        </ScrollView>
+      )}
     </SafeAreaView>
   );
 };
@@ -107,7 +103,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   loader: {
-    marginVertical: rem(250),
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   block: {
     flexDirection: 'row',
