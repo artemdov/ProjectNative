@@ -14,7 +14,27 @@ export const upLoadingAPIData = (uploadingAPIData: boolean) =>
     payload: uploadingAPIData,
   } as const);
 
+export const changeValue = (value: string) =>
+  ({
+    type: actionTypes.data.SEARCH_VALUE_QUERY,
+    payload: value,
+  } as const);
+
 export const getAPIData = () => async (dispatch: Dispatch) => {
-  let response = await API.getData();
-  dispatch(setAPIData(response.data));
+  try {
+    let response = await API.getData();
+    dispatch(setAPIData(response.data));
+  } catch (er) {
+    console.log(er);
+  }
+};
+export const getQueryData = (value: string) => async (dispatch: Dispatch) => {
+  try {
+    let response = await API.getQueryData(value);
+    dispatch(changeValue(value));
+    dispatch(setAPIData(response.data));
+    dispatch(changeValue(''));
+  } catch (er) {
+    console.log(er);
+  }
 };

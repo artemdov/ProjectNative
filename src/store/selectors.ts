@@ -20,3 +20,5 @@ export const getCommentsSelector = (state: AppRootStateType) =>
 export const getAPIDataSelector = (state: AppRootStateType) => state.data.data;
 export const isLoadingAPIDataSelector = (state: AppRootStateType) =>
   state.data.uploadingAPIData;
+export const getQueryValueSelector = (state: AppRootStateType) =>
+  state.data.value;

@@ -17,7 +17,7 @@ export const ImageList: React.FC<any> = ({data, onPress}) => {
           name="md-image-outline"
           size={rem(300)}
           color="#818181"
-          style={[styles.imageBlock, styles.withoutImageWrapper]}
+          style={[styles.imageBlock, styles.imagePlaceholder]}
         />
       )}
       <Text style={styles.imageTitle}>{imageName}</Text>
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     height: '100%',
     borderRadius: rem(10),
   },
-  withoutImageWrapper: {
+  imagePlaceholder: {
     opacity: 0.2,
     marginLeft: rem(60),
   },

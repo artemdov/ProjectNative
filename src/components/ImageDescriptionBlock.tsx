@@ -13,7 +13,7 @@ export const ImageDescriptionBlock: React.FC<any> = ({imageURL, imageId}) => {
           name="md-image-outline"
           size={rem(300)}
           color="#818181"
-          style={[styles.imageBlock, styles.withoutImageWrapper]}
+          style={[styles.imageBlock, styles.imagePlaceholder]}
         />
       )}
     </View>
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     height: '100%',
     borderRadius: rem(12),
   },
-  withoutImageWrapper: {
+  imagePlaceholder: {
     opacity: 0.2,
     marginLeft: rem(30),
   },

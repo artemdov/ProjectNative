@@ -1,12 +1,13 @@
 import {rem} from '../consts/size';
 
+export const commonHeaderOptions = {
+  backgroundColor: '#0c0c30',
+  height: 50,
+};
 export const myOptions = {
   title: 'Вход',
   headerTintColor: '#fff',
-  headerStyle: {
-    backgroundColor: '#0c0c30',
-    height: 50,
-  },
+  headerStyle: commonHeaderOptions,
   headerTitleStyle: {
     fontSize: rem(20),
   },
@@ -14,10 +15,7 @@ export const myOptions = {
 export const APIDataScreenOptions = {
   title: '',
   headerTintColor: '#fff',
-  headerStyle: {
-    backgroundColor: '#4f016d',
-    height: 50,
-  },
+  headerStyle: {...commonHeaderOptions, backgroundColor: '#4f016d'},
   headerTitleStyle: {
     fontSize: rem(20),
   },

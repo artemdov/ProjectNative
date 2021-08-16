@@ -20,6 +20,7 @@ const actionTypes = {
   data: {
     SET_API_DATA: 'SET_API_DATA',
     SET_UPLOADING_API_DATA: 'SET_UPLOADING_API_DATA',
+    SEARCH_VALUE_QUERY: 'SEARCH_VALUE_QUERY',
   },
 };
 
