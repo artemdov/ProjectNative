@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, ScrollView, Text, View, SafeAreaView} from 'react-native';
+import {StyleSheet, ScrollView, Text, SafeAreaView} from 'react-native';
 import {ImageDetailScreenBlock} from '../../components/ImageDetailScreenBlock';
 import {rem, vrem} from '../../consts/size';
 
@@ -13,16 +13,11 @@ export const ArtworkDetailScreen: React.FC<any> = ({route}) => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
-        <View>
-          <ImageDetailScreenBlock imageURL={imageURL} imageId={imageId} />
-          <Text
-            numberOfLines={1}
-            ellipsizeMode="tail"
-            style={styles.titleImage}>
-            {imageName.toUpperCase()}
-          </Text>
-          <Text style={styles.textDescription}>{historyItem}</Text>
-        </View>
+        <ImageDetailScreenBlock imageURL={imageURL} imageId={imageId} />
+        <Text numberOfLines={1} ellipsizeMode="tail" style={styles.titleImage}>
+          {imageName.toUpperCase()}
+        </Text>
+        <Text style={styles.textDescription}>{historyItem}</Text>
       </ScrollView>
     </SafeAreaView>
   );
