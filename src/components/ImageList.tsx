@@ -2,22 +2,23 @@ import React from 'react';
 import {StyleSheet, Image, TouchableOpacity, Text} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {rem, vrem} from '../consts/size';
+import {artworkImageUrl} from './artworkImageUrl';
 
 export const ImageList: React.FC<any> = ({data, onPress}) => {
   const imageName = data.title;
-  const imageId = data.image_id;
-  const imageURL = `https://www.artic.edu/iiif/2/${imageId}/full/843,/0/default.jpg`;
+
+  const imageId: any = data.image_id;
 
   return (
-    <TouchableOpacity style={styles.ImageContainer} onPress={onPress}>
+    <TouchableOpacity style={styles.imageContainer} onPress={onPress}>
       {imageId ? (
-        <Image style={styles.imageBlock} source={{uri: imageURL}} />
+        <Image style={styles.image} source={{uri: artworkImageUrl(imageId)}} />
       ) : (
         <Icon
           name="md-image-outline"
           size={rem(300)}
           color="#818181"
-          style={[styles.imageBlock, styles.imagePlaceholder]}
+          style={[styles.image, styles.imagePlaceholder]}
         />
       )}
       <Text style={styles.imageTitle}>{imageName}</Text>
@@ -26,14 +27,14 @@ export const ImageList: React.FC<any> = ({data, onPress}) => {
 };
 
 const styles = StyleSheet.create({
-  ImageContainer: {
+  imageContainer: {
     flexDirection: 'column',
     alignItems: 'center',
     marginBottom: vrem(80),
     paddingHorizontal: rem(10),
     height: vrem(500),
   },
-  imageBlock: {
+  image: {
     width: '100%',
     height: '100%',
     borderRadius: rem(10),

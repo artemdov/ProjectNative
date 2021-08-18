@@ -1,5 +1,5 @@
 import actionTypes from '../actionTypes';
-import {ActionsType} from '../../types/types';
+import {ActionType} from '../../types/types';
 
 const initialState = {
   image: '',
@@ -12,10 +12,7 @@ const initialState = {
 };
 type initialStateType = typeof initialState;
 
-export const feedReducer = (
-  state = initialState,
-  action: ActionsType,
-): initialStateType => {
+export const feedReducer = (state = initialState, action: ActionType) => {
   switch (action.type) {
     case actionTypes.feed.SET_IMAGE:
       return <initialStateType>{...state, image: action.payload};

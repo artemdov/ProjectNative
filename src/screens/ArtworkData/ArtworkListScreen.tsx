@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   ActivityIndicator,
@@ -12,53 +12,55 @@ import {
 import {ImageList} from '../../components/ImageList';
 import screenNames from '../../navigation/ScreenNames';
 import {
-  getArtWorkAPISelector,
-  getQueryValueSelector,
-  isLoadingArtWorkAPISelector,
+  getArtworkDataSelector,
+  isLoadingArtworkDataSelector,
 } from '../../store/selectors';
 import {
-  changeValue,
-  getAPIData,
-  getQueryData,
-  upLoadingAPIData,
-} from '../../store/actions/API_DataAction';
+  getArtworkData,
+  getArtworkValueData,
+  upLoadingArtworkData,
+} from '../../store/actions/ArtworkDataAction';
 import {rem, vrem} from '../../consts/size';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export const ArtworkListScreen: React.FC<any> = ({navigation}) => {
-  const APIData = useSelector(getArtWorkAPISelector);
-  const isLoadingAPIData = useSelector(isLoadingArtWorkAPISelector);
-  const queryValue = useSelector(getQueryValueSelector);
+  const ArtworkData = useSelector(getArtworkDataSelector);
+  const isLoadingArtworkData = useSelector(isLoadingArtworkDataSelector);
   const dispatch = useDispatch();
 
+  const [searchValue, setSearchValue] = useState('');
+
   const onChangeValue = (value: string) => {
-    dispatch(changeValue(value));
-  };
-  const onClickGetQuery = () => {
-    dispatch(getQueryData(queryValue));
+    setSearchValue(value);
   };
 
-  const fetchAPIData = async () => {
+  const onClickGetQuery = () => {
+    dispatch(getArtworkValueData(searchValue));
+    setSearchValue('');
+  };
+
+  const fetchArtworkData = async () => {
     try {
-      dispatch(upLoadingAPIData(true));
-      await dispatch(getAPIData());
-      dispatch(upLoadingAPIData(false));
-    } catch (er) {
+      dispatch(upLoadingArtworkData(true));
+      await dispatch(getArtworkData());
+      dispatch(upLoadingArtworkData(false));
+    }
+    catch (er) {
       console.log(er);
     }
   };
 
   useEffect(() => {
-    fetchAPIData().then(() => console.log('success'));
+    fetchArtworkData().then(() => console.log('success'));
   }, []);
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.block}>
+      <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
           placeholder={'Поиск...'}
-          value={queryValue}
+          value={searchValue}
           onChangeText={onChangeValue}
         />
         <TouchableOpacity onPress={onClickGetQuery}>
@@ -67,13 +69,13 @@ export const ArtworkListScreen: React.FC<any> = ({navigation}) => {
           </View>
         </TouchableOpacity>
       </View>
-      {isLoadingAPIData ? (
+      {isLoadingArtworkData ? (
         <ActivityIndicator style={styles.loader} size="large" color="#0000ff" />
       ) : (
         <ScrollView>
-          <View style={styles.imagesList}>
-            {APIData &&
-              APIData.map((item: any) => (
+          <View style={styles.imageList}>
+            {ArtworkData &&
+              ArtworkData.map((item: any) => (
                 <ImageList
                   key={item.id}
                   data={item}
@@ -97,7 +99,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: rem(5),
   },
-  imagesList: {
+  imageList: {
     marginTop: rem(20),
     flexDirection: 'column',
     justifyContent: 'center',
@@ -107,7 +109,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  block: {
+  inputContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',

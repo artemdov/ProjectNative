@@ -8,10 +8,9 @@ import {
   setUser,
 } from '../store/actions/authAction';
 import {
-  changeValue,
-  setAPIData,
-  upLoadingAPIData,
-} from '../store/actions/API_DataAction';
+  setArtworkData,
+  upLoadingArtworkData,
+} from '../store/actions/ArtworkDataAction';
 import {
   setCommentMenuVisible,
   setComments,
@@ -92,10 +91,9 @@ type AuthActionType =
   | ReturnType<typeof setLoadingStatus>
   | ReturnType<typeof setUser>;
 
-type ArtWorkAPIActionType =
-  | ReturnType<typeof setAPIData>
-  | ReturnType<typeof upLoadingAPIData>
-  | ReturnType<typeof changeValue>;
+type ArtWorkActionType =
+  | ReturnType<typeof setArtworkData>
+  | ReturnType<typeof upLoadingArtworkData>;
 
 type feedActionType =
   | ReturnType<typeof setPosts>
@@ -106,7 +104,4 @@ type feedActionType =
   | ReturnType<typeof setIsLoadingPost>
   | ReturnType<typeof setTransferred>;
 
-export type ActionsType =
-  | ArtWorkAPIActionType
-  | AuthActionType
-  | feedActionType;
+export type ActionType = ArtWorkActionType | AuthActionType | feedActionType;

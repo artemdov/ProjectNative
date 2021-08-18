@@ -5,9 +5,9 @@ import {AddPostScreen} from '../../screens/Feed/AddPostScreen';
 import {addPostOptions, withoutHeader} from '../options';
 import screenNames from '../ScreenNames';
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<any>();
 
-export const FeedPostStack: React.FC<any> = () => (
+export const FeedPostStack = () => (
   <Stack.Navigator>
     <Stack.Screen
       name={screenNames.FEED_SCREEN}
@@ -17,6 +17,7 @@ export const FeedPostStack: React.FC<any> = () => (
     <Stack.Screen
       name={screenNames.ADD_POST_SCREEN}
       component={AddPostScreen}
+      // @ts-ignore
       options={addPostOptions}
     />
   </Stack.Navigator>

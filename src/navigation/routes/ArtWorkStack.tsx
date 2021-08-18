@@ -1,13 +1,13 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import {APIDataScreenOptions, withoutHeader} from '../options';
+import {ArtworkDetailScreenOptions, withoutHeader} from '../options';
 import screenNames from '../ScreenNames';
-import {ArtworkListScreen} from '../../screens/API_Data/ArtworkListScreen';
-import {ArtworkDetailScreen} from '../../screens/API_Data/ArtworkDetailScreen';
+import {ArtworkListScreen} from '../../screens/ArtworkData/ArtworkListScreen';
+import {ArtworkDetailScreen} from '../../screens/ArtworkData/ArtworkDetailScreen';
 
 const Stack = createStackNavigator();
 
-export const ArtWorkAPIStack: React.FC<any> = () => (
+export const ArtWorkStack: React.FC<any> = () => (
   <Stack.Navigator>
     <Stack.Screen
       name={screenNames.ARTWORK_LIST_SCREEN}
@@ -17,7 +17,7 @@ export const ArtWorkAPIStack: React.FC<any> = () => (
     <Stack.Screen
       name={screenNames.ARTWORK_DETAIL_SCREEN}
       component={ArtworkDetailScreen}
-      options={APIDataScreenOptions}
+      options={ArtworkDetailScreenOptions}
     />
   </Stack.Navigator>
 );

@@ -3,12 +3,12 @@ import thunkMiddleware from 'redux-thunk';
 import {authReducer} from './reducers/authReducer';
 import {feedReducer} from './reducers/feedReducer';
 import {composeWithDevTools} from 'redux-devtools-extension';
-import {APIDataReducer} from './reducers/APIDataReducer';
+import {ArtworkDataReducer} from './reducers/ArtworkDataReducer';
 
 export const rootReducer = combineReducers({
   auth: authReducer,
   feed: feedReducer,
-  data: APIDataReducer,
+  data: ArtworkDataReducer,
 });
 export const store = createStore(
   rootReducer,

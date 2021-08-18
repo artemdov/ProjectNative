@@ -2,18 +2,19 @@ import React from 'react';
 import {StyleSheet, Image, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {rem, vrem} from '../consts/size';
+import {artworkImageUrl} from './artworkImageUrl';
 
-export const ImageDetailScreenBlock: React.FC<any> = ({imageURL, imageId}) => {
+export const ArtworkItemDetail: React.FC<any> = ({imageId}) => {
   return (
-    <View style={styles.ImageContainer}>
+    <View style={styles.imageContainer}>
       {imageId ? (
-        <Image style={styles.imageBlock} source={{uri: imageURL}} />
+        <Image style={styles.image} source={{uri: artworkImageUrl(imageId)}} />
       ) : (
         <Icon
           name="md-image-outline"
           size={rem(300)}
           color="#818181"
-          style={[styles.imageBlock, styles.imagePlaceholder]}
+          style={[styles.image, styles.imagePlaceholder]}
         />
       )}
     </View>
@@ -21,13 +22,13 @@ export const ImageDetailScreenBlock: React.FC<any> = ({imageURL, imageId}) => {
 };
 
 const styles = StyleSheet.create({
-  ImageContainer: {
+  imageContainer: {
     marginVertical: vrem(12),
     height: vrem(500),
     paddingHorizontal: rem(10),
     backgroundColor: '#fff',
   },
-  imageBlock: {
+  image: {
     width: '100%',
     height: '100%',
     borderRadius: rem(12),
