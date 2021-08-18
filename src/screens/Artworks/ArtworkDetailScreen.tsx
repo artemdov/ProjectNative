@@ -6,7 +6,7 @@ import {rem, vrem} from '../../consts/size';
 export const ArtworkDetailScreen: React.FC<any> = ({route}) => {
   const imageName = route.params.title;
 
-  const historyItem =
+  const artworkDescription =
     route.params.publication_history || route.params.artist_display;
 
   const imageId = route.params.image_id;
@@ -15,10 +15,10 @@ export const ArtworkDetailScreen: React.FC<any> = ({route}) => {
     <SafeAreaView style={styles.container}>
       <ScrollView>
         <ArtworkItemDetail imageId={imageId} />
-        <Text numberOfLines={1} ellipsizeMode="tail" style={styles.titleImage}>
+        <Text numberOfLines={1} ellipsizeMode="tail" style={styles.ImageTitle}>
           {imageName.toUpperCase()}
         </Text>
-        <Text style={styles.textDescription}>{historyItem}</Text>
+        <Text style={styles.textDescription}>{artworkDescription}</Text>
       </ScrollView>
     </SafeAreaView>
   );
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     paddingBottom: vrem(14),
   },
-  titleImage: {
+  ImageTitle: {
     color: '#161616',
     textAlign: 'center',
     fontSize: rem(27),

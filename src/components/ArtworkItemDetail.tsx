@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, Image, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {rem, vrem} from '../consts/size';
-import {artworkImageUrl} from './artworkImageUrl';
+import {artworkImageUrl} from '../utils/helpers';
 
 export const ArtworkItemDetail: React.FC<any> = ({imageId}) => {
   return (

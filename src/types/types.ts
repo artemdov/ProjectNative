@@ -8,9 +8,9 @@ import {
   setUser,
 } from '../store/actions/authAction';
 import {
-  setArtworkData,
-  upLoadingArtworkData,
-} from '../store/actions/ArtworkDataAction';
+  setArtworks,
+  isLoadingArtworks,
+} from '../store/actions/ArtworksAction';
 import {
   setCommentMenuVisible,
   setComments,
@@ -91,9 +91,9 @@ type AuthActionType =
   | ReturnType<typeof setLoadingStatus>
   | ReturnType<typeof setUser>;
 
-type ArtWorkActionType =
-  | ReturnType<typeof setArtworkData>
-  | ReturnType<typeof upLoadingArtworkData>;
+type ArtworkActionType =
+  | ReturnType<typeof setArtworks>
+  | ReturnType<typeof isLoadingArtworks>;
 
 type feedActionType =
   | ReturnType<typeof setPosts>
@@ -104,4 +104,4 @@ type feedActionType =
   | ReturnType<typeof setIsLoadingPost>
   | ReturnType<typeof setTransferred>;
 
-export type ActionType = ArtWorkActionType | AuthActionType | feedActionType;
+export type ActionType = ArtworkActionType | AuthActionType | feedActionType;

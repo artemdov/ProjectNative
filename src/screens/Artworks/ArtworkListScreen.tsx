@@ -9,41 +9,37 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {ImageList} from '../../components/ImageList';
+import {ArtworkImage} from '../../components/ArtworkImage';
 import screenNames from '../../navigation/ScreenNames';
 import {
-  getArtworkDataSelector,
-  isLoadingArtworkDataSelector,
+  getArtworksSelector,
+  isLoadingArtworksSelector,
 } from '../../store/selectors';
 import {
-  getArtworkData,
-  getArtworkValueData,
-  upLoadingArtworkData,
-} from '../../store/actions/ArtworkDataAction';
+  getArtworks,
+  searchArtwork,
+  isLoadingArtworks,
+} from '../../store/actions/ArtworksAction';
 import {rem, vrem} from '../../consts/size';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export const ArtworkListScreen: React.FC<any> = ({navigation}) => {
-  const ArtworkData = useSelector(getArtworkDataSelector);
-  const isLoadingArtworkData = useSelector(isLoadingArtworkDataSelector);
+  const ArtworkData = useSelector(getArtworksSelector);
+  const isLoadingArtworkData = useSelector(isLoadingArtworksSelector);
   const dispatch = useDispatch();
 
   const [searchValue, setSearchValue] = useState('');
 
-  const onChangeValue = (value: string) => {
-    setSearchValue(value);
-  };
-
-  const onClickGetQuery = () => {
-    dispatch(getArtworkValueData(searchValue));
+  const onPressSearchArtwork = async () => {
+    await dispatch(searchArtwork(searchValue));
     setSearchValue('');
   };
 
-  const fetchArtworkData = async () => {
+  const fetchArtworks = async () => {
     try {
-      dispatch(upLoadingArtworkData(true));
-      await dispatch(getArtworkData());
-      dispatch(upLoadingArtworkData(false));
+      dispatch(isLoadingArtworks(true));
+      await dispatch(getArtworks());
+      dispatch(isLoadingArtworks(false));
     }
     catch (er) {
       console.log(er);
@@ -51,7 +47,7 @@ export const ArtworkListScreen: React.FC<any> = ({navigation}) => {
   };
 
   useEffect(() => {
-    fetchArtworkData().then(() => console.log('success'));
+    fetchArtworks().then(() => console.log('success'));
   }, []);
 
   return (
@@ -61,10 +57,10 @@ export const ArtworkListScreen: React.FC<any> = ({navigation}) => {
           style={styles.input}
           placeholder={'Поиск...'}
           value={searchValue}
-          onChangeText={onChangeValue}
+          onChangeText={setSearchValue}
         />
-        <TouchableOpacity onPress={onClickGetQuery}>
-          <View style={styles.searchButton}>
+        <TouchableOpacity onPress={onPressSearchArtwork}>
+          <View style={styles.buttonSearch}>
             <Ionicons name="search-circle" style={styles.iconSearch} />
           </View>
         </TouchableOpacity>
@@ -76,7 +72,7 @@ export const ArtworkListScreen: React.FC<any> = ({navigation}) => {
           <View style={styles.imageList}>
             {ArtworkData &&
               ArtworkData.map((item: any) => (
-                <ImageList
+                <ArtworkImage
                   key={item.id}
                   data={item}
                   onPress={() => {
@@ -131,7 +127,7 @@ const styles = StyleSheet.create({
     paddingRight: rem(190),
     paddingVertical: vrem(5),
   },
-  searchButton: {
+  buttonSearch: {
     justifyContent: 'center',
     alignItems: 'center',
     marginLeft: rem(50),

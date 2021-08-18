@@ -2,9 +2,9 @@ import React from 'react';
 import {StyleSheet, Image, TouchableOpacity, Text} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {rem, vrem} from '../consts/size';
-import {artworkImageUrl} from './artworkImageUrl';
+import {artworkImageUrl} from '../utils/helpers';
 
-export const ImageList: React.FC<any> = ({data, onPress}) => {
+export const ArtworkImage: React.FC<any> = ({data, onPress}) => {
   const imageName = data.title;
 
   const imageId: any = data.image_id;
