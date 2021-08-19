@@ -6,7 +6,7 @@ import {RegistrationScreen} from '../../screens/Auth/RegistrationScreen';
 import {myOptions, withoutHeader} from '../options';
 import {LoginScreen} from '../../screens/Auth/LoginScreen';
 
-const Stack = createStackNavigator<any>();
+const Stack = createStackNavigator();
 
 const AuthStack = () => {
   return (

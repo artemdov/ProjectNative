@@ -4,11 +4,22 @@ import {rootReducer} from '../store/store';
 import {
   errorMessage,
   setLoadingStatus,
-  onSubmitLogIn,
-  onSubmitRegistration,
   setIsLoggedIn,
   setUser,
 } from '../store/actions/authAction';
+import {
+  setArtworks,
+  isLoadingArtworks,
+} from '../store/actions/ArtworksAction';
+import {
+  setCommentMenuVisible,
+  setComments,
+  setImage,
+  setIsLoadingPost,
+  setPosts,
+  setTransferred,
+  upLoadingImage,
+} from '../store/actions/feedAction';
 
 export type myOptionsType = {
   title: string;
@@ -73,10 +84,24 @@ export type OnSubmitRegistrationDataType = {
   confirmPassword: string;
 };
 export type AppRootStateType = ReturnType<typeof rootReducer>;
-export type AuthActionType =
+
+type AuthActionType =
   | ReturnType<typeof setIsLoggedIn>
   | ReturnType<typeof errorMessage>
-  | ReturnType<typeof onSubmitRegistration>
-  | ReturnType<typeof onSubmitLogIn>
   | ReturnType<typeof setLoadingStatus>
   | ReturnType<typeof setUser>;
+
+type ArtworkActionType =
+  | ReturnType<typeof setArtworks>
+  | ReturnType<typeof isLoadingArtworks>;
+
+type feedActionType =
+  | ReturnType<typeof setPosts>
+  | ReturnType<typeof setComments>
+  | ReturnType<typeof setImage>
+  | ReturnType<typeof setCommentMenuVisible>
+  | ReturnType<typeof upLoadingImage>
+  | ReturnType<typeof setIsLoadingPost>
+  | ReturnType<typeof setTransferred>;
+
+export type ActionType = ArtworkActionType | AuthActionType | feedActionType;

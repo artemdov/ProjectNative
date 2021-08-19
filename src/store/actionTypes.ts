@@ -17,6 +17,10 @@ const actionTypes = {
     SET_COMMENTS: 'SET_COMMENTS',
     SET_IS_COMMENT_MENU_VISIBLE: 'SET_IS_COMMENT_MENU_VISIBLE',
   },
+  artworks: {
+    SET_ARTWORKS: 'SET_ARTWORKS',
+    SET_IS_LOADING_ARTWORKS: 'SET_IS_LOADING_ARTWORKS',
+  },
 };
 
 export default actionTypes;

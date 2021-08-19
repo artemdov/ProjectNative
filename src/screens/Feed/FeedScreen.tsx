@@ -129,7 +129,7 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
         <Ionicons name="add-circle" size={rem(45)} color="#2e64e5" />
       </TouchableOpacity>
       {isLoadingPost ? (
-        <ActivityIndicator size="large" color="#0000ff" />
+        <ActivityIndicator style={styles.loader} size="large" color="#0000ff" />
       ) : (
         <FlatList
           data={data}
@@ -150,5 +150,10 @@ const styles = StyleSheet.create({
   },
   buttonAddPost: {
     margin: rem(3),
+  },
+  loader: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

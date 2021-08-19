@@ -4,12 +4,19 @@ import {ProfileScreen} from '../Profile/ProfileScreen';
 import screenNames from '../../navigation/ScreenNames';
 import {bottomTabBarOptions} from '../../navigation/options';
 import {Image, StyleSheet} from 'react-native';
-import {width as w, height as h, rem} from '../../consts/size';
+import {rem} from '../../consts/size';
 import {FeedPostStack} from '../../navigation/routes/FeedPostStack';
+import {ArtworkStack} from '../../navigation/routes/ArtworkStack';
 
 const Tab = createBottomTabNavigator<any>();
 const notFocused = 0.51;
 
+const ArtworkTabBarIcon: React.FC<any> = ({focused}) => (
+  <Image
+    style={[styles.icon, {opacity: focused ? 1 : notFocused}]}
+    source={require('../../assets/icon_favorites.png')}
+  />
+);
 const profileTabBarIcon: React.FC<any> = ({focused}) => (
   <Image
     style={[styles.icon, {opacity: focused ? 1 : notFocused}]}
@@ -40,6 +47,14 @@ export const MainTabScreen = () => (
       options={{
         tabBarLabel: 'Лента',
         tabBarIcon: FeedTabBarIcon,
+      }}
+    />
+    <Tab.Screen
+      name={screenNames.ARTWORK_API_STACK}
+      component={ArtworkStack}
+      options={{
+        tabBarLabel: 'Данные',
+        tabBarIcon: ArtworkTabBarIcon,
       }}
     />
   </Tab.Navigator>

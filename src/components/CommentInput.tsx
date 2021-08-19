@@ -6,7 +6,7 @@ import {
   Text,
   TouchableOpacity,
 } from 'react-native';
-import {height as h, rem, width as w} from '../consts/size';
+import {rem} from '../consts/size';
 import {useSelector} from 'react-redux';
 import {getUserSelector} from '../store/selectors';
 import firebase from 'firebase';
