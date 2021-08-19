@@ -21,3 +21,4 @@ export const getArtworksSelector = (state: AppRootStateType) =>
   state.data.artworks;
 export const isLoadingArtworksSelector = (state: AppRootStateType) =>
   state.data.isLoadingArtworks;
+
