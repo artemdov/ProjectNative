@@ -15,7 +15,7 @@ export const ArtworkDetailScreen: React.FC<any> = ({route}) => {
     <SafeAreaView style={styles.container}>
       <ScrollView>
         <ArtworkItemDetail imageId={imageId} />
-        <Text numberOfLines={1} ellipsizeMode="tail" style={styles.ImageTitle}>
+        <Text numberOfLines={1} ellipsizeMode="tail" style={styles.imageTitle}>
           {imageName.toUpperCase()}
         </Text>
         <Text style={styles.textDescription}>{artworkDescription}</Text>
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     paddingBottom: vrem(14),
   },
-  ImageTitle: {
+  imageTitle: {
     color: '#161616',
     textAlign: 'center',
     fontSize: rem(27),

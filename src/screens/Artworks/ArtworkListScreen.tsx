@@ -31,8 +31,15 @@ export const ArtworkListScreen: React.FC<any> = ({navigation}) => {
   const [searchValue, setSearchValue] = useState('');
 
   const onPressSearchArtwork = async () => {
-    await dispatch(searchArtwork(searchValue));
-    setSearchValue('');
+    try {
+      dispatch(isLoadingArtworks(true));
+      await dispatch(searchArtwork(searchValue));
+      dispatch(isLoadingArtworks(false));
+      setSearchValue('');
+    }
+    catch (er) {
+      console.log(er);
+    }
   };
 
   const fetchArtworks = async () => {
@@ -60,8 +67,8 @@ export const ArtworkListScreen: React.FC<any> = ({navigation}) => {
           onChangeText={setSearchValue}
         />
         <TouchableOpacity onPress={onPressSearchArtwork}>
-          <View style={styles.buttonSearch}>
-            <Ionicons name="search-circle" style={styles.iconSearch} />
+          <View style={styles.searchButton}>
+            <Ionicons name="search-circle" style={styles.searchIcon} />
           </View>
         </TouchableOpacity>
       </View>
@@ -127,7 +134,7 @@ const styles = StyleSheet.create({
     paddingRight: rem(190),
     paddingVertical: vrem(5),
   },
-  buttonSearch: {
+  searchButton: {
     justifyContent: 'center',
     alignItems: 'center',
     marginLeft: rem(50),
@@ -136,7 +143,7 @@ const styles = StyleSheet.create({
     borderRadius: rem(20),
     backgroundColor: '#4f016d',
   },
-  iconSearch: {
+  searchIcon: {
     fontSize: rem(40),
     color: '#fff',
   },
