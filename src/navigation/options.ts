@@ -22,6 +22,26 @@ export const addPostOptions = {
   },
   headerBackTitleVisible: false,
 };
+export const profileOptions = {
+  title: '',
+  headerTitleAlign: 'center',
+  headerStyle: {
+    backgroundColor: '#fff',
+    shadowColor: '#fff',
+    elevation: 0,
+  },
+  headerBackTitleVisible: false,
+};
+export const EditProfileScreenOptions = {
+  headerTitle: 'Редактировать профиль',
+  headerBackTitleVisible: false,
+  headerTitleAlign: 'center',
+  headerStyle: {
+    backgroundColor: '#fff',
+    shadowColor: '#fff',
+    elevation: 0,
+  },
+};
 export const ArtworkDetailScreenOptions = {
   title: '',
   headerTintColor: '#fff',

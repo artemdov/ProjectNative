@@ -1,12 +1,12 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {ProfileScreen} from '../Profile/ProfileScreen';
 import screenNames from '../../navigation/ScreenNames';
 import {bottomTabBarOptions} from '../../navigation/options';
 import {Image, StyleSheet} from 'react-native';
 import {rem} from '../../consts/size';
 import {FeedPostStack} from '../../navigation/routes/FeedPostStack';
 import {ArtworkStack} from '../../navigation/routes/ArtworkStack';
+import {ProfileStack} from '../../navigation/routes/ProfileStack';
 
 const Tab = createBottomTabNavigator<any>();
 const notFocused = 0.51;
@@ -34,8 +34,8 @@ const FeedTabBarIcon: React.FC<any> = ({focused}) => (
 export const MainTabScreen = () => (
   <Tab.Navigator tabBarOptions={bottomTabBarOptions}>
     <Tab.Screen
-      name={screenNames.PROFILE_SCREEN}
-      component={ProfileScreen}
+      name={screenNames.PROFILE_STACK}
+      component={ProfileStack}
       options={{
         tabBarLabel: 'Профиль',
         tabBarIcon: profileTabBarIcon,

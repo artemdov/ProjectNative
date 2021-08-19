@@ -15,7 +15,7 @@ import {Comment} from './Comment';
 import {setComments, setCommentMenuVisible} from '../store/actions/feedAction';
 import {StyleSheet, View, TouchableOpacity, Text, Image} from 'react-native';
 
-export const PostCard: React.FC<any> = ({item, onDelete}) => {
+export const PostCard: React.FC<any> = ({item, onDelete, onPress}) => {
   let [likes, setLikes] = useState<any>([]);
   const dispatch = useDispatch();
   const comments = useSelector(getCommentsSelector);
@@ -127,7 +127,9 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
       <View style={styles.userInfo}>
         <Image style={styles.userImg} source={{uri: item.userImage}} />
         <View style={styles.userInfoText}>
+          <TouchableOpacity onPress={onPress}>
           <Text style={styles.userName}>{item.userName}</Text>
+          </TouchableOpacity>
           <Text style={styles.postTime}>{moment(item.postTime).fromNow()}</Text>
         </View>
       </View>

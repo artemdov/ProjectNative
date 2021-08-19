@@ -61,7 +61,10 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
   const keyExtractor = (item: {id: string}) => item.id;
 
   const renderItem = ({item}: any) => (
-    <PostCard item={item} onDelete={handleDelete} />
+    <PostCard item={item}
+              onDelete={handleDelete}
+              onPress={() => {navigation.navigate(screenNames.PROFILE_SCREEN, {userId: item.userId})}}
+    />
   );
 
   const handleDelete = (postId: string) => {
