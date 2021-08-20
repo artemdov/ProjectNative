@@ -21,4 +21,9 @@ export const getArtworksSelector = (state: AppRootStateType) =>
   state.data.artworks;
 export const isLoadingArtworksSelector = (state: AppRootStateType) =>
   state.data.isLoadingArtworks;
-
+export const isLoadingEditUserSelector = (state: AppRootStateType) =>
+    state.userInfo.upLoadingUserInfo;
+export const isTransferredEditUserSelector = (state: AppRootStateType) =>
+    state.userInfo.transferredImage;
+export const getUserInfoSelector = (state: AppRootStateType) =>
+    state.userInfo.userInfo;

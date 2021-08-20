@@ -7,7 +7,7 @@ const initialState = {
 };
 type initialStateType = typeof initialState;
 
-export const ArtworksReducer = (state = initialState, action: ActionType) => {
+export const artworksReducer = (state = initialState, action: ActionType) => {
   switch (action.type) {
     case actionTypes.artworks.SET_ARTWORKS:
       return <initialStateType>{...state, artworks: action.payload};

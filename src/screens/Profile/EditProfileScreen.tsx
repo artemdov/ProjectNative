@@ -4,9 +4,11 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
+import {useSelector} from "react-redux";
+import {getUserInfoSelector} from "../../store/selectors";
 
 export const EditProfileScreen: React.FC<any> = () => {
-    const [userData, setUserData] = useState(null);
+    const userInfo = useSelector(getUserInfoSelector)
 
     return (
     <KeyboardAwareScrollView style={styles.container}>
@@ -16,8 +18,8 @@ export const EditProfileScreen: React.FC<any> = () => {
                 placeholder="First Name"
                 placeholderTextColor="#666666"
                 autoCorrect={false}
-                value={userData ? userData.fname : ''}
-                onChangeText={(txt) => setUserData({...userData, fname: txt})}
+                value={userInfo ? userInfo.fname : ''}
+                onChangeText={(txt) => setUserData({...userInfo, fname: txt})}
                 style={styles.textInput}
             />
         </View>
@@ -26,8 +28,8 @@ export const EditProfileScreen: React.FC<any> = () => {
             <TextInput
                 placeholder="Last Name"
                 placeholderTextColor="#666666"
-                value={userData ? userData.lname : ''}
-                onChangeText={(txt) => setUserData({...userData, lname: txt})}
+                value={userInfo ? userInfo.lname : ''}
+                onChangeText={(txt) => setUserData({...userInfo, lname: txt})}
                 autoCorrect={false}
                 style={styles.textInput}
             />
@@ -39,8 +41,8 @@ export const EditProfileScreen: React.FC<any> = () => {
                 numberOfLines={3}
                 placeholder="About Me"
                 placeholderTextColor="#666666"
-                value={userData ? userData.about : ''}
-                onChangeText={(txt) => setUserData({...userData, about: txt})}
+                value={userInfo ? userInfo.about : ''}
+                onChangeText={(txt) => setUserData({...userInfo, about: txt})}
                 autoCorrect={true}
                 style={[styles.textInput, {height: 40}]}
             />
@@ -52,8 +54,8 @@ export const EditProfileScreen: React.FC<any> = () => {
                 placeholderTextColor="#666666"
                 keyboardType="number-pad"
                 autoCorrect={false}
-                value={userData ? userData.phone : ''}
-                onChangeText={(txt) => setUserData({...userData, phone: txt})}
+                value={userInfo ? userInfo.phone : ''}
+                onChangeText={(txt) => setUserData({...userInfo, phone: txt})}
                 style={styles.textInput}
             />
         </View>
@@ -64,8 +66,8 @@ export const EditProfileScreen: React.FC<any> = () => {
                 placeholder="Country"
                 placeholderTextColor="#666666"
                 autoCorrect={false}
-                value={userData ? userData.country : ''}
-                onChangeText={(txt) => setUserData({...userData, country: txt})}
+                value={userInfo ? userInfo.country : ''}
+                onChangeText={(txt) => setUserData({...userInfo, country: txt})}
                 style={styles.textInput}
             />
         </View>
@@ -79,8 +81,8 @@ export const EditProfileScreen: React.FC<any> = () => {
                 placeholder="City"
                 placeholderTextColor="#666666"
                 autoCorrect={false}
-                value={userData ? userData.city : ''}
-                onChangeText={(txt) => setUserData({...userData, city: txt})}
+                value={userInfo ? userInfo.city : ''}
+                onChangeText={(txt) => setUserData({...userInfo, city: txt})}
                 style={styles.textInput}
             />
         </View>
@@ -105,7 +107,7 @@ const styles = StyleSheet.create({
     textInput: {
         flex: 1,
         marginTop: Platform.OS === 'ios' ? 0 : -12,
-        paddingLeft: 10,
+        paddingLeft: 12,
         color: '#333333',
     },
 });

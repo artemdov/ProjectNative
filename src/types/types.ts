@@ -10,7 +10,7 @@ import {
 import {
   setArtworks,
   isLoadingArtworks,
-} from '../store/actions/ArtworksAction';
+} from '../store/actions/artworksAction';
 import {
   setCommentMenuVisible,
   setComments,
@@ -20,6 +20,7 @@ import {
   setTransferred,
   upLoadingImage,
 } from '../store/actions/feedAction';
+import {setTransferredUserImage, setUserInfo, upLoadingUserImage} from "../store/actions/editUserAction";
 
 export type myOptionsType = {
   title: string;
@@ -104,4 +105,9 @@ type feedActionType =
   | ReturnType<typeof setIsLoadingPost>
   | ReturnType<typeof setTransferred>;
 
-export type ActionType = ArtworkActionType | AuthActionType | feedActionType;
+type EditUserType =
+    | ReturnType<typeof setUserInfo>
+    | ReturnType<typeof upLoadingUserImage>
+    | ReturnType<typeof setTransferredUserImage>;
+
+export type ActionType = ArtworkActionType | AuthActionType | feedActionType | EditUserType;

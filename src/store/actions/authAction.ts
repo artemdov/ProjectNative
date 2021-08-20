@@ -3,8 +3,9 @@ import {
   OnSubmitLoginType,
   OnSubmitRegistrationDataType,
 } from '../../types/types';
-import {firebase, FirebaseAuthTypes} from '@react-native-firebase/auth';
+import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import {Dispatch} from 'redux';
+import firebase from "firebase";
 
 export const setIsLoggedIn = (value: boolean) =>
   ({
@@ -34,13 +35,22 @@ export const onSubmitRegistration =
   (data: OnSubmitRegistrationDataType) => async (dispatch: Dispatch) => {
     try {
       dispatch(setLoadingStatus(true));
-      const res = await firebase
-        .auth()
-        .createUserWithEmailAndPassword(data.email, data.password);
-      if (res.user) {
-        dispatch(setIsLoggedIn(true));
-        dispatch(setLoadingStatus(false));
-      }
+      const res = await auth()
+        .createUserWithEmailAndPassword(data.email, data.password)
+              if (res.user) {
+                  dispatch(setIsLoggedIn(true));
+                  dispatch(setLoadingStatus(false));
+              }
+              await firebase
+                  .database()
+                  .ref(`users/${res.user.uid}`)
+                  .update({
+                      email: data.email,
+                      userName: '',
+                      userImage: null,
+                      createdAt: firebase.database.ServerValue.TIMESTAMP,
+                  }).then(()=>console.log('user registered'))
+
     }
     catch (err) {
       dispatch(errorMessage(err));
@@ -51,8 +61,7 @@ export const onSubmitLogIn =
   (data: OnSubmitLoginType) => async (dispatch: Dispatch) => {
     try {
       dispatch(setLoadingStatus(true));
-      await firebase
-        .auth()
+      await auth()
         .signInWithEmailAndPassword(data.email, data.password);
       dispatch(setIsLoggedIn(true));
       dispatch(setLoadingStatus(false));
@@ -66,7 +75,7 @@ export const onSubmitLogIn =
 export const onSubmitLogOut = () => async (dispatch: Dispatch) => {
   try {
     dispatch(setLoadingStatus(true));
-    await firebase.auth().signOut();
+    await auth().signOut();
     dispatch(setIsLoggedIn(false));
     dispatch(setLoadingStatus(false));
   }
