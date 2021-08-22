@@ -27,3 +27,5 @@ export const isTransferredEditUserSelector = (state: AppRootStateType) =>
     state.userInfo.transferredImage;
 export const getUserInfoSelector = (state: AppRootStateType) =>
     state.userInfo.userInfo;
+export const getImageUserSelector = (state: AppRootStateType) => state.userInfo.userImage;
+

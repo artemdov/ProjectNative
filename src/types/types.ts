@@ -20,7 +20,7 @@ import {
   setTransferred,
   upLoadingImage,
 } from '../store/actions/feedAction';
-import {setTransferredUserImage, setUserInfo, upLoadingUserImage} from "../store/actions/editUserAction";
+import {setTransferredUserImage, setUserImage, setUserInfo, upLoadingUserImage} from "../store/actions/editUserAction";
 
 export type myOptionsType = {
   title: string;
@@ -108,6 +108,8 @@ type feedActionType =
 type EditUserType =
     | ReturnType<typeof setUserInfo>
     | ReturnType<typeof upLoadingUserImage>
-    | ReturnType<typeof setTransferredUserImage>;
+    | ReturnType<typeof setTransferredUserImage>
+    | ReturnType<typeof setUserImage>
+
 
 export type ActionType = ArtworkActionType | AuthActionType | feedActionType | EditUserType;

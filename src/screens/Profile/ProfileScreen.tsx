@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {onSubmitLogOut} from '../../store/actions/authAction';
 import screenNames from '../../navigation/ScreenNames';
 import {rem, vrem} from '../../consts/size';
-import {getPostsSelector, getUserSelector} from "../../store/selectors";
+import {getImageUserSelector, getPostsSelector, getUserInfoSelector, getUserSelector} from "../../store/selectors";
 import {setIsLoadingPost, setPosts} from "../../store/actions/feedAction";
 import firebase from "firebase";
 import {PostCard} from "../../components/PostCard";
@@ -12,10 +12,10 @@ import {PostCard} from "../../components/PostCard";
 export const ProfileScreen: React.FC<any> = ({navigation, route}) => {
     const data: any = useSelector(getPostsSelector);
     const user: any = useSelector(getUserSelector);
+    const userImage = useSelector(getImageUserSelector)
+    const userInfo: any = useSelector(getUserInfoSelector)
     const userUID = user && user.uid;
     const dispatch = useDispatch();
-    console.log('user', user)
-    console.log('data', data)
 
     const onPressLogout = () => {
         dispatch(onSubmitLogOut());
@@ -26,22 +26,18 @@ export const ProfileScreen: React.FC<any> = ({navigation, route}) => {
         navigation.navigate(screenNames.EDIT_PROFILE_SCREEN);
     }
 
-    const fetch = () => {
+    const fetchUser = () => {
         dispatch(setIsLoadingPost(true));
         const postsRef = firebase.database().ref('usersPost')
         const onLoadingFeed = postsRef.on('value', snapshot => {
             const listData: any = [];
             snapshot.forEach(childSnapshot => {
-                const {id, userId, post, postImg, postTime, likes, userName} =
+                const {id, userId, post, postImg, postTime, likes, userImage} =
                     childSnapshot.val();
                 listData.push({
                     id,
                     userId,
-                    userName,
-                    userImage:
-                        'https://lh5.googleusercontent.com/' +
-                        '-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/' +
-                        'AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg',
+                    userImage,
                     postTime,
                     post,
                     postImg,
@@ -57,7 +53,7 @@ export const ProfileScreen: React.FC<any> = ({navigation, route}) => {
     };
 
     useEffect(() => {
-        fetch();
+        fetchUser();
     }, []);
 
     return (
@@ -65,8 +61,8 @@ export const ProfileScreen: React.FC<any> = ({navigation, route}) => {
             <ScrollView style={styles.wrapper}
                         contentContainerStyle={styles.content}
                         showsVerticalScrollIndicator={false}>
-                <Image style={styles.userImage} source={require('../../assets/users/user-6.jpg')}/>
-                <Text style={styles.userName}>Катя Иванова</Text>
+                <Image style={styles.userImage} source={{uri: userImage}}/>
+                <Text style={styles.userName}>{userInfo && userInfo.firstName || 'Без имени'} {userInfo && userInfo.firstName && userInfo.lastName || ''}</Text>
                 <Text style={styles.userName}>{route.params ? route.params.userId : userUID}</Text>
                 <View style={styles.userButtonWrapper}>
                     <TouchableOpacity style={styles.userButton} onPress={onPressLogout}>

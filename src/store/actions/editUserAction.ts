@@ -19,3 +19,9 @@ export const setTransferredUserImage = (transferred: number) =>
         type: actionTypes.editUser.SET_TRANSFERRED_IMAGE,
         payload: transferred,
     } as const);
+
+export const setUserImage = (image?: string) =>
+    ({
+        type: actionTypes.editUser.SET_USER_IMAGE,
+        payload: image,
+    } as const);
