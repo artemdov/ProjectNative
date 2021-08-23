@@ -32,7 +32,7 @@ import {rem, vrem} from "../../consts/size";
 import ActionButton from "react-native-action-button";
 import Icon from "react-native-vector-icons/Ionicons";
 
-export const EditProfileScreen: React.FC<any> = () => {
+export const EditProfileScreen: React.FC<any> = ({navigation}) => {
     const userInfo: any = useSelector(getUserInfoSelector)
     const userImage = useSelector(getImageUserSelector)
     const user: any = useSelector(getUserSelector)
@@ -47,19 +47,18 @@ export const EditProfileScreen: React.FC<any> = () => {
             .ref(`users/${user.uid}`)
             .get()
             .then(snapshot => {
+                console.log(snapshot,snapshot.val())
                 if (snapshot.exists()) {
                     dispatch(setUserInfo(snapshot.val()))
-                    console.log(snapshot.val())
                 }
             })
     }
+
     const handleUpdate = async () => {
         let imgUrl = await uploadUserImage();
-
         if (imgUrl == null && userInfo.userImage) {
             imgUrl = userInfo.userImage;
         }
-
         firebase
             .database()
             .ref(`users/${user.uid}`)
@@ -72,9 +71,9 @@ export const EditProfileScreen: React.FC<any> = () => {
                 userImage: imgUrl,
             })
             .then(() => {
-                console.log('User Updated!');
+                navigation.goBack();
                 Alert.alert(
-                    'Профиль обнофиль!',
+                    'Профиль обновлен!',
                     'Ваш профиль обновлен успешно.'
                 );
             })
@@ -142,10 +141,11 @@ export const EditProfileScreen: React.FC<any> = () => {
 
     return (
         <KeyboardAwareScrollView style={styles.container}>
-            {userImage ? (<ImageBackground
-                    source={{uri: userImage}}
+            {userInfo && userInfo.userImage ? (<ImageBackground
+                    source={{uri: userImage || userInfo && userInfo.userImage}}
                     style={{height: 100, width: 100}}
-                    imageStyle={{borderRadius: 15}}/>) :
+                    imageStyle={{borderRadius: 15}}/>)
+                :
                 (<View
                     style={{
                         width: rem(70),
@@ -175,7 +175,7 @@ export const EditProfileScreen: React.FC<any> = () => {
                     placeholderTextColor="#666666"
                     autoCorrect={false}
                     value={userInfo ? userInfo.firstName : ''}
-                    onChangeText={(txt) => dispatch(setUserInfo({...userInfo, firstName: txt}))}
+                    onChangeText={(value) => dispatch(setUserInfo({...userInfo, firstName: value}))}
                     style={styles.textInput}
                 />
             </View>
@@ -185,7 +185,7 @@ export const EditProfileScreen: React.FC<any> = () => {
                     placeholder="Фамилия"
                     placeholderTextColor="#666666"
                     value={userInfo ? userInfo.lastName : ''}
-                    onChangeText={(txt) => dispatch(setUserInfo({...userInfo, lastName: txt}))}
+                    onChangeText={(value) => dispatch(setUserInfo({...userInfo, lastName: value}))}
                     autoCorrect={false}
                     style={styles.textInput}
                 />
@@ -199,7 +199,7 @@ export const EditProfileScreen: React.FC<any> = () => {
                     keyboardType="number-pad"
                     autoCorrect={false}
                     value={userInfo ? userInfo.phone : ''}
-                    onChangeText={(txt) => dispatch(setUserInfo({...userInfo, phone: txt}))}
+                    onChangeText={(value) => dispatch(setUserInfo({...userInfo, phone: value}))}
                     style={styles.textInput}
                 />
             </View>
@@ -211,22 +211,7 @@ export const EditProfileScreen: React.FC<any> = () => {
                     placeholderTextColor="#666666"
                     autoCorrect={false}
                     value={userInfo ? userInfo.country : ''}
-                    onChangeText={(txt) => dispatch(setUserInfo({...userInfo, country: txt}))}
-                    style={styles.textInput}
-                />
-            </View>
-            <View style={styles.action}>
-                <MaterialCommunityIcons
-                    name="map-marker-outline"
-                    color="#333333"
-                    size={20}
-                />
-                <TextInput
-                    placeholder="Город"
-                    placeholderTextColor="#666666"
-                    autoCorrect={false}
-                    value={userInfo ? userInfo.city : ''}
-                    onChangeText={(txt) => dispatch(setUserInfo({...userInfo, city: txt}))}
+                    onChangeText={(value) => dispatch(setUserInfo({...userInfo, country: value}))}
                     style={styles.textInput}
                 />
             </View>
@@ -269,15 +254,14 @@ const styles = StyleSheet.create({
     action: {
         flexDirection: 'row',
         paddingBottom: vrem(4),
-        marginTop: rem(8),
         paddingLeft: rem(5),
-        marginBottom: rem(10),
+        marginVertical: rem(6),
         borderBottomWidth: rem(2),
         borderBottomColor: '#f2f2f2',
     },
     textInput: {
         flex: 1,
-        marginTop: vrem(-18),
+        marginTop: vrem(-20),
         paddingLeft: rem(10),
         color: '#333333',
         opacity: 0.6,
@@ -287,11 +271,11 @@ const styles = StyleSheet.create({
         color: '#ffffff',
     },
     actionButtonStyle: {
-        marginBottom: vrem(25),
+        marginVertical: vrem(8),
         marginHorizontal: rem(-22),
     },
     button: {
-        marginTop: vrem(110),
+        marginTop: vrem(230),
         paddingHorizontal: rem(6),
     },
     statusLoadingWrapper: {
