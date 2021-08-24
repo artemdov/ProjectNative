@@ -21,6 +21,7 @@ import {
   upLoadingImage,
 } from '../store/actions/feedAction';
 import {
+  setEditedUserInfo,
   setTransferredUserImage,
   setUserImage,
   setUserInfo,
@@ -116,7 +117,8 @@ type EditUserType =
     | ReturnType<typeof upLoadingUserImage>
     | ReturnType<typeof setTransferredUserImage>
     | ReturnType<typeof setUserImage>
-    | ReturnType<typeof setUserPosts>;
+    | ReturnType<typeof setUserPosts>
+    | ReturnType<typeof setEditedUserInfo>;
 
 
 

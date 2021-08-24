@@ -3,33 +3,41 @@ import {rem} from '../consts/size';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import {useDispatch, useSelector} from 'react-redux';
-import {getCommentsSelector, getUserInfoSelector, getUserSelector, isCommentVisibleSelector,} from '../store/selectors';
+import {
+    getCommentsSelector,
+    getEditedUserInfoSelector,
+    getUserInfoSelector,
+    getUserSelector,
+    isCommentVisibleSelector,
+} from '../store/selectors';
 import moment from 'moment';
 import firebase from 'firebase';
 import {CommentInput} from './CommentInput';
 import {Comment} from './Comment';
 import {setCommentMenuVisible, setComments} from '../store/actions/feedAction';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {photoProfile} from "../utils/helpers";
+import {photoUserProfile} from "../utils/helpers";
+import {setEditedUserInfo, setTransferredUserImage, setUserInfo} from "../store/actions/editUserAction";
 
 export const PostCard: React.FC<any> = ({item, onDelete, onPress}) => {
-    let [likes, setLikes] = useState<any>([]);
     const dispatch = useDispatch();
     const comments = useSelector(getCommentsSelector);
     const user: any = useSelector(getUserSelector);
-    const userInfo: any = useSelector(getUserInfoSelector);
+   // const editUserInfo: any = useSelector(getEditedUserInfoSelector)
     const isCommentVisibleMenu = useSelector(isCommentVisibleSelector);
-    const [userData, setUserData] = useState<any>(null);
-
+    let [likes, setLikes] = useState<any>([]);
+    const [currentUser, setCurrentUser] = useState<any>(null);
+    console.log('currentUser', currentUser)
+   // console.log('editUserInfo', editUserInfo)
     const getUser = async () => {
         await firebase
             .database()
             .ref(`users/${item.userId}`)
             .on('value', snapshot => {
                 if (snapshot.exists()) {
-                    console.log('snapshotPOSTCARD', snapshot.val())
-                    //dispatch(setUserInfo(snapshot.val()))
-                    setUserData(snapshot.val())
+                    console.log('snapshot', snapshot.val())
+                    //dispatch(setEditedUserInfo(snapshot.val()))
+                    setCurrentUser(snapshot.val())
                 }
             })
     }
@@ -136,11 +144,11 @@ export const PostCard: React.FC<any> = ({item, onDelete, onPress}) => {
         <View style={styles.card} key={item.id}>
             <View style={styles.userInfo}>
                 <Image style={styles.userImage}
-                       source={{uri: userData && userData.userImage || photoProfile}}/>
+                       source={{uri: currentUser && currentUser.userImage || photoUserProfile}}/>
                 <View style={styles.userInfoText}>
                     <TouchableOpacity onPress={onPress}>
-                        <Text style={styles.userName}>{userData && userData.firstName || 'Без имени'}
-                        {' '}{userData && userData.firstName && userData.lastName || ''}</Text>
+                        <Text style={styles.userName}>{currentUser && currentUser.firstName || 'Без имени'}
+                        {' '}{currentUser && currentUser.firstName && currentUser.lastName || ''}</Text>
                     </TouchableOpacity>
                     <Text style={styles.postTime}>{moment(item.postTime).fromNow()}</Text>
                 </View>

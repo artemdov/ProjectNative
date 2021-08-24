@@ -8,6 +8,12 @@ export const setUserInfo = (userInfo: any) =>
         payload: userInfo,
     } as const);
 
+export const setEditedUserInfo = (editedUserInfo: any) =>
+    ({
+        type: actionTypes.editUser.SET_EDITED_USER_INFO,
+        payload: editedUserInfo,
+    } as const);
+
 export const upLoadingUserImage = (uploading: boolean) =>
     ({
         type: actionTypes.editUser.SET_UPLOADING_USER_IMAGE,

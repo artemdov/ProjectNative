@@ -17,8 +17,8 @@ import {getUserInfoSelector, getUserPostsSelector, getUserSelector, isLoadingPos
 import {setIsLoadingPost} from "../../store/actions/feedAction";
 import firebase from "firebase";
 import {PostCard} from "../../components/PostCard";
-import {setUserPosts} from "../../store/actions/editUserAction";
-import {photoProfile} from "../../utils/helpers";
+import {setUserInfo, setUserPosts} from "../../store/actions/editUserAction";
+import {photoUserProfile} from "../../utils/helpers";
 
 export const ProfileScreen: React.FC<any> = ({navigation, route}) => {
     const data: any = useSelector(getUserPostsSelector);
@@ -26,16 +26,9 @@ export const ProfileScreen: React.FC<any> = ({navigation, route}) => {
     const userInfo: any = useSelector(getUserInfoSelector)
     const isLoadingUserPost = useSelector(isLoadingPostSelector);
     const userUID = user && user.uid;
-    const [userData, setUserData] = useState<any>(null);
     const [loading, setLoading] = useState(true);
-
-
     const dispatch = useDispatch();
-    console.log('user.uid', userUID)
     console.log('data', data)
-    console.log('userInfo', userInfo)
-    console.log('route params', route.params)
-
 
     const onPressLogout = () => {
         dispatch(onSubmitLogOut());
@@ -52,7 +45,8 @@ export const ProfileScreen: React.FC<any> = ({navigation, route}) => {
         const onLoadingFeed = postsRef.on('value', snapshot => {
             const listData: any = [];
             snapshot.forEach(childSnapshot => {
-                if(route.params ? childSnapshot.val().userId ===  route.params.userId : childSnapshot.val().userId === userUID) {
+                const userId = childSnapshot.val().userId
+                if (route.params ? userId === route.params.userId : userId === userUID) {
                     const {id, userId, post, postImg, postTime, likes, userImage} =
                         childSnapshot.val();
                     listData.push({
@@ -65,9 +59,6 @@ export const ProfileScreen: React.FC<any> = ({navigation, route}) => {
                         likes,
                     })
                 }
-                // listData.filter((item: any) => item && item.userId != route.params ? route.params.userId :  userUID)
-                // console.log('listData', listData)
-
             });
             dispatch(setUserPosts(listData));
             dispatch(setIsLoadingPost(false));
@@ -83,9 +74,8 @@ export const ProfileScreen: React.FC<any> = ({navigation, route}) => {
             .ref(`users/${route.params && route.params.userId || userUID}`)
             .on('value', snapshot => {
                 if (snapshot.exists()) {
-                    console.log('snapshotPROFILE', snapshot.val())
-                    //dispatch(setUserInfo(snapshot.val()))
-                    setUserData(snapshot.val())
+                    dispatch(setUserInfo(snapshot.val()))
+                    //setUserData(snapshot.val())
                 }
             })
     }
@@ -98,14 +88,16 @@ export const ProfileScreen: React.FC<any> = ({navigation, route}) => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <ScrollView style={styles.wrapper}
-                        contentContainerStyle={styles.content}
-                        showsVerticalScrollIndicator={false}>
+            {isLoadingUserPost ? (
+                <ActivityIndicator style={styles.loader} size="large" color="#0000ff"/>
+            ) : (<ScrollView style={styles.wrapper}
+                             contentContainerStyle={styles.content}
+                             showsVerticalScrollIndicator={false}>
                 <Image style={styles.userImage}
-                       source={{uri: userData && userData.userImage || photoProfile}}/>
-                <Text style={styles.userName}>{userData && userData.firstName || 'Без имени'}
+                       source={{uri: userInfo && userInfo.userImage || photoUserProfile}}/>
+                <Text style={styles.userName}>{userInfo && userInfo.firstName || 'Без имени'}
                     {' '}
-                    {userData && userData.firstName && userData.lastName || ''}</Text>
+                    {userInfo && userInfo.firstName && userInfo.lastName || ''}</Text>
                 {!route.params &&
                 (<View style={styles.userButtonWrapper}>
                     <TouchableOpacity style={styles.userButton} onPress={onPressLogout}>
@@ -116,16 +108,15 @@ export const ProfileScreen: React.FC<any> = ({navigation, route}) => {
                         <Text style={styles.userButtonText}>Редактировать профиль</Text>
                     </TouchableOpacity>
                 </View>)}
-                {isLoadingUserPost ? (
-                    <ActivityIndicator style={styles.loader} size="large" color="#0000ff"/>
-                ) : (
+                {
                     data.map((item: any) => (
                         <PostCard key={item.id}
                                   item={item}
                         />)
-                    ))
+                    )
                 }
-            </ScrollView>
+
+            </ScrollView>)}
         </SafeAreaView>
     );
 };
