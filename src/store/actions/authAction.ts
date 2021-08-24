@@ -46,11 +46,10 @@ export const onSubmitRegistration =
                   .ref(`users/${res.user.uid}`)
                   .update({
                       email: data.email,
-                      userName: '',
+                      userId: res.user.uid,
                       userImage: null,
                       createdAt: firebase.database.ServerValue.TIMESTAMP,
                   }).then(()=>console.log('user registered'))
-
     }
     catch (err) {
       dispatch(errorMessage(err));

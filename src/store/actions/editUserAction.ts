@@ -25,3 +25,8 @@ export const setUserImage = (image?: string) =>
         type: actionTypes.editUser.SET_USER_IMAGE,
         payload: image,
     } as const);
+export const setUserPosts = (posts: any) =>
+    ({
+        type: actionTypes.editUser.SET_USER_POSTS,
+        payload: posts,
+    } as const);
