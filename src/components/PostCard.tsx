@@ -5,8 +5,6 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import {useDispatch, useSelector} from 'react-redux';
 import {
     getCommentsSelector,
-    getEditedUserInfoSelector,
-    getUserInfoSelector,
     getUserSelector,
     isCommentVisibleSelector,
 } from '../store/selectors';
@@ -17,18 +15,15 @@ import {Comment} from './Comment';
 import {setCommentMenuVisible, setComments} from '../store/actions/feedAction';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {photoUserProfile} from "../utils/helpers";
-import {setEditedUserInfo, setTransferredUserImage, setUserInfo} from "../store/actions/editUserAction";
 
 export const PostCard: React.FC<any> = ({item, onDelete, onPress}) => {
     const dispatch = useDispatch();
     const comments = useSelector(getCommentsSelector);
     const user: any = useSelector(getUserSelector);
-   // const editUserInfo: any = useSelector(getEditedUserInfoSelector)
     const isCommentVisibleMenu = useSelector(isCommentVisibleSelector);
     let [likes, setLikes] = useState<any>([]);
     const [currentUser, setCurrentUser] = useState<any>(null);
-    console.log('currentUser', currentUser)
-   // console.log('editUserInfo', editUserInfo)
+
     const getUser = async () => {
         await firebase
             .database()
@@ -36,7 +31,6 @@ export const PostCard: React.FC<any> = ({item, onDelete, onPress}) => {
             .on('value', snapshot => {
                 if (snapshot.exists()) {
                     console.log('snapshot', snapshot.val())
-                    //dispatch(setEditedUserInfo(snapshot.val()))
                     setCurrentUser(snapshot.val())
                 }
             })
@@ -132,6 +126,7 @@ export const PostCard: React.FC<any> = ({item, onDelete, onPress}) => {
     const likeIconColor = isPostLiked ? '#2e64e5' : '#333';
 
     const commentsFromUsersId: any[] = [];
+
     comments.forEach((comment: any) => {
         for (let value in comment) {
             if (item.id === comment[value]) {

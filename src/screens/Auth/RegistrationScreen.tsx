@@ -1,6 +1,6 @@
 import React from 'react';
 import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
-import {CustomButton} from '../../components/common/CustomButton';
+import {CustomFormButton} from '../../components/common/CustomFormButton';
 import {CustomTextInput} from '../../components/common/CustomTextInput';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Formik} from 'formik';
@@ -64,7 +64,7 @@ export const RegistrationScreen: React.FC<any> = ({navigation}) => {
                   secureTextEntry={true}
                 />
                 <View style={styles.button}>
-                  <CustomButton title={'Продолжить'} onPress={handleSubmit} />
+                  <CustomFormButton title='Продолжить' onPress={handleSubmit} />
                 </View>
               </View>
             )}

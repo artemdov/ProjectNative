@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, View, SafeAreaView} from 'react-native';
-import {CustomButton} from '../../components/common/CustomButton';
+import {CustomFormButton} from '../../components/common/CustomFormButton';
 import {CustomTextInput} from '../../components/common/CustomTextInput';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {LoginSchema} from '../../consts/validation';
@@ -53,7 +53,7 @@ export const LoginScreen = () => {
                   secureTextEntry={true}
                 />
                 <View style={styles.button}>
-                  <CustomButton title={'Вход'} onPress={handleSubmit} />
+                  <CustomFormButton title='Вход' onPress={handleSubmit} />
                 </View>
               </View>
             )}

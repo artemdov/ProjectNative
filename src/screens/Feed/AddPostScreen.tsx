@@ -21,7 +21,7 @@ import {
   getImageSelector,
 } from '../../store/selectors';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {CustomButton} from '../../components/common/CustomButton';
+import {CustomFormButton} from '../../components/common/CustomFormButton';
 import {rem, vrem} from '../../consts/size';
 import {
   setImage,
@@ -145,7 +145,7 @@ export const AddPostScreen: React.FC<any> = ({navigation}) => {
           </View>
         ) : (
           <View style={styles.customButton}>
-            <CustomButton title="Отправить" onPress={submitPost} />
+            <CustomFormButton title="Отправить" onPress={submitPost} />
           </View>
         )}
         <TextInput

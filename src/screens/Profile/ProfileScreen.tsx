@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {
-    ActivityIndicator,
+    ActivityIndicator, Alert,
     Image,
     SafeAreaView,
     ScrollView,
@@ -19,6 +19,7 @@ import firebase from "firebase";
 import {PostCard} from "../../components/PostCard";
 import {setUserInfo, setUserPosts} from "../../store/actions/editUserAction";
 import {photoUserProfile} from "../../utils/helpers";
+import {CustomProfileButton} from "../../components/common/CustomProfileButton";
 
 export const ProfileScreen: React.FC<any> = ({navigation, route}) => {
     const data: any = useSelector(getUserPostsSelector);
@@ -26,9 +27,28 @@ export const ProfileScreen: React.FC<any> = ({navigation, route}) => {
     const userInfo: any = useSelector(getUserInfoSelector)
     const isLoadingUserPost = useSelector(isLoadingPostSelector);
     const userUID = user && user.uid;
-    const [loading, setLoading] = useState(true);
     const dispatch = useDispatch();
-    console.log('data', data)
+    const [loading, setLoading] = useState(true);
+
+    const handleDelete = () => {
+        Alert.alert(
+            'Чтобы удалить пост перейдите в ленту',
+            'Перейти в ленту?',
+            [
+                {
+                    text: 'Отмена',
+                    onPress: () => console.log('Cancel pressed'),
+                    style: 'cancel',
+                },
+                {
+                    text: 'Да',
+                    onPress: () => navigation.navigate(screenNames.FEED_SCREEN),
+                    style: 'cancel',
+                },
+            ],
+            {cancelable: false},
+        );
+    };
 
     const onPressLogout = () => {
         dispatch(onSubmitLogOut());
@@ -75,7 +95,6 @@ export const ProfileScreen: React.FC<any> = ({navigation, route}) => {
             .on('value', snapshot => {
                 if (snapshot.exists()) {
                     dispatch(setUserInfo(snapshot.val()))
-                    //setUserData(snapshot.val())
                 }
             })
     }
@@ -90,8 +109,7 @@ export const ProfileScreen: React.FC<any> = ({navigation, route}) => {
         <SafeAreaView style={styles.container}>
             {isLoadingUserPost ? (
                 <ActivityIndicator style={styles.loader} size="large" color="#0000ff"/>
-            ) : (<ScrollView style={styles.wrapper}
-                             contentContainerStyle={styles.content}
+            ) : (<ScrollView contentContainerStyle={styles.content}
                              showsVerticalScrollIndicator={false}>
                 <Image style={styles.userImage}
                        source={{uri: userInfo && userInfo.userImage || photoUserProfile}}/>
@@ -100,18 +118,15 @@ export const ProfileScreen: React.FC<any> = ({navigation, route}) => {
                     {userInfo && userInfo.firstName && userInfo.lastName || ''}</Text>
                 {!route.params &&
                 (<View style={styles.userButtonWrapper}>
-                    <TouchableOpacity style={styles.userButton} onPress={onPressLogout}>
-                        <Text style={styles.userButtonText}>Выйти</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.userButton}
-                                      onPress={onPressEditProfile}>
-                        <Text style={styles.userButtonText}>Редактировать профиль</Text>
-                    </TouchableOpacity>
+                    <CustomProfileButton title='Редактировать профиль' onPress={onPressEditProfile}/>
+                    <CustomProfileButton title='Выйти' onPress={onPressLogout}/>
+
                 </View>)}
                 {
                     data.map((item: any) => (
                         <PostCard key={item.id}
                                   item={item}
+                                  onDelete={handleDelete}
                         />)
                     )
                 }
@@ -126,12 +141,10 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
     },
-    wrapper: {
-        flex: 1,
-        backgroundColor: '#fff',
-        padding: rem(18),
-    },
     content: {
+        marginBottom: rem(15),
+        borderRadius: rem(15),
+        width: rem(375),
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -140,6 +153,7 @@ const styles = StyleSheet.create({
         height: vrem(220),
         backgroundColor: '#666',
         borderRadius: rem(90),
+        marginTop: rem(4),
     },
     userName: {
         fontSize: rem(18),
@@ -149,7 +163,22 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    userButtonWrapper: {},
-    userButton: {},
-    userButtonText: {},
+    userButtonWrapper: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        width: '100%',
+        marginVertical: vrem(13),
+
+    },
+    button: {
+        borderColor: '#2e64e5',
+        borderWidth: rem(2),
+        borderRadius: rem(3),
+        paddingVertical: vrem(8),
+        paddingHorizontal: rem(12),
+        marginHorizontal: rem(5),
+    },
+    userButtonText: {
+        color: '#2e64e5',
+    },
 });
