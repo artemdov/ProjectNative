@@ -21,12 +21,13 @@ import {
   upLoadingImage,
 } from '../store/actions/feedAction';
 import {
+  setOtherUserInfo,
   setTransferredUserImage,
   setUserImage,
   setUserInfo,
   setUserPosts,
   upLoadingUserImage
-} from "../store/actions/editUserAction";
+} from "../store/actions/profileUserAction";
 
 export type myOptionsType = {
   title: string;
@@ -48,7 +49,7 @@ export type Props = {
   navigation: LandingScreenProp;
 };
 
-export type CustomTextInputType = {
+export type CustomFormTextInputType = {
   onChangePassword: (text: string) => void;
   onBlur?: (e: FocusEvent) => void;
   value: string;
@@ -116,7 +117,8 @@ type EditUserType =
     | ReturnType<typeof upLoadingUserImage>
     | ReturnType<typeof setTransferredUserImage>
     | ReturnType<typeof setUserImage>
-    | ReturnType<typeof setUserPosts>;
+    | ReturnType<typeof setUserPosts>
+    | ReturnType<typeof setOtherUserInfo>;
 
 
 

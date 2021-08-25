@@ -4,13 +4,13 @@ import {authReducer} from './reducers/authReducer';
 import {feedReducer} from './reducers/feedReducer';
 import {composeWithDevTools} from 'redux-devtools-extension';
 import {artworksReducer} from './reducers/artworksReducer';
-import {editUserReducer} from "./reducers/editUserReducer";
+import {profileUserReducer} from "./reducers/profileUserReducer";
 
 export const rootReducer = combineReducers({
   auth: authReducer,
   feed: feedReducer,
   data: artworksReducer,
-  userInfo: editUserReducer,
+  userInfo: profileUserReducer,
 });
 export const store = createStore(
   rootReducer,

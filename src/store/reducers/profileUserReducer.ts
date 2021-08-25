@@ -3,6 +3,7 @@ import actionTypes from "../actionTypes";
 
 const initialState = {
     userInfo: null,
+    otherUserInfo: null,
     userImage: '',
     upLoadingUserInfo: false,
     transferredImage: 0,
@@ -10,10 +11,12 @@ const initialState = {
 };
 type initialStateType = typeof initialState;
 
-export const editUserReducer = (state = initialState, action: ActionType) => {
+export const profileUserReducer = (state = initialState, action: ActionType) => {
     switch (action.type) {
         case actionTypes.editUser.SET_USER_INFO:
             return <initialStateType>{...state, userInfo: action.payload};
+        case actionTypes.editUser.SET_OTHER_USER_INFO:
+            return <initialStateType>{...state, otherUserInfo: action.payload};
         case actionTypes.editUser.SET_UPLOADING_USER_IMAGE:
             return <initialStateType>{...state, upLoadingUserInfo: action.payload};
         case actionTypes.editUser.SET_TRANSFERRED_IMAGE:

@@ -2,9 +2,9 @@ import React from 'react';
 import {View, StyleSheet, Text, TextInput} from 'react-native';
 import {height as h, rem, vrem} from '../../consts/size';
 import {width as w} from '../../consts/size';
-import {CustomTextInputType} from '../../types/types';
+import {CustomFormTextInputType} from '../../types/types';
 
-export const CustomTextInput: React.FC<CustomTextInputType> = ({
+export const CustomFormTextInput: React.FC<CustomFormTextInputType> = ({
   onChangePassword,
   onBlur,
   value,

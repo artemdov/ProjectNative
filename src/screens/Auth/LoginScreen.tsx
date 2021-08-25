@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text, View, SafeAreaView} from 'react-native';
 import {CustomFormButton} from '../../components/common/CustomFormButton';
-import {CustomTextInput} from '../../components/common/CustomTextInput';
+import {CustomFormTextInput} from '../../components/common/CustomFormTextInput';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {LoginSchema} from '../../consts/validation';
 import {Formik} from 'formik';
@@ -35,7 +35,7 @@ export const LoginScreen = () => {
               handleSubmit,
             }) => (
               <View style={styles.wrapperElements}>
-                <CustomTextInput
+                <CustomFormTextInput
                   label={'Email'}
                   error={!!errors.email && touched.email}
                   errorMessage={errors.email}
@@ -43,7 +43,7 @@ export const LoginScreen = () => {
                   onChangePassword={handleChange('email')}
                   onBlur={handleBlur('email')}
                 />
-                <CustomTextInput
+                <CustomFormTextInput
                   label={'Пароль'}
                   error={!!errors.password && touched.password}
                   errorMessage={errors.password}

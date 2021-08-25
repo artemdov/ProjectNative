@@ -23,6 +23,10 @@ export const PostCard: React.FC<any> = ({item, onDelete, onPress}) => {
     const isCommentVisibleMenu = useSelector(isCommentVisibleSelector);
     let [likes, setLikes] = useState<any>([]);
     const [currentUser, setCurrentUser] = useState<any>(null);
+    const userImageURL = currentUser && currentUser.userImage || photoUserProfile;
+    const userFirstName = currentUser && currentUser.firstName;
+    const userLastName = currentUser && currentUser.lastName
+
 
     const getUser = async () => {
         await firebase
@@ -30,7 +34,6 @@ export const PostCard: React.FC<any> = ({item, onDelete, onPress}) => {
             .ref(`users/${item.userId}`)
             .on('value', snapshot => {
                 if (snapshot.exists()) {
-                    console.log('snapshot', snapshot.val())
                     setCurrentUser(snapshot.val())
                 }
             })
@@ -139,11 +142,11 @@ export const PostCard: React.FC<any> = ({item, onDelete, onPress}) => {
         <View style={styles.card} key={item.id}>
             <View style={styles.userInfo}>
                 <Image style={styles.userImage}
-                       source={{uri: currentUser && currentUser.userImage || photoUserProfile}}/>
+                       source={{uri: userImageURL}}/>
                 <View style={styles.userInfoText}>
                     <TouchableOpacity onPress={onPress}>
-                        <Text style={styles.userName}>{currentUser && currentUser.firstName || 'Без имени'}
-                        {' '}{currentUser && currentUser.firstName && currentUser.lastName || ''}</Text>
+                        <Text style={styles.userName}>{`${userFirstName || 'Без имени'} ${userFirstName && userLastName || ''}`}
+                        </Text>
                     </TouchableOpacity>
                     <Text style={styles.postTime}>{moment(item.postTime).fromNow()}</Text>
                 </View>

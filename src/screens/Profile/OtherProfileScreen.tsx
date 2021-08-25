@@ -12,94 +12,31 @@ import {useDispatch, useSelector} from 'react-redux';
 import {onSubmitLogOut} from '../../store/actions/authAction';
 import screenNames from '../../navigation/ScreenNames';
 import {rem, vrem} from '../../consts/size';
-import {getUserInfoSelector, getUserPostsSelector, getUserSelector, isLoadingPostSelector} from "../../store/selectors";
+import {
+    getOtherUserInfoSelector,
+    getUserInfoSelector,
+    getUserPostsSelector,
+    getUserSelector,
+    isLoadingPostSelector
+} from "../../store/selectors";
 import {setIsLoadingPost} from "../../store/actions/feedAction";
 import firebase from "firebase";
 import {PostCard} from "../../components/PostCard";
-import {setUserInfo, setUserPosts} from "../../store/actions/profileUserAction";
+import {setOtherUserInfo, setUserInfo, setUserPosts} from "../../store/actions/profileUserAction";
 import {photoUserProfile} from "../../utils/helpers";
 import {CustomProfileButton} from "../../components/common/CustomProfileButton";
 import storage from "@react-native-firebase/storage";
 
-export const ProfileScreen: React.FC<any> = ({navigation}) => {
+export const OtherProfileScreen: React.FC<any> = ({navigation, route}) => {
     const data: any = useSelector(getUserPostsSelector);
-    const user: any = useSelector(getUserSelector);
-    const userInfo: any = useSelector(getUserInfoSelector)
+    const otherUserInfo: any = useSelector(getOtherUserInfoSelector)
     const isLoadingUserPost = useSelector(isLoadingPostSelector);
-    const userUID = user && user.uid;
-    const imageURL = userInfo && userInfo.userImage || photoUserProfile
-    const userFirstName = userInfo && userInfo.firstName
-    const userLastName = userInfo && userInfo.lastName
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(true);
+    const userImageURL = otherUserInfo && otherUserInfo.userImage || photoUserProfile;
+    const userFirstName = otherUserInfo && otherUserInfo.firstName;
+    const userLastName = otherUserInfo && otherUserInfo.lastName
 
-    const handleDelete = (postId: string) => {
-        Alert.alert(
-            'Удалить этот пост',
-            'Вы уверены?',
-            [
-                {
-                    text: 'Отмена',
-                    onPress: () => console.log('Cancel pressed'),
-                    style: 'cancel',
-                },
-                {
-                    text: 'Удалить',
-                    onPress: () => deletePost(postId),
-                    style: 'cancel',
-                },
-            ],
-            {cancelable: false},
-        );
-    };
-
-    const deletePost = (postId: string) => {
-        firebase
-            .database()
-            .ref(`usersPost/${postId}`)
-            .get()
-            .then(snapshot => {
-                if (snapshot.exists()) {
-                    const {postImg} = snapshot.val();
-                    if (postImg) {
-                        const storageRef = storage().refFromURL(postImg);
-                        const imageRef = storage().ref(storageRef.fullPath);
-                        imageRef
-                            .delete()
-                            .then(() => {
-                                console.log(`${postImg} удалена!`);
-                                deleteFirebaseData(postId);
-                            })
-                            .catch(err => {
-                                console.log(err);
-                            });
-                    } else {
-                        deleteFirebaseData(postId);
-                    }
-                }
-            });
-        const deleteFirebaseData = (postId: string) => {
-            firebase
-                .database()
-                .ref(`usersPost/${postId}`)
-                .remove()
-                .then(() => {
-                    Alert.alert('Пост удален', 'Ваш пост удален успешно!');
-                })
-                .catch(err => {
-                    console.log(err);
-                });
-        };
-    };
-
-    const onPressLogout = () => {
-        dispatch(onSubmitLogOut());
-        navigation.navigate(screenNames.LANDING_SCREEN);
-    };
-
-    const onPressEditProfile = () => {
-        navigation.navigate(screenNames.EDIT_PROFILE_SCREEN);
-    }
 
     const fetchUserPosts = () => {
         dispatch(setIsLoadingPost(true));
@@ -108,7 +45,7 @@ export const ProfileScreen: React.FC<any> = ({navigation}) => {
             const listData: any = [];
             snapshot.forEach(childSnapshot => {
                 const userId = childSnapshot.val().userId
-                if (userId === userUID) {
+                if (route.params && userId === route.params.userId) {
                     const {id, userId, post, postImg, postTime, likes, userImage} =
                         childSnapshot.val();
                     listData.push({
@@ -133,10 +70,10 @@ export const ProfileScreen: React.FC<any> = ({navigation}) => {
     const getUser = async () => {
         await firebase
             .database()
-            .ref(`users/${userUID}`)
+            .ref(`users/${route.params && route.params.userId}`)
             .on('value', snapshot => {
                 if (snapshot.exists()) {
-                    dispatch(setUserInfo(snapshot.val()))
+                    dispatch(setOtherUserInfo(snapshot.val()))
                 }
             })
     }
@@ -148,41 +85,34 @@ export const ProfileScreen: React.FC<any> = ({navigation}) => {
     }, [navigation, loading]);
 
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={styles.profileContainer}>
             {isLoadingUserPost ? (
                 <ActivityIndicator style={styles.loader} size="large" color="#0000ff"/>
-            ) : (<ScrollView contentContainerStyle={styles.content}
+            ) : (<ScrollView contentContainerStyle={styles.profileContent}
                              showsVerticalScrollIndicator={false}>
                 <Image style={styles.userImage}
-                       source={{uri: imageURL}}/>
+                       source={{uri: userImageURL}}/>
                 <Text style={styles.userName}>{`${userFirstName || 'Без имени'} ${userFirstName && userLastName || ''}`}
                 </Text>
-                <View style={styles.userButtonWrapper}>
-                    <CustomProfileButton title='Редактировать профиль' onPress={onPressEditProfile}/>
-                    <CustomProfileButton title='Выйти' onPress={onPressLogout}/>
-
-                </View>
                 {
                     data.map((item: any) => (
                         <PostCard key={item.id}
                                   item={item}
-                                  onDelete={handleDelete}
                         />)
                     )
                 }
-
             </ScrollView>)}
         </SafeAreaView>
     );
 };
 
 const styles = StyleSheet.create({
-    container: {
+    profileContainer: {
         flex: 1,
         backgroundColor: '#fff',
     },
-    content: {
-        marginBottom: vrem(15),
+    profileContent: {
+        marginBottom: vrem(14),
         borderRadius: rem(15),
         width: rem(375),
         alignItems: 'center',

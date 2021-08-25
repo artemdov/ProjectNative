@@ -8,12 +8,13 @@ import {
 } from 'react-native';
 import {rem} from '../consts/size';
 import {useSelector} from 'react-redux';
-import {getUserSelector} from '../store/selectors';
+import {getUserInfoSelector, getUserSelector} from '../store/selectors';
 import firebase from 'firebase';
 
 export const CommentInput: React.FC<any> = ({item}) => {
   const commentKey: any = firebase.database().ref().push().key;
   const user: any = useSelector(getUserSelector);
+  const userInfo: any = useSelector(getUserInfoSelector)
 
   const [commentValue, setCommentValue] = useState('');
 
@@ -30,11 +31,8 @@ export const CommentInput: React.FC<any> = ({item}) => {
         createdAt: firebase.database.ServerValue.TIMESTAMP,
         postId: item.id,
         userId: user.uid,
-        userName: user.uid,
-        userImage:
-          'https://lh5.googleusercontent.com/' +
-          '-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/' +
-          'AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg',
+        userName: `${userInfo.firstName} ${userInfo.lastName}`,
+        userImage: userInfo.userImage,
       })
       .then(() => {
         setCommentValue('');

@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {
   ActivityIndicator,
-  Alert,
   Image,
   Platform,
   SafeAreaView,
@@ -25,11 +24,9 @@ import {CustomFormButton} from '../../components/common/CustomFormButton';
 import {rem, vrem} from '../../consts/size';
 import {
   setImage,
-  setTransferred,
-  upLoadingImage,
 } from '../../store/actions/feedAction';
-import storage from '@react-native-firebase/storage';
 import firebase from 'firebase';
+import {uploadImage} from "../../utils/helpers";
 
 export const AddPostScreen: React.FC<any> = ({navigation}) => {
   const [postValue, setPostValue] = useState('');
@@ -65,7 +62,7 @@ export const AddPostScreen: React.FC<any> = ({navigation}) => {
 
   const submitPost = async () => {
     const key: any = await firebase.database().ref().push().key;
-    const imageUrl = await uploadImage();
+    const imageUrl = await uploadImage(newImage);
     dispatch(setImage(''));
     await firebase
       .database()
@@ -91,38 +88,6 @@ export const AddPostScreen: React.FC<any> = ({navigation}) => {
 
   const onChangePost = (value: string) => {
     setPostValue(value);
-  };
-
-  const uploadImage = async () => {
-    if (!newImage) {
-      return null;
-    }
-    const uploadUri = newImage;
-    let fileName = uploadUri.substring(uploadUri.lastIndexOf('/') + 1);
-    const extension = fileName.split('.').pop();
-    const name = fileName.split('.').slice(0, -1).join('.');
-    fileName = name + Date.now() + '.' + extension;
-    const storageRef = storage().ref(`photos/${fileName}`);
-    const task = storageRef.putFile(uploadUri);
-    task.on('state_changed', taskSnapshot => {
-      dispatch(
-        setTransferred(
-          Math.round(taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) *
-            100,
-        ),
-      );
-    });
-    try {
-      dispatch(upLoadingImage(true));
-      dispatch(setTransferred(0));
-      await task;
-      const url = await storageRef.getDownloadURL();
-      dispatch(upLoadingImage(false));
-      return url;
-    } catch (err) {
-      Alert.alert(err);
-      return '';
-    }
   };
 
   return (

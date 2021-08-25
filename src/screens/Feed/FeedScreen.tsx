@@ -60,7 +60,7 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
   const renderItem = ({item}: any) => (
     <PostCard item={item}
               onDelete={handleDelete}
-              onPress={() => {navigation.navigate(screenNames.PROFILE_SCREEN, {userId: item.userId})}}
+              onPress={() => {navigation.navigate(screenNames.OTHER_PROFILE_SCREEN, {userId: item.userId})}}
     />
   );
 

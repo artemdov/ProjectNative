@@ -6,6 +6,12 @@ export const setUserInfo = (userInfo: any) =>
         payload: userInfo,
     } as const);
 
+export const setOtherUserInfo = (otherUserInfo: any) =>
+    ({
+        type: actionTypes.editUser.SET_OTHER_USER_INFO,
+        payload: otherUserInfo,
+    } as const);
+
 export const upLoadingUserImage = (uploading: boolean) =>
     ({
         type: actionTypes.editUser.SET_UPLOADING_USER_IMAGE,
@@ -23,6 +29,7 @@ export const setUserImage = (image?: string) =>
         type: actionTypes.editUser.SET_USER_IMAGE,
         payload: image,
     } as const);
+
 export const setUserPosts = (posts: any) =>
     ({
         type: actionTypes.editUser.SET_USER_POSTS,

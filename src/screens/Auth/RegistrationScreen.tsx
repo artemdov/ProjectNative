@@ -1,7 +1,7 @@
 import React from 'react';
 import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import {CustomFormButton} from '../../components/common/CustomFormButton';
-import {CustomTextInput} from '../../components/common/CustomTextInput';
+import {CustomFormTextInput} from '../../components/common/CustomFormTextInput';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Formik} from 'formik';
 import {RegistrationSchema} from '../../consts/validation';
@@ -37,7 +37,7 @@ export const RegistrationScreen: React.FC<any> = ({navigation}) => {
               handleSubmit,
             }) => (
               <View style={styles.wrapperElements}>
-                <CustomTextInput
+                <CustomFormTextInput
                   label={'Email'}
                   error={!!errors.email && touched.email}
                   errorMessage={errors.email}
@@ -45,7 +45,7 @@ export const RegistrationScreen: React.FC<any> = ({navigation}) => {
                   onChangePassword={handleChange('email')}
                   onBlur={handleBlur('email')}
                 />
-                <CustomTextInput
+                <CustomFormTextInput
                   label={'Пароль'}
                   error={!!errors.password && touched.password}
                   errorMessage={errors.password}
@@ -54,7 +54,7 @@ export const RegistrationScreen: React.FC<any> = ({navigation}) => {
                   onBlur={handleBlur('password')}
                   secureTextEntry={true}
                 />
-                <CustomTextInput
+                <CustomFormTextInput
                   label={'Повторите Пароль'}
                   error={!!errors.confirmPassword && touched.confirmPassword}
                   errorMessage={errors.confirmPassword}
