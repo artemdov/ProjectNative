@@ -13,33 +13,41 @@ import screenNames from '../../navigation/ScreenNames';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import firebase from 'firebase';
 import {useDispatch, useSelector} from 'react-redux';
-import {isLoadingPostSelector, getPostsSelector} from '../../store/selectors';
+import {isLoadingPostSelector, getPostsSelector, getOtherUserInfoSelector} from '../../store/selectors';
 import {setIsLoadingPost, setPosts} from '../../store/actions/feedAction';
 import storage from '@react-native-firebase/storage';
+import {setOtherUserInfo, setOtherUserPosts} from "../../store/actions/profileUserAction";
 
-export const FeedScreen: React.FC<any> = ({navigation}) => {
+export const FeedScreen: React.FC<any> = ({navigation, route}) => {
   const dispatch = useDispatch();
   const isLoadingPost = useSelector(isLoadingPostSelector);
   const data: any = useSelector(getPostsSelector);
+  //const postInfo: any = useSelector(getPostInfoSelector)
+  //console.log('data', data)
+  //console.log('routes', route.params)
+
 
   const onPressAddPost = () => navigation.navigate(screenNames.ADD_POST_SCREEN);
 
-  const fetch = () => {
+  const fetchPosts = () => {
     dispatch(setIsLoadingPost(true));
-    const postsRef = firebase.database().ref('usersPost');
+    const postsRef = firebase.database().ref('userPosts');
     const onLoadingFeed = postsRef.on('value', snapshot => {
       const listData: any = [];
       snapshot.forEach(childSnapshot => {
-        const {id, userId, post, postImg, postTime, likes, userName, userImage} =
+        console.log('childSnapshot', childSnapshot.val())
+        const {id, userId, post, firstName, lastName, userImage, postImg, postTime, comments, likes} =
           childSnapshot.val();
         listData.push({
-          id,
           userId,
-          userName,
+          id,
           userImage,
+          firstName,
+          lastName,
           postTime,
           post,
           postImg,
+          comments,
           likes,
         });
       });
@@ -52,15 +60,25 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
   };
 
   useEffect(() => {
-    fetch();
+    fetchPosts();
   }, []);
 
   const keyExtractor = (item: {id: string}) => item.id;
 
   const renderItem = ({item}: any) => (
-    <PostCard item={item}
-              onDelete={handleDelete}
-              onPress={() => {navigation.navigate(screenNames.OTHER_PROFILE_SCREEN, {userId: item.userId})}}
+      <PostCard item={item}
+                onDelete={handleDelete}
+                onPress={ () => {
+                    /*await firebase
+                        .database()
+                        .ref(`userPosts/${item.id}`)
+                        .on('value', snapshot => {
+                          if (snapshot.exists()) {
+                            //console.log('snapshot', snapshot.val())
+                            //dispatch(setOtherUserPosts(snapshot.val()))
+                          }
+                        })*/
+                  navigation.navigate(screenNames.OTHER_PROFILE_SCREEN, {userId: item.userId})}}
     />
   );
 
@@ -87,8 +105,8 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
   const deletePost = (postId: string) => {
     firebase
       .database()
-      .ref(`usersPost/${postId}`)
-      .get()
+        .ref(`usersPost/${postId}`)
+        .get()
       .then(snapshot => {
         if (snapshot.exists()) {
           const {postImg} = snapshot.val();
@@ -112,8 +130,8 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
     const deleteFirebaseData = (postId: string) => {
       firebase
         .database()
-        .ref(`usersPost/${postId}`)
-        .remove()
+          .ref(`usersPost/${postId}`)
+          .remove()
         .then(() => {
           Alert.alert('Пост удален', 'Ваш пост удален успешно!');
         })

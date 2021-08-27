@@ -6,6 +6,7 @@ import {
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import {Dispatch} from 'redux';
 import firebase from "firebase";
+import {photoUserProfile} from "../../utils/helpers";
 
 export const setIsLoggedIn = (value: boolean) =>
   ({
@@ -46,8 +47,12 @@ export const onSubmitRegistration =
                   .ref(`users/${res.user.uid}`)
                   .update({
                       email: data.email,
+                      firstName: 'Без имени',
+                      lastName: '',
+                      phone: '',
+                      country: '',
                       userId: res.user.uid,
-                      userImage: null,
+                      userImage: photoUserProfile,
                       createdAt: firebase.database.ServerValue.TIMESTAMP,
                   }).then(()=>console.log('user registered'))
     }

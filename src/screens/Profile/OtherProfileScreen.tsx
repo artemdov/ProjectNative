@@ -13,8 +13,7 @@ import {onSubmitLogOut} from '../../store/actions/authAction';
 import screenNames from '../../navigation/ScreenNames';
 import {rem, vrem} from '../../consts/size';
 import {
-    getOtherUserInfoSelector,
-    getUserInfoSelector,
+    getOtherUserInfoSelector, getOtherUserPostsSelector,
     getUserPostsSelector,
     getUserSelector,
     isLoadingPostSelector
@@ -22,50 +21,24 @@ import {
 import {setIsLoadingPost} from "../../store/actions/feedAction";
 import firebase from "firebase";
 import {PostCard} from "../../components/PostCard";
-import {setOtherUserInfo, setUserInfo, setUserPosts} from "../../store/actions/profileUserAction";
+import {setOtherUserInfo, setUserInfo, setOtherUserPosts} from "../../store/actions/profileUserAction";
 import {photoUserProfile} from "../../utils/helpers";
 import {CustomProfileButton} from "../../components/common/CustomProfileButton";
 import storage from "@react-native-firebase/storage";
 
 export const OtherProfileScreen: React.FC<any> = ({navigation, route}) => {
-    const data: any = useSelector(getUserPostsSelector);
-    const otherUserInfo: any = useSelector(getOtherUserInfoSelector)
+    const otherUserPosts: any = useSelector(getOtherUserPostsSelector);
     const isLoadingUserPost = useSelector(isLoadingPostSelector);
     const dispatch = useDispatch();
-    const [loading, setLoading] = useState(true);
+    //const [loading, setLoading] = useState(true);
+    const otherUserInfo: any = useSelector(getOtherUserInfoSelector)
     const userImageURL = otherUserInfo && otherUserInfo.userImage || photoUserProfile;
     const userFirstName = otherUserInfo && otherUserInfo.firstName;
     const userLastName = otherUserInfo && otherUserInfo.lastName
-
-
-    const fetchUserPosts = () => {
-        dispatch(setIsLoadingPost(true));
-        const postsRef = firebase.database().ref('usersPost')
-        const onLoadingFeed = postsRef.on('value', snapshot => {
-            const listData: any = [];
-            snapshot.forEach(childSnapshot => {
-                const userId = childSnapshot.val().userId
-                if (route.params && userId === route.params.userId) {
-                    const {id, userId, post, postImg, postTime, likes, userImage} =
-                        childSnapshot.val();
-                    listData.push({
-                        id,
-                        userId,
-                        userImage,
-                        postTime,
-                        post,
-                        postImg,
-                        likes,
-                    })
-                }
-            });
-            dispatch(setUserPosts(listData));
-            dispatch(setIsLoadingPost(false));
-        });
-        return () => {
-            postsRef.off('value', onLoadingFeed);
-        };
-    };
+    console.log('route', route.params)
+    console.log('otheruserInfo', otherUserInfo)
+    console.log('otherUserPosts', otherUserPosts)
+     //console.log('data', userPosts)
 
     const getUser = async () => {
         await firebase
@@ -78,11 +51,43 @@ export const OtherProfileScreen: React.FC<any> = ({navigation, route}) => {
             })
     }
 
+    const fetchOtherUserPosts = () => {
+        dispatch(setIsLoadingPost(true));
+        const postsRef = firebase.database().ref('userPosts')
+        const onLoadingFeed = postsRef.on('value', snapshot => {
+            const listData: any = [];
+            snapshot.forEach(childSnapshot => {
+                const userId = childSnapshot.val().userId
+                if (route.params && userId === route.params.userId) {
+                    const {id, userId, post, firstName, lastName, userImage, postImg, postTime, comments, likes} =
+                        childSnapshot.val();
+                    listData.push({
+                        userId,
+                        id,
+                        userImage,
+                        firstName,
+                        lastName,
+                        postTime,
+                        post,
+                        postImg,
+                        comments,
+                        likes,
+                    });
+                }
+            });
+            dispatch(setOtherUserPosts(listData));
+            dispatch(setIsLoadingPost(false));
+        });
+        return () => {
+            postsRef.off('value', onLoadingFeed);
+        };
+    };
+
+
     useEffect(() => {
+        fetchOtherUserPosts();
         getUser().then(() => console.log('user success'));
-        fetchUserPosts();
-        navigation.addListener("focus", () => setLoading(!loading));
-    }, [navigation, loading]);
+    }, []);
 
     return (
         <SafeAreaView style={styles.profileContainer}>
@@ -95,7 +100,7 @@ export const OtherProfileScreen: React.FC<any> = ({navigation, route}) => {
                 <Text style={styles.userName}>{`${userFirstName || 'Без имени'} ${userFirstName && userLastName || ''}`}
                 </Text>
                 {
-                    data.map((item: any) => (
+                    otherUserPosts.map((item: any) => (
                         <PostCard key={item.id}
                                   item={item}
                         />)

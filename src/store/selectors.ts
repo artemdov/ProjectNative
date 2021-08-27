@@ -29,5 +29,9 @@ export const getUserInfoSelector = (state: AppRootStateType) =>
     state.userInfo.userInfo;
 export const getImageUserSelector = (state: AppRootStateType) => state.userInfo.userImage;
 export const getUserPostsSelector = (state: AppRootStateType) => state.userInfo.userPosts;
+export const getOtherUserPostsSelector = (state: AppRootStateType) => state.userInfo.otherUserPosts;
 export const getOtherUserInfoSelector = (state: AppRootStateType) =>
     state.userInfo.otherUserInfo;
+
+export const getKeySelector = (state: AppRootStateType) =>
+    state.userInfo.key;

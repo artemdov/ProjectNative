@@ -29,10 +29,10 @@ export const CommentInput: React.FC<any> = ({item}) => {
       .update({
         comment: commentValue,
         createdAt: firebase.database.ServerValue.TIMESTAMP,
-        postId: item.id,
+        postId: item.userId,
         userId: user.uid,
-        userName: `${userInfo.firstName} ${userInfo.lastName}`,
-        userImage: userInfo.userImage,
+        userName: `${item.firstName} ${item.lastName}`,
+        userImage: item.userImage,
       })
       .then(() => {
         setCommentValue('');

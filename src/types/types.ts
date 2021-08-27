@@ -25,8 +25,8 @@ import {
   setTransferredUserImage,
   setUserImage,
   setUserInfo,
-  setUserPosts,
-  upLoadingUserImage
+  setOtherUserPosts,
+  upLoadingUserImage, setUserPosts, setKey
 } from "../store/actions/profileUserAction";
 
 export type myOptionsType = {
@@ -110,18 +110,20 @@ type feedActionType =
   | ReturnType<typeof setCommentMenuVisible>
   | ReturnType<typeof upLoadingImage>
   | ReturnType<typeof setIsLoadingPost>
-  | ReturnType<typeof setTransferred>;
+  | ReturnType<typeof setTransferred>
 
-type EditUserType =
+type ProfileUserType =
     | ReturnType<typeof setUserInfo>
     | ReturnType<typeof upLoadingUserImage>
     | ReturnType<typeof setTransferredUserImage>
     | ReturnType<typeof setUserImage>
+    | ReturnType<typeof setOtherUserPosts>
+    | ReturnType<typeof setOtherUserInfo>
     | ReturnType<typeof setUserPosts>
-    | ReturnType<typeof setOtherUserInfo>;
+    | ReturnType<typeof setKey>;
 
 
 
 
 
-export type ActionType = ArtworkActionType | AuthActionType | feedActionType | EditUserType;
+export type ActionType = ArtworkActionType | AuthActionType | feedActionType | ProfileUserType;

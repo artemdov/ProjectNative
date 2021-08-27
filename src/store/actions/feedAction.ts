@@ -37,3 +37,4 @@ export const setTransferred = (transferred: number) =>
     type: actionTypes.feed.SET_TRANSFERRED,
     payload: transferred,
   } as const);
+

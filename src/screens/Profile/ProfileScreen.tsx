@@ -16,13 +16,13 @@ import {getUserInfoSelector, getUserPostsSelector, getUserSelector, isLoadingPos
 import {setIsLoadingPost} from "../../store/actions/feedAction";
 import firebase from "firebase";
 import {PostCard} from "../../components/PostCard";
-import {setUserInfo, setUserPosts} from "../../store/actions/profileUserAction";
+import {setUserInfo, setOtherUserPosts, setUserPosts} from "../../store/actions/profileUserAction";
 import {photoUserProfile} from "../../utils/helpers";
 import {CustomProfileButton} from "../../components/common/CustomProfileButton";
 import storage from "@react-native-firebase/storage";
 
-export const ProfileScreen: React.FC<any> = ({navigation}) => {
-    const data: any = useSelector(getUserPostsSelector);
+export const ProfileScreen: React.FC<any> = ({navigation, route}) => {
+    const userPosts: any = useSelector(getUserPostsSelector);
     const user: any = useSelector(getUserSelector);
     const userInfo: any = useSelector(getUserInfoSelector)
     const isLoadingUserPost = useSelector(isLoadingPostSelector);
@@ -31,7 +31,7 @@ export const ProfileScreen: React.FC<any> = ({navigation}) => {
     const userFirstName = userInfo && userInfo.firstName
     const userLastName = userInfo && userInfo.lastName
     const dispatch = useDispatch();
-    const [loading, setLoading] = useState(true);
+    //const [loading, setLoading] = useState(true);
 
     const handleDelete = (postId: string) => {
         Alert.alert(
@@ -98,28 +98,32 @@ export const ProfileScreen: React.FC<any> = ({navigation}) => {
     };
 
     const onPressEditProfile = () => {
-        navigation.navigate(screenNames.EDIT_PROFILE_SCREEN);
+        navigation.navigate(screenNames.EDIT_PROFILE_SCREEN/*,userPosts.map((item: any) => item.id)*/);
     }
 
     const fetchUserPosts = () => {
         dispatch(setIsLoadingPost(true));
-        const postsRef = firebase.database().ref('usersPost')
+        const postsRef = firebase.database().ref('userPosts')
         const onLoadingFeed = postsRef.on('value', snapshot => {
             const listData: any = [];
             snapshot.forEach(childSnapshot => {
+                //console.log('childSnapshot', childSnapshot.val())
                 const userId = childSnapshot.val().userId
                 if (userId === userUID) {
-                    const {id, userId, post, postImg, postTime, likes, userImage} =
+                    const {id, userId, post, firstName, lastName, userImage, postImg, postTime, comments, likes} =
                         childSnapshot.val();
                     listData.push({
-                        id,
                         userId,
+                        id,
                         userImage,
+                        firstName,
+                        lastName,
                         postTime,
                         post,
                         postImg,
+                        comments,
                         likes,
-                    })
+                    });
                 }
             });
             dispatch(setUserPosts(listData));
@@ -142,10 +146,10 @@ export const ProfileScreen: React.FC<any> = ({navigation}) => {
     }
 
     useEffect(() => {
-        getUser().then(() => console.log('user success'));
+        getUser().then(() => console.log('user changed'));
         fetchUserPosts();
-        navigation.addListener("focus", () => setLoading(!loading));
-    }, [navigation, loading]);
+       // navigation.addListener("focus", () => setLoading(!loading));
+    }, []);
 
     return (
         <SafeAreaView style={styles.container}>
@@ -163,7 +167,7 @@ export const ProfileScreen: React.FC<any> = ({navigation}) => {
 
                 </View>
                 {
-                    data.map((item: any) => (
+                    userPosts.map((item: any) => (
                         <PostCard key={item.id}
                                   item={item}
                                   onDelete={handleDelete}

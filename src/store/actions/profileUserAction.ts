@@ -35,3 +35,16 @@ export const setUserPosts = (posts: any) =>
         type: actionTypes.editUser.SET_USER_POSTS,
         payload: posts,
     } as const);
+export const setOtherUserPosts = (posts: any) =>
+    ({
+        type: actionTypes.editUser.SET_OTHER_USER_POSTS,
+        payload: posts,
+    } as const);
+
+
+
+export const setKey = (key: any) =>
+    ({
+        type: actionTypes.editUser.SET_KEY,
+        payload: key,
+    } as const);

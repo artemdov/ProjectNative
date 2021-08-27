@@ -17,7 +17,7 @@ import {
   getUserSelector,
   isLoadingImageSelector,
   isTransferredSelector,
-  getImageSelector,
+  getImageSelector, getUserInfoSelector,
 } from '../../store/selectors';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {CustomFormButton} from '../../components/common/CustomFormButton';
@@ -26,15 +26,19 @@ import {
   setImage,
 } from '../../store/actions/feedAction';
 import firebase from 'firebase';
-import {uploadImage} from "../../utils/helpers";
+import {photoUserProfile, uploadImage} from "../../utils/helpers";
 
 export const AddPostScreen: React.FC<any> = ({navigation}) => {
   const [postValue, setPostValue] = useState('');
   const dispatch = useDispatch();
   const newImage = useSelector(getImageSelector);
   const user: any = useSelector(getUserSelector);
+  const userInfo: any = useSelector(getUserInfoSelector);
   const isTransferred = useSelector(isTransferredSelector);
   const isLoadingImage = useSelector(isLoadingImageSelector);
+  const userImageURL = userInfo && userInfo.userImage || photoUserProfile;
+  const userFirstName = userInfo && userInfo.firstName;
+  const userLastName = userInfo && userInfo.lastName
 
   const takePhotoFromCamera = () => {
     ImagePicker.openCamera({
@@ -66,12 +70,14 @@ export const AddPostScreen: React.FC<any> = ({navigation}) => {
     dispatch(setImage(''));
     await firebase
       .database()
-      .ref(`usersPost/${key}`)
+      .ref(`userPosts/${key}`)
       .update({
         id: key,
         userId: user.uid || null,
         post: postValue,
-        userName: user.uid,
+        firstName: `${userFirstName || 'Без имени'}`,
+        lastName: `${userFirstName && userLastName || ''}`,
+        userImage: userImageURL,
         postImg: imageUrl,
         postTime: firebase.database.ServerValue.TIMESTAMP,
         comments: null,
