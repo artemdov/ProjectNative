@@ -69,15 +69,20 @@ export const AddPostScreen: React.FC<any> = ({navigation}) => {
     const imageUrl = await uploadImage(newImage);
     dispatch(setImage(''));
     await firebase
+        .database()
+        .ref(`userPosts/${user.uid}`)
+        .update({
+          firstName: `${userFirstName || 'Без имени'}`,
+          lastName: `${userFirstName && userLastName || ''}`,
+          userImage: userImageURL,
+        });
+    await firebase
       .database()
-      .ref(`userPosts/${key}`)
+      .ref(`userPosts/${user.uid}/${key}`)
       .update({
         id: key,
         userId: user.uid || null,
         post: postValue,
-        firstName: `${userFirstName || 'Без имени'}`,
-        lastName: `${userFirstName && userLastName || ''}`,
-        userImage: userImageURL,
         postImg: imageUrl,
         postTime: firebase.database.ServerValue.TIMESTAMP,
         comments: null,

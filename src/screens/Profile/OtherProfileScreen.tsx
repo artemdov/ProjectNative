@@ -35,9 +35,8 @@ export const OtherProfileScreen: React.FC<any> = ({navigation, route}) => {
     const userImageURL = otherUserInfo && otherUserInfo.userImage || photoUserProfile;
     const userFirstName = otherUserInfo && otherUserInfo.firstName;
     const userLastName = otherUserInfo && otherUserInfo.lastName
-    console.log('route', route.params)
-    console.log('otheruserInfo', otherUserInfo)
-    console.log('otherUserPosts', otherUserPosts)
+//    console.log('otheruserInfo', otherUserInfo)
+   // console.log('otherUserPosts', otherUserPosts)
      //console.log('data', userPosts)
 
     const getUser = async () => {
