@@ -17,7 +17,7 @@ import {
   getUserSelector,
   isLoadingImageSelector,
   isTransferredSelector,
-  getImageSelector, getUserInfoSelector,
+  getImageSelector,
 } from '../../store/selectors';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {CustomFormButton} from '../../components/common/CustomFormButton';
@@ -26,19 +26,15 @@ import {
   setImage,
 } from '../../store/actions/feedAction';
 import firebase from 'firebase';
-import {photoUserProfile, uploadImage} from "../../utils/helpers";
+import {uploadImage} from "../../utils/helpers";
 
 export const AddPostScreen: React.FC<any> = ({navigation}) => {
   const [postValue, setPostValue] = useState('');
   const dispatch = useDispatch();
   const newImage = useSelector(getImageSelector);
   const user: any = useSelector(getUserSelector);
-  const userInfo: any = useSelector(getUserInfoSelector);
   const isTransferred = useSelector(isTransferredSelector);
   const isLoadingImage = useSelector(isLoadingImageSelector);
-  const userImageURL = userInfo && userInfo.userImage || photoUserProfile;
-  const userFirstName = userInfo && userInfo.firstName;
-  const userLastName = userInfo && userInfo.lastName
 
   const takePhotoFromCamera = () => {
     ImagePicker.openCamera({
@@ -70,31 +66,23 @@ export const AddPostScreen: React.FC<any> = ({navigation}) => {
     dispatch(setImage(''));
     await firebase
         .database()
-        .ref(`userPosts/${user.uid}`)
+        .ref(`usersPost/${key}`)
         .update({
-          firstName: `${userFirstName || 'Без имени'}`,
-          lastName: `${userFirstName && userLastName || ''}`,
-          userImage: userImageURL,
+          id: key,
+          userId: user.uid || null,
+          post: postValue,
+          postImg: imageUrl,
+          postTime: firebase.database.ServerValue.TIMESTAMP,
+          comments: null,
+          likes: [],
+        })
+        .then(() => {
+          setPostValue('');
+          navigation.goBack();
+        })
+        .catch(err => {
+          console.log(err);
         });
-    await firebase
-      .database()
-      .ref(`userPosts/${user.uid}/${key}`)
-      .update({
-        id: key,
-        userId: user.uid || null,
-        post: postValue,
-        postImg: imageUrl,
-        postTime: firebase.database.ServerValue.TIMESTAMP,
-        comments: null,
-        likes: [],
-      })
-      .then(() => {
-        setPostValue('');
-        navigation.goBack();
-      })
-      .catch(err => {
-        console.log(err);
-      });
   };
 
   const onChangePost = (value: string) => {
@@ -102,54 +90,54 @@ export const AddPostScreen: React.FC<any> = ({navigation}) => {
   };
 
   return (
-    <SafeAreaView style={styles.containerWrapper}>
-      <KeyboardAwareScrollView>
-        {newImage ? (
-          <Image source={{uri: newImage}} style={styles.imageStyle} />
-        ) : (
-          <Icon
-            name="camera"
-            size={rem(300)}
-            color="#fff"
-            style={styles.photoFeed}
+      <SafeAreaView style={styles.containerWrapper}>
+        <KeyboardAwareScrollView>
+          {newImage ? (
+              <Image source={{uri: newImage}} style={styles.imageStyle} />
+          ) : (
+              <Icon
+                  name="camera"
+                  size={rem(300)}
+                  color="#fff"
+                  style={styles.photoFeed}
+              />
+          )}
+          {isLoadingImage ? (
+              <View style={styles.statusLoadingWrapper}>
+                <Text>{isTransferred} % Загружено!</Text>
+                <ActivityIndicator size="large" color="#0000ff" />
+              </View>
+          ) : (
+              <View style={styles.customButton}>
+                <CustomFormButton title="Отправить" onPress={submitPost} />
+              </View>
+          )}
+          <TextInput
+              style={styles.input}
+              placeholder="Подпись к фото"
+              multiline
+              value={postValue}
+              onChangeText={onChangePost}
           />
-        )}
-        {isLoadingImage ? (
-          <View style={styles.statusLoadingWrapper}>
-            <Text>{isTransferred} % Загружено!</Text>
-            <ActivityIndicator size="large" color="#0000ff" />
-          </View>
-        ) : (
-          <View style={styles.customButton}>
-            <CustomFormButton title="Отправить" onPress={submitPost} />
-          </View>
-        )}
-        <TextInput
-          style={styles.input}
-          placeholder="Подпись к фото"
-          multiline
-          value={postValue}
-          onChangeText={onChangePost}
-        />
-        <ActionButton
-          size={rem(50)}
-          style={styles.actionButtonStyle}
-          buttonColor="rgba(231,76,60,1)">
-          <ActionButton.Item
-            buttonColor="#9b59b6"
-            title="Сделать фото"
-            onPress={takePhotoFromCamera}>
-            <Icon name="camera-outline" style={styles.actionButtonIcon} />
-          </ActionButton.Item>
-          <ActionButton.Item
-            buttonColor="#3498db"
-            title="Выбрать из галереи"
-            onPress={choosePhotoFromLibrary}>
-            <Icon name="images-outline" style={styles.actionButtonIcon} />
-          </ActionButton.Item>
-        </ActionButton>
-      </KeyboardAwareScrollView>
-    </SafeAreaView>
+          <ActionButton
+              size={rem(50)}
+              style={styles.actionButtonStyle}
+              buttonColor="rgba(231,76,60,1)">
+            <ActionButton.Item
+                buttonColor="#9b59b6"
+                title="Сделать фото"
+                onPress={takePhotoFromCamera}>
+              <Icon name="camera-outline" style={styles.actionButtonIcon} />
+            </ActionButton.Item>
+            <ActionButton.Item
+                buttonColor="#3498db"
+                title="Выбрать из галереи"
+                onPress={choosePhotoFromLibrary}>
+              <Icon name="images-outline" style={styles.actionButtonIcon} />
+            </ActionButton.Item>
+          </ActionButton>
+        </KeyboardAwareScrollView>
+      </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({

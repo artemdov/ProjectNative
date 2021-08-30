@@ -4,8 +4,8 @@ import {rem} from '../consts/size';
 import moment from 'moment';
 
 export const Comment: React.FC<any> = ({
-  userImage: userImage,
-  userName: userName,
+  userImage,
+  userName,
   comment,
   createdAt,
 }) => {

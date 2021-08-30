@@ -15,6 +15,8 @@ export const CommentInput: React.FC<any> = ({item}) => {
   const commentKey: any = firebase.database().ref().push().key;
   const user: any = useSelector(getUserSelector);
   const userInfo: any = useSelector(getUserInfoSelector)
+  console.log('item', item)
+  console.log('userInfo', userInfo)
 
   const [commentValue, setCommentValue] = useState('');
 
@@ -29,10 +31,10 @@ export const CommentInput: React.FC<any> = ({item}) => {
       .update({
         comment: commentValue,
         createdAt: firebase.database.ServerValue.TIMESTAMP,
-        postId: item.userId,
+        postId: item.id,
         userId: user.uid,
-        userName: `${item.firstName} ${item.lastName}`,
-        userImage: item.userImage,
+        userName: `${userInfo.firstName} ${userInfo.lastName}`,
+        userImage: userInfo.userImage,
       })
       .then(() => {
         setCommentValue('');

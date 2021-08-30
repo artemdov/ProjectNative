@@ -33,5 +33,5 @@ export const getOtherUserPostsSelector = (state: AppRootStateType) => state.user
 export const getOtherUserInfoSelector = (state: AppRootStateType) =>
     state.userInfo.otherUserInfo;
 
-export const getKeySelector = (state: AppRootStateType) =>
+export const getKey = (state: AppRootStateType) =>
     state.userInfo.key;

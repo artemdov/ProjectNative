@@ -4,7 +4,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import {useDispatch, useSelector} from 'react-redux';
 import {
-    getCommentsSelector, getOtherUserInfoSelector,
+    getCommentsSelector,
     getUserSelector,
     isCommentVisibleSelector,
 } from '../store/selectors';
@@ -22,15 +22,14 @@ export const PostCard: React.FC<any> = ({item, onDelete, onPress}) => {
     const user: any = useSelector(getUserSelector);
     const isCommentVisibleMenu = useSelector(isCommentVisibleSelector);
     let [likes, setLikes] = useState<any>([]);
-    //const postInfo: any = useSelector(getPostInfoSelector)
-    // const userImageURL = postInfo && postInfo.userImage || photoUserProfile;
-    // const userFirstName = postInfo && postInfo.firstName;
-    // const userLastName = postInfo && postInfo.lastName
-    // console.log('postInfo', postInfo)
-    //console.log('item1', item)
+    const [currentUser, setCurrentUser] = useState<any>(null);
+    const userImageURL = currentUser && currentUser.userImage || photoUserProfile;
+    const userFirstName = currentUser && currentUser.firstName;
+    const userLastName = currentUser && currentUser.lastName
+    console.log('item postcard', item)
 
 
-    /*const getUser = async () => {
+    const getUser = async () => {
         await firebase
             .database()
             .ref(`users/${item.userId}`)
@@ -39,22 +38,21 @@ export const PostCard: React.FC<any> = ({item, onDelete, onPress}) => {
                     setCurrentUser(snapshot.val())
                 }
             })
-    }*/
+    }
 
     const fetchComments = () => {
         const postCommentsRef = firebase.database().ref('comments/');
         const onLoadingComments = postCommentsRef.on('value', snapshot => {
             const commentsMap: any = [];
             snapshot.forEach(childSnapshot => {
-                const {comment, createdAt, postId, userId, firstName, lastName, userImage} =
+                const {comment, createdAt, postId, userId, userName, userImage} =
                     childSnapshot.val();
                 commentsMap.push({
                     comment,
                     createdAt,
                     postId,
                     userId,
-                    firstName,
-                    lastName,
+                    userName,
                     userImage,
                 });
             });
@@ -66,7 +64,7 @@ export const PostCard: React.FC<any> = ({item, onDelete, onPress}) => {
     };
 
     useEffect(() => {
-        // getUser().then(() => console.log('user success'));
+        getUser().then(() => console.log('user success'));
         fetchComments();
     }, []);
 
@@ -82,7 +80,7 @@ export const PostCard: React.FC<any> = ({item, onDelete, onPress}) => {
         if (likes.length === 0) {
             firebase
                 .database()
-                .ref(`userPosts/${item.id}/likes/${user.uid}`)
+                .ref(`usersPost/${item.id}/likes/${user.uid}`)
                 .set({
                     isLike: true,
                 })
@@ -95,7 +93,7 @@ export const PostCard: React.FC<any> = ({item, onDelete, onPress}) => {
                 if (likeKey === `${user.uid}`) {
                     await firebase
                         .database()
-                        .ref(`userPosts/${item.id}/likes/${user.uid}`)
+                        .ref(`usersPost/${item.id}/likes/${user.uid}`)
                         .remove()
                         .then(() => {
                             setLikes(likes.filter((item: any) => item !== user.uid));
@@ -105,7 +103,7 @@ export const PostCard: React.FC<any> = ({item, onDelete, onPress}) => {
                 if (likeKey !== `${user.uid}`) {
                     await firebase
                         .database()
-                        .ref(`userPosts/${item.id}/likes/${user.uid}`)
+                        .ref(`usersPost/${item.id}/likes/${user.uid}`)
                         .set({
                             isLike: true,
                         })
@@ -145,10 +143,10 @@ export const PostCard: React.FC<any> = ({item, onDelete, onPress}) => {
         <View style={styles.card} key={item.id}>
             <View style={styles.userInfo}>
                 <Image style={styles.userImage}
-                       source={{uri: item.userImage}}/>
+                       source={{uri: userImageURL}}/>
                 <View style={styles.userInfoText}>
                     <TouchableOpacity onPress={onPress}>
-                        <Text style={styles.userName}>{`${item.firstName || 'Без имени'} ${item.lastName || ''}`}
+                        <Text style={styles.userName}>{`${userFirstName || 'Без имени'} ${userFirstName && userLastName || ''}`}
                         </Text>
                     </TouchableOpacity>
                     <Text style={styles.postTime}>{moment(item.postTime).fromNow()}</Text>
@@ -191,8 +189,7 @@ export const PostCard: React.FC<any> = ({item, onDelete, onPress}) => {
                                 <Comment
                                     key={comment.createdAt}
                                     userImage={comment.userImage}
-                                    firstName={comment.firstName}
-                                    lastName={comment.lastName}
+                                    userName={comment.userName}
                                     createdAt={comment.createdAt}
                                     comment={comment.comment}
                                 />
