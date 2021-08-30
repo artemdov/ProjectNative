@@ -17,12 +17,18 @@ import {
     getUserInfoSelector,
     getUserPostsSelector,
     getUserSelector,
-    isLoadingPostSelector
+    isLoadingPostSelector, isLoadingUserPostSelector
 } from "../../store/selectors";
 import {setIsLoadingPost} from "../../store/actions/feedAction";
 import firebase from "firebase";
 import {PostCard} from "../../components/PostCard";
-import {setOtherUserInfo, setOtherUserPosts, setUserInfo, setUserPosts} from "../../store/actions/profileUserAction";
+import {
+    setIsLoadingUserPost,
+    setOtherUserInfo,
+    setOtherUserPosts,
+    setUserInfo,
+    setUserPosts
+} from "../../store/actions/profileUserAction";
 import {photoUserProfile} from "../../utils/helpers";
 import {CustomProfileButton} from "../../components/common/CustomProfileButton";
 import storage from "@react-native-firebase/storage";
@@ -30,16 +36,15 @@ import storage from "@react-native-firebase/storage";
 export const OtherProfileScreen: React.FC<any> = ({navigation, route}) => {
     const otherUserPosts: any = useSelector(getOtherUserPostsSelector);
     const otherUserInfo: any = useSelector(getOtherUserInfoSelector)
-    const isLoadingUserPost = useSelector(isLoadingPostSelector);
+    const isLoadingUserPost = useSelector(isLoadingUserPostSelector);
     const dispatch = useDispatch();
-    const [loading, setLoading] = useState(true);
     const userImageURL = otherUserInfo && otherUserInfo.userImage || photoUserProfile;
     const userFirstName = otherUserInfo && otherUserInfo.firstName;
     const userLastName = otherUserInfo && otherUserInfo.lastName
 
 
     const fetchUserPosts = () => {
-        dispatch(setIsLoadingPost(true));
+        dispatch(setIsLoadingUserPost(true));
         const postsRef = firebase.database().ref('usersPost')
         const onLoadingFeed = postsRef.on('value', snapshot => {
             const listData: any = [];
@@ -60,7 +65,7 @@ export const OtherProfileScreen: React.FC<any> = ({navigation, route}) => {
                 }
             });
             dispatch(setOtherUserPosts(listData));
-            dispatch(setIsLoadingPost(false));
+            dispatch(setIsLoadingUserPost(false));
         });
         return () => {
             postsRef.off('value', onLoadingFeed);

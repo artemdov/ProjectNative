@@ -21,13 +21,11 @@ export const PostCard: React.FC<any> = ({item, onDelete, onPress}) => {
     const comments = useSelector(getCommentsSelector);
     const user: any = useSelector(getUserSelector);
     const isCommentVisibleMenu = useSelector(isCommentVisibleSelector);
-    let [likes, setLikes] = useState<any>([]);
+    let [likes, setLikes] = useState<any[]>([]);
     const [currentUser, setCurrentUser] = useState<any>(null);
     const userImageURL = currentUser && currentUser.userImage || photoUserProfile;
     const userFirstName = currentUser && currentUser.firstName;
     const userLastName = currentUser && currentUser.lastName
-    console.log('item postcard', item)
-
 
     const getUser = async () => {
         await firebase
@@ -71,13 +69,11 @@ export const PostCard: React.FC<any> = ({item, onDelete, onPress}) => {
     useEffect(() => {
         if (item.likes) {
             setLikes(Object.keys(item.likes));
-        } else {
-            setLikes([]);
         }
     }, []);
 
     const likeToggled = () => {
-        if (likes.length === 0) {
+        if (likes && likes.length === 0) {
             firebase
                 .database()
                 .ref(`usersPost/${item.id}/likes/${user.uid}`)
@@ -85,34 +81,31 @@ export const PostCard: React.FC<any> = ({item, onDelete, onPress}) => {
                     isLike: true,
                 })
                 .then(() => {
-                    setLikes([...likes, `${user.uid}`]);
-                    console.log('likes1', likes);
+                    setLikes([...likes, user.uid]);
                 });
         } else {
-            likes.forEach(async (likeKey: string) => {
-                if (likeKey === `${user.uid}`) {
-                    await firebase
+            const isLiked =  likes.find( (likeId: string) => likeId === user.uid)
+                if (isLiked) {
+                     firebase
                         .database()
                         .ref(`usersPost/${item.id}/likes/${user.uid}`)
                         .remove()
                         .then(() => {
-                            setLikes(likes.filter((item: any) => item !== user.uid));
-                            console.log('likes2', likes);
+                            setLikes(likes.filter((item: string) => item !== user.uid));
                         });
                 }
-                if (likeKey !== `${user.uid}`) {
-                    await firebase
+                else {
+                     firebase
                         .database()
                         .ref(`usersPost/${item.id}/likes/${user.uid}`)
                         .set({
                             isLike: true,
                         })
                         .then(() => {
-                            setLikes([...likes, `${user.uid}`]);
-                            console.log('likes3', likes);
+                            setLikes([...likes, user.uid]);
                         });
                 }
-            });
+
         }
     };
 
@@ -164,7 +157,7 @@ export const PostCard: React.FC<any> = ({item, onDelete, onPress}) => {
                         <Ionicons name={likeIcon} size={24} color={likeIconColor}/>
                     </View>
                 </TouchableOpacity>
-                <Text style={styles.interactionText}>{likes.length}</Text>
+                <Text style={styles.interactionText}>{likes ? likes.length : 0}</Text>
                 <TouchableOpacity onPress={commentHandler}>
                     <View style={styles.interactionComment}>
                         <EvilIcons name="comment" size={30} color="#000"/>

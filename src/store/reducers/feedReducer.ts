@@ -4,7 +4,6 @@ import {ActionType} from '../../types/types';
 const initialState = {
   image: '',
   isLoadingPost: false,
-  upLoading: false,
   isCommentsMenuVisible: false,
   transferred: 0,
   posts: [],
@@ -16,8 +15,7 @@ export const feedReducer = (state = initialState, action: ActionType) => {
   switch (action.type) {
     case actionTypes.feed.SET_IMAGE:
       return <initialStateType>{...state, image: action.payload};
-    case actionTypes.feed.SET_UPLOADING:
-      return <initialStateType>{...state, upLoading: action.payload};
+
     case actionTypes.feed.SET_IS_LOADING_POST:
       return <initialStateType>{...state, isLoadingPost: action.payload};
     case actionTypes.feed.SET_IS_COMMENT_MENU_VISIBLE:

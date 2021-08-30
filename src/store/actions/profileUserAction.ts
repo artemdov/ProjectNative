@@ -41,10 +41,8 @@ export const setOtherUserPosts = (posts: any) =>
         payload: posts,
     } as const);
 
-
-
-export const setKey = (key: any) =>
+export const setIsLoadingUserPost = (isLoadingPost: boolean) =>
     ({
-        type: actionTypes.editUser.SET_KEY,
-        payload: key,
+        type: actionTypes.editUser.SET_IS_LOADING_USER_POST,
+        payload: isLoadingPost,
     } as const);

@@ -8,8 +8,6 @@ export const isCommentVisibleSelector = (state: AppRootStateType) =>
   state.feed.isCommentsMenuVisible;
 export const getUserSelector = (state: AppRootStateType) => state.auth.user;
 export const getImageSelector = (state: AppRootStateType) => state.feed.image;
-export const isLoadingImageSelector = (state: AppRootStateType) =>
-  state.feed.upLoading;
 export const isLoadingPostSelector = (state: AppRootStateType) =>
   state.feed.isLoadingPost;
 export const isTransferredSelector = (state: AppRootStateType) =>
@@ -32,6 +30,5 @@ export const getUserPostsSelector = (state: AppRootStateType) => state.userInfo.
 export const getOtherUserPostsSelector = (state: AppRootStateType) => state.userInfo.otherUserPosts;
 export const getOtherUserInfoSelector = (state: AppRootStateType) =>
     state.userInfo.otherUserInfo;
-
-export const getKey = (state: AppRootStateType) =>
-    state.userInfo.key;
+export const isLoadingUserPostSelector = (state: AppRootStateType) =>
+    state.userInfo.isLoadingUserPost;

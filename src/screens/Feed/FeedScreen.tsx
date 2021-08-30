@@ -13,7 +13,7 @@ import screenNames from '../../navigation/ScreenNames';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import firebase from 'firebase';
 import {useDispatch, useSelector} from 'react-redux';
-import {isLoadingPostSelector, getPostsSelector} from '../../store/selectors';
+import {isLoadingPostSelector, getPostsSelector, getUserSelector} from '../../store/selectors';
 import {setIsLoadingPost, setPosts} from '../../store/actions/feedAction';
 import storage from '@react-native-firebase/storage';
 
@@ -21,6 +21,7 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
   const dispatch = useDispatch();
   const isLoadingPost = useSelector(isLoadingPostSelector);
   const posts: any = useSelector(getPostsSelector);
+  const user: any = useSelector(getUserSelector);
 
   const onPressAddPost = () => navigation.navigate(screenNames.ADD_POST_SCREEN);
 
@@ -59,7 +60,8 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
   const renderItem = ({item}: any) => (
       <PostCard item={item}
                 onDelete={handleDelete}
-                onPress={() => {navigation.navigate(screenNames.OTHER_PROFILE_SCREEN, {userId: item.userId})}}
+                onPress={() => {user.uid === item.userId ? navigation.navigate (screenNames.PROFILE_SCREEN)
+                    : navigation.navigate(screenNames.OTHER_PROFILE_SCREEN, {userId: item.userId})}}
       />
   );
 

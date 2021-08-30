@@ -15,9 +15,8 @@ import ImagePicker from 'react-native-image-crop-picker';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   getUserSelector,
-  isLoadingImageSelector,
   isTransferredSelector,
-  getImageSelector,
+  getImageSelector, isLoadingEditUserSelector, getUserInfoSelector,
 } from '../../store/selectors';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {CustomFormButton} from '../../components/common/CustomFormButton';
@@ -34,7 +33,8 @@ export const AddPostScreen: React.FC<any> = ({navigation}) => {
   const newImage = useSelector(getImageSelector);
   const user: any = useSelector(getUserSelector);
   const isTransferred = useSelector(isTransferredSelector);
-  const isLoadingImage = useSelector(isLoadingImageSelector);
+  const isLoadingImage = useSelector(isLoadingEditUserSelector);
+  const userInfo: any = useSelector(getUserInfoSelector)
 
   const takePhotoFromCamera = () => {
     ImagePicker.openCamera({

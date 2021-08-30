@@ -8,6 +8,7 @@ const initialState = {
     upLoadingUserInfo: false,
     transferredImage: 0,
     userPosts: [],
+    isLoadingUserPost: false,
     otherUserPosts: [],
     key: '',
 };
@@ -29,9 +30,8 @@ export const profileUserReducer = (state = initialState, action: ActionType) => 
             return <initialStateType>{...state, userPosts: action.payload};
         case actionTypes.editUser.SET_OTHER_USER_POSTS:
             return <initialStateType>{...state, otherUserPosts: action.payload};
-
-        case actionTypes.editUser.SET_KEY:
-            return <initialStateType>{...state, key: action.payload};
+        case actionTypes.editUser.SET_IS_LOADING_USER_POST:
+            return <initialStateType>{...state, isLoadingUserPost: action.payload};
         default:
             return state;
     }

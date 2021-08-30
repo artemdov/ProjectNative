@@ -12,11 +12,17 @@ import {useDispatch, useSelector} from 'react-redux';
 import {onSubmitLogOut} from '../../store/actions/authAction';
 import screenNames from '../../navigation/ScreenNames';
 import {rem, vrem} from '../../consts/size';
-import {getUserInfoSelector, getUserPostsSelector, getUserSelector, isLoadingPostSelector} from "../../store/selectors";
+import {
+    getUserInfoSelector,
+    getUserPostsSelector,
+    getUserSelector,
+    isLoadingPostSelector,
+    isLoadingUserPostSelector
+} from "../../store/selectors";
 import {setIsLoadingPost} from "../../store/actions/feedAction";
 import firebase from "firebase";
 import {PostCard} from "../../components/PostCard";
-import {setUserInfo, setUserPosts} from "../../store/actions/profileUserAction";
+import {setIsLoadingUserPost, setUserInfo, setUserPosts} from "../../store/actions/profileUserAction";
 import {photoUserProfile} from "../../utils/helpers";
 import {CustomProfileButton} from "../../components/common/CustomProfileButton";
 import storage from "@react-native-firebase/storage";
@@ -25,13 +31,19 @@ export const ProfileScreen: React.FC<any> = ({navigation}) => {
     const userPosts: any = useSelector(getUserPostsSelector);
     const user: any = useSelector(getUserSelector);
     const userInfo: any = useSelector(getUserInfoSelector)
-    const isLoadingUserPost = useSelector(isLoadingPostSelector);
+    const isLoadingUserPost = useSelector(isLoadingUserPostSelector);
     const userUID = user && user.uid;
     const imageURL = userInfo && userInfo.userImage || photoUserProfile
     const userFirstName = userInfo && userInfo.firstName
     const userLastName = userInfo && userInfo.lastName
+
+    useEffect(() => {
+        getUser().then(() => console.log('user success'));
+        fetchUserPosts();
+    }, []);
+
     const dispatch = useDispatch();
-    const [loading, setLoading] = useState(true);
+
 
     const handleDelete = (postId: string) => {
         Alert.alert(
@@ -101,8 +113,19 @@ export const ProfileScreen: React.FC<any> = ({navigation}) => {
         navigation.navigate(screenNames.EDIT_PROFILE_SCREEN);
     }
 
+    const getUser = async () => {
+        await firebase
+            .database()
+            .ref(`users/${userUID}`)
+            .on('value', snapshot => {
+                if (snapshot.exists()) {
+                    dispatch(setUserInfo(snapshot.val()))
+                }
+            })
+    };
+
     const fetchUserPosts = () => {
-        dispatch(setIsLoadingPost(true));
+        dispatch(setIsLoadingUserPost(true));
         const postsRef = firebase.database().ref('usersPost')
         const onLoadingFeed = postsRef.on('value', snapshot => {
             const listData: any = [];
@@ -123,28 +146,12 @@ export const ProfileScreen: React.FC<any> = ({navigation}) => {
                 }
             });
             dispatch(setUserPosts(listData));
-            dispatch(setIsLoadingPost(false));
+            dispatch(setIsLoadingUserPost(false));
         });
         return () => {
             postsRef.off('value', onLoadingFeed);
         };
     };
-
-    const getUser = async () => {
-        await firebase
-            .database()
-            .ref(`users/${userUID}`)
-            .on('value', snapshot => {
-                if (snapshot.exists()) {
-                    dispatch(setUserInfo(snapshot.val()))
-                }
-            })
-    }
-
-    useEffect(() => {
-        getUser().then(() => console.log('user success'));
-        fetchUserPosts();
-    }, []);
 
     return (
         <SafeAreaView style={styles.container}>

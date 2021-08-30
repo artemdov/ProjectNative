@@ -15,7 +15,7 @@ export const CommentInput: React.FC<any> = ({item}) => {
   const commentKey: any = firebase.database().ref().push().key;
   const user: any = useSelector(getUserSelector);
   const userInfo: any = useSelector(getUserInfoSelector)
-  console.log('item', item)
+  //console.log('item', item)
   console.log('userInfo', userInfo)
 
   const [commentValue, setCommentValue] = useState('');
