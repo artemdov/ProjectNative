@@ -4,7 +4,7 @@ import {authReducer} from './reducers/authReducer';
 import {feedReducer} from './reducers/feedReducer';
 import {composeWithDevTools} from 'redux-devtools-extension';
 import {artworksReducer} from './reducers/artworksReducer';
-import {profileUserReducer} from "./reducers/profileUserReducer";
+import {profileUserReducer} from './reducers/profileUserReducer';
 
 export const rootReducer = combineReducers({
   auth: authReducer,

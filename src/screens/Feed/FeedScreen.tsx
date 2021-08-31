@@ -13,7 +13,11 @@ import screenNames from '../../navigation/ScreenNames';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import firebase from 'firebase';
 import {useDispatch, useSelector} from 'react-redux';
-import {isLoadingPostSelector, getPostsSelector, getUserSelector} from '../../store/selectors';
+import {
+  isLoadingPostSelector,
+  getPostsSelector,
+  getUserSelector,
+} from '../../store/selectors';
 import {setIsLoadingPost, setPosts} from '../../store/actions/feedAction';
 import storage from '@react-native-firebase/storage';
 
@@ -32,7 +36,7 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
       const listData: any = [];
       snapshot.forEach(childSnapshot => {
         const {id, userId, post, postImg, postTime, likes, userImage} =
-            childSnapshot.val();
+          childSnapshot.val();
         listData.push({
           id,
           userId,
@@ -58,88 +62,94 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
   const keyExtractor = (item: {id: string}) => item.id;
 
   const renderItem = ({item}: any) => (
-      <PostCard item={item}
-                onDelete={handleDelete}
-                onPress={() => {user.uid === item.userId ? navigation.navigate (screenNames.PROFILE_SCREEN)
-                    : navigation.navigate(screenNames.OTHER_PROFILE_SCREEN, {userId: item.userId})}}
-      />
+    <PostCard
+      item={item}
+      onDelete={handleDelete}
+      onPress={() => {
+        user.uid === item.userId
+          ? navigation.navigate(screenNames.PROFILE_SCREEN)
+          : navigation.navigate(screenNames.OTHER_PROFILE_SCREEN, {
+              userId: item.userId,
+            });
+      }}
+    />
   );
 
   const handleDelete = (postId: string) => {
     Alert.alert(
-        'Удалить пост',
-        'Вы уверены?',
-        [
-          {
-            text: 'Отмена',
-            onPress: () => console.log('Cancel pressed'),
-            style: 'cancel',
-          },
-          {
-            text: 'Удалить',
-            onPress: () => deletePost(postId),
-            style: 'cancel',
-          },
-        ],
-        {cancelable: false},
+      'Удалить пост',
+      'Вы уверены?',
+      [
+        {
+          text: 'Отмена',
+          onPress: () => console.log('Cancel pressed'),
+          style: 'cancel',
+        },
+        {
+          text: 'Удалить',
+          onPress: () => deletePost(postId),
+          style: 'cancel',
+        },
+      ],
+      {cancelable: false},
     );
   };
 
   const deletePost = (postId: string) => {
     firebase
-        .database()
-        .ref(`usersPost/${postId}`)
-        .get()
-        .then(snapshot => {
-          if (snapshot.exists()) {
-            const {postImg} = snapshot.val();
-            if (postImg) {
-              const storageRef = storage().refFromURL(postImg);
-              const imageRef = storage().ref(storageRef.fullPath);
-              imageRef
-                  .delete()
-                  .then(() => {
-                    console.log(`${postImg} успешно удалена!`);
-                    deleteFirebaseData(postId);
-                  })
-                  .catch(err => {
-                    console.log(err);
-                  });
-            } else {
-              deleteFirebaseData(postId);
-            }
+      .database()
+      .ref(`usersPost/${postId}`)
+      .get()
+      .then(snapshot => {
+        if (snapshot.exists()) {
+          const {postImg} = snapshot.val();
+          if (postImg) {
+            const storageRef = storage().refFromURL(postImg);
+            const imageRef = storage().ref(storageRef.fullPath);
+            imageRef
+              .delete()
+              .then(() => {
+                console.log(`${postImg} успешно удалена!`);
+                deleteFirebaseData(postId);
+              })
+              .catch(err => {
+                console.log(err);
+              });
+          } else {
+            deleteFirebaseData(postId);
           }
-        });
+        }
+      });
     const deleteFirebaseData = (postId: string) => {
       firebase
-          .database()
-          .ref(`usersPost/${postId}`)
-          .remove()
-          .then(() => {
-            Alert.alert('Пост удален', 'Ваш пост удален успешно!');
-          })
-          .catch(err => {
-            console.log(err);
-          });
+        .database()
+        .ref(`usersPost/${postId}`)
+        .remove()
+        .then(() => {
+          Alert.alert('Пост удален', 'Ваш пост удален успешно!');
+        })
+        .catch(err => {
+          console.log(err);
+        });
     };
   };
 
   return (
-      <SafeAreaView style={styles.container}>
-        <TouchableOpacity style={styles.buttonAddPost} onPress={onPressAddPost}>
-          <Ionicons name="add-circle" size={rem(45)} color="#2e64e5" />
-        </TouchableOpacity>
-        {isLoadingPost ? (
-            <ActivityIndicator style={styles.loader} size="large" color="#0000ff" />
-        ) : (
-            <FlatList
-                data={posts}
-                renderItem={renderItem}
-                keyExtractor={keyExtractor}
-                showsVerticalScrollIndicator={false}
-            />
-        )}
-      </SafeAreaView>
+    <SafeAreaView style={styles.container}>
+      <TouchableOpacity style={styles.buttonAddPost} onPress={onPressAddPost}>
+        <Ionicons name="add-circle" size={rem(45)} color="#2e64e5" />
+      </TouchableOpacity>
+      {isLoadingPost ? (
+        <ActivityIndicator style={styles.loader} size="large" color="#0000ff" />
+      ) : (
+        <FlatList
+          data={posts}
+          renderItem={renderItem}
+          keyExtractor={keyExtractor}
+          showsVerticalScrollIndicator={false}
+        />
+      )}
+    </SafeAreaView>
   );
 };
 

@@ -31,7 +31,7 @@ const actionTypes = {
     SET_OTHER_USER_INFO: 'SET_OTHER_USER_INFO',
     SET_CURRENT_USER_INFO: 'SET_CURRENT_USER_INFO',
     SET_IS_LOADING_USER_POST: 'SET_IS_LOADING_USER_POST',
-  }
+  },
 };
 
 export default actionTypes;

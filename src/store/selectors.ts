@@ -20,17 +20,20 @@ export const getArtworksSelector = (state: AppRootStateType) =>
 export const isLoadingArtworksSelector = (state: AppRootStateType) =>
   state.data.isLoadingArtworks;
 export const isLoadingEditUserSelector = (state: AppRootStateType) =>
-    state.userInfo.upLoadingUserInfo;
+  state.userInfo.upLoadingUserInfo;
 export const isTransferredEditUserSelector = (state: AppRootStateType) =>
-    state.userInfo.transferredImage;
+  state.userInfo.transferredImage;
 export const getUserInfoSelector = (state: AppRootStateType) =>
-    state.userInfo.userInfo;
-export const getImageUserSelector = (state: AppRootStateType) => state.userInfo.userImage;
-export const getUserPostsSelector = (state: AppRootStateType) => state.userInfo.userPosts;
-export const getOtherUserPostsSelector = (state: AppRootStateType) => state.userInfo.otherUserPosts;
+  state.userInfo.userInfo;
+export const getImageUserSelector = (state: AppRootStateType) =>
+  state.userInfo.userImage;
+export const getUserPostsSelector = (state: AppRootStateType) =>
+  state.userInfo.userPosts;
+export const getOtherUserPostsSelector = (state: AppRootStateType) =>
+  state.userInfo.otherUserPosts;
 export const getOtherUserInfoSelector = (state: AppRootStateType) =>
-    state.userInfo.otherUserInfo;
+  state.userInfo.otherUserInfo;
 export const getCurrentUserInfoSelector = (state: AppRootStateType) =>
-    state.userInfo.currentUserInfo;
+  state.userInfo.currentUserInfo;
 export const isLoadingUserPostSelector = (state: AppRootStateType) =>
-    state.userInfo.isLoadingUserPost;
+  state.userInfo.isLoadingUserPost;

@@ -1,17 +1,20 @@
-import storage from "@react-native-firebase/storage";
-import {setTransferredUserImage, upLoadingUserImage} from "../store/actions/profileUserAction";
-import {Alert} from "react-native";
-import {useDispatch} from "react-redux";
-import firebase from "firebase";
+import storage from '@react-native-firebase/storage';
+import {
+  setTransferredUserImage,
+  upLoadingUserImage,
+} from '../store/actions/profileUserAction';
+import {Alert} from 'react-native';
+import {useDispatch} from 'react-redux';
 
+// eslint-disable-next-line react-hooks/rules-of-hooks
 const dispatch = useDispatch();
 
 export const artworkImageUrl = (imageId: string) => {
   return `https://www.artic.edu/iiif/2/${imageId}/full/843,/0/default.jpg`;
 };
 
-export const photoUserProfile = 'https://png.pngtree.com/png-vector/20190115/ourlarge/pngtree-photography-camera-graphic-icon-design-template-png-image_316192.jpg';
-
+export const photoUserProfile =
+  'https://png.pngtree.com/png-vector/20190115/ourlarge/pngtree-photography-camera-graphic-icon-design-template-png-image_316192.jpg';
 
 export const uploadImage = async (image: string) => {
   if (!image) {
@@ -26,10 +29,10 @@ export const uploadImage = async (image: string) => {
   const task = storageRef.putFile(uploadUri);
   task.on('state_changed', taskSnapshot => {
     dispatch(
-        setTransferredUserImage(
-            Math.round(taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) *
-            100,
-        ),
+      setTransferredUserImage(
+        Math.round(taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) *
+          100,
+      ),
     );
   });
   try {
@@ -39,9 +42,9 @@ export const uploadImage = async (image: string) => {
     const url = await storageRef.getDownloadURL();
     dispatch(upLoadingUserImage(false));
     return url;
-  } catch (err) {
+  }
+  catch (err) {
     Alert.alert(err);
     return '';
   }
 };
-

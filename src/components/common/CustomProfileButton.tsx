@@ -3,7 +3,10 @@ import {StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {rem, vrem} from '../../consts/size';
 import {CustomButtonType} from '../../types/types';
 
-export const CustomProfileButton: React.FC<CustomButtonType> = ({title, onPress}) => (
+export const CustomProfileButton: React.FC<CustomButtonType> = ({
+  title,
+  onPress,
+}) => (
   <TouchableOpacity style={styles.button} onPress={onPress}>
     <Text style={styles.textStyle}>{title}</Text>
   </TouchableOpacity>

@@ -7,10 +7,7 @@ import {
   setIsLoggedIn,
   setUser,
 } from '../store/actions/authAction';
-import {
-  setArtworks,
-  isLoadingArtworks,
-} from '../store/actions/artworksAction';
+import {setArtworks, isLoadingArtworks} from '../store/actions/artworksAction';
 import {
   setCommentMenuVisible,
   setComments,
@@ -18,15 +15,18 @@ import {
   setIsLoadingPost,
   setPosts,
   setTransferred,
-  } from '../store/actions/feedAction';
+} from '../store/actions/feedAction';
 import {
   setOtherUserInfo,
   setTransferredUserImage,
   setUserImage,
   setUserInfo,
   setOtherUserPosts,
-  upLoadingUserImage, setUserPosts, setIsLoadingUserPost, setCurrentUserInfo
-} from "../store/actions/profileUserAction";
+  upLoadingUserImage,
+  setUserPosts,
+  setIsLoadingUserPost,
+  setCurrentUserInfo,
+} from '../store/actions/profileUserAction';
 
 export type myOptionsType = {
   title: string;
@@ -111,17 +111,18 @@ type feedActionType =
   | ReturnType<typeof setTransferred>;
 
 type ProfileUserType =
-    | ReturnType<typeof setUserInfo>
-    | ReturnType<typeof upLoadingUserImage>
-    | ReturnType<typeof setTransferredUserImage>
-    | ReturnType<typeof setUserImage>
-    | ReturnType<typeof setOtherUserPosts>
-    | ReturnType<typeof setOtherUserInfo>
-    | ReturnType<typeof setUserPosts>
-    | ReturnType<typeof setIsLoadingUserPost>
-    | ReturnType<typeof setCurrentUserInfo>;
+  | ReturnType<typeof setUserInfo>
+  | ReturnType<typeof upLoadingUserImage>
+  | ReturnType<typeof setTransferredUserImage>
+  | ReturnType<typeof setUserImage>
+  | ReturnType<typeof setOtherUserPosts>
+  | ReturnType<typeof setOtherUserInfo>
+  | ReturnType<typeof setUserPosts>
+  | ReturnType<typeof setIsLoadingUserPost>
+  | ReturnType<typeof setCurrentUserInfo>;
 
-
-
-
-export type ActionType = ArtworkActionType | AuthActionType | feedActionType | ProfileUserType;
+export type ActionType =
+  | ArtworkActionType
+  | AuthActionType
+  | feedActionType
+  | ProfileUserType;
