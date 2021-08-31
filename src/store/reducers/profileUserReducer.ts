@@ -4,6 +4,7 @@ import actionTypes from "../actionTypes";
 const initialState = {
     userInfo: null,
     otherUserInfo: null,
+    currentUserInfo: null,
     userImage: '',
     upLoadingUserInfo: false,
     transferredImage: 0,
@@ -20,6 +21,8 @@ export const profileUserReducer = (state = initialState, action: ActionType) => 
             return <initialStateType>{...state, userInfo: action.payload};
         case actionTypes.editUser.SET_OTHER_USER_INFO:
             return <initialStateType>{...state, otherUserInfo: action.payload};
+        case actionTypes.editUser.SET_CURRENT_USER_INFO:
+            return <initialStateType>{...state, currentUserInfo: action.payload};
         case actionTypes.editUser.SET_UPLOADING_USER_IMAGE:
             return <initialStateType>{...state, upLoadingUserInfo: action.payload};
         case actionTypes.editUser.SET_TRANSFERRED_IMAGE:

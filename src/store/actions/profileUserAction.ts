@@ -35,10 +35,17 @@ export const setUserPosts = (posts: any) =>
         type: actionTypes.editUser.SET_USER_POSTS,
         payload: posts,
     } as const);
+
 export const setOtherUserPosts = (posts: any) =>
     ({
         type: actionTypes.editUser.SET_OTHER_USER_POSTS,
         payload: posts,
+    } as const);
+
+export const setCurrentUserInfo = (currentUserInfo: any) =>
+    ({
+        type: actionTypes.editUser.SET_CURRENT_USER_INFO,
+        payload: currentUserInfo,
     } as const);
 
 export const setIsLoadingUserPost = (isLoadingPost: boolean) =>

@@ -30,5 +30,7 @@ export const getUserPostsSelector = (state: AppRootStateType) => state.userInfo.
 export const getOtherUserPostsSelector = (state: AppRootStateType) => state.userInfo.otherUserPosts;
 export const getOtherUserInfoSelector = (state: AppRootStateType) =>
     state.userInfo.otherUserInfo;
+export const getCurrentUserInfoSelector = (state: AppRootStateType) =>
+    state.userInfo.currentUserInfo;
 export const isLoadingUserPostSelector = (state: AppRootStateType) =>
     state.userInfo.isLoadingUserPost;

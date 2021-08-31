@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {
     ActivityIndicator, Alert,
     Image,
@@ -19,7 +19,6 @@ import {
     isLoadingPostSelector,
     isLoadingUserPostSelector
 } from "../../store/selectors";
-import {setIsLoadingPost} from "../../store/actions/feedAction";
 import firebase from "firebase";
 import {PostCard} from "../../components/PostCard";
 import {setIsLoadingUserPost, setUserInfo, setUserPosts} from "../../store/actions/profileUserAction";
@@ -37,13 +36,7 @@ export const ProfileScreen: React.FC<any> = ({navigation}) => {
     const userFirstName = userInfo && userInfo.firstName
     const userLastName = userInfo && userInfo.lastName
 
-    useEffect(() => {
-        getUser().then(() => console.log('user success'));
-        fetchUserPosts();
-    }, []);
-
     const dispatch = useDispatch();
-
 
     const handleDelete = (postId: string) => {
         Alert.alert(
@@ -152,6 +145,11 @@ export const ProfileScreen: React.FC<any> = ({navigation}) => {
             postsRef.off('value', onLoadingFeed);
         };
     };
+
+    useEffect(() => {
+        getUser().then(() => console.log('user success'));
+        fetchUserPosts();
+    }, []);
 
     return (
         <SafeAreaView style={styles.container}>

@@ -4,7 +4,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import {useDispatch, useSelector} from 'react-redux';
 import {
-    getCommentsSelector,
+    getCommentsSelector, getCurrentUserInfoSelector,
     getUserSelector,
     isCommentVisibleSelector,
 } from '../store/selectors';
@@ -15,11 +15,13 @@ import {Comment} from './Comment';
 import {setCommentMenuVisible, setComments} from '../store/actions/feedAction';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {photoUserProfile} from "../utils/helpers";
+import {setCurrentUserInfo} from "../store/actions/profileUserAction";
 
 export const PostCard: React.FC<any> = ({item, onDelete, onPress}) => {
     const dispatch = useDispatch();
     const comments = useSelector(getCommentsSelector);
     const user: any = useSelector(getUserSelector);
+    //const currentUser: any = useSelector(getCurrentUserInfoSelector)
     const isCommentVisibleMenu = useSelector(isCommentVisibleSelector);
     let [likes, setLikes] = useState<any[]>([]);
     const [currentUser, setCurrentUser] = useState<any>(null);
@@ -34,6 +36,7 @@ export const PostCard: React.FC<any> = ({item, onDelete, onPress}) => {
             .on('value', snapshot => {
                 if (snapshot.exists()) {
                     setCurrentUser(snapshot.val())
+                    //dispatch(setCurrentUserInfo(snapshot.val()))
                 }
             })
     }
