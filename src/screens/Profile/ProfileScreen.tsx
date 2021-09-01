@@ -45,6 +45,8 @@ export const ProfileScreen: React.FC<any> = ({navigation}) => {
 
   const userLastName = userInfo && userInfo.lastName;
 
+  const nameInfo = userFirstName === '' && userLastName === '';
+
   const handleDelete = (postId: string) => {
     Alert.alert(
       'Удалить этот пост',
@@ -52,7 +54,7 @@ export const ProfileScreen: React.FC<any> = ({navigation}) => {
       [
         {
           text: 'Отмена',
-          onPress: () => console.log('Cancel pressed'),
+          onPress: () => {},
           style: 'cancel',
         },
         {
@@ -90,6 +92,7 @@ export const ProfileScreen: React.FC<any> = ({navigation}) => {
           }
         }
       });
+
     const deleteFirebaseData = (postId: string) => {
       firebase
         .database()
@@ -111,6 +114,10 @@ export const ProfileScreen: React.FC<any> = ({navigation}) => {
 
   const onPressEditProfile = () => {
     navigation.navigate(screenNames.EDIT_PROFILE_SCREEN);
+  };
+
+  const onPressCreateUserInfo = () => {
+    navigation.navigate(screenNames.CREATE_PROFILE_INFO_SCREEN);
   };
 
   const getUser = async () => {
@@ -168,15 +175,19 @@ export const ProfileScreen: React.FC<any> = ({navigation}) => {
           showsVerticalScrollIndicator={false}>
           <Image style={styles.userImage} source={{uri: imageURL}} />
           <Text style={styles.userName}>
-            {`${userFirstName || 'Без имени'} ${
-              (userFirstName && userLastName) || ''
+            {`${userFirstName} ${
+              (userFirstName && userLastName) 
             }`}
           </Text>
           <View style={styles.userButtonWrapper}>
-            <CustomProfileButton
-              title="Редактировать профиль"
-              onPress={onPressEditProfile}
-            />
+            {!nameInfo ?
+              <CustomProfileButton
+                  title="Редактировать профиль"
+                  onPress={onPressEditProfile}
+              />
+              : <CustomProfileButton
+                    title="Создать профиль"
+                    onPress={onPressCreateUserInfo} />}
             <CustomProfileButton title="Выйти" onPress={onPressLogout} />
           </View>
           {userPosts.map((item: any) => (

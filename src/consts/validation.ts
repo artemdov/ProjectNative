@@ -25,3 +25,21 @@ export const RegistrationSchema = Yup.object().shape({
     .oneOf([Yup.ref('password'), null], 'Пароли не совпадают')
     .required('Заполните поле'),
 });
+export const UserInfoSchema = Yup.object().shape({
+  name: Yup.string()
+      .min(2, 'Слишком короткое слово')
+      .max(30, 'Слишком длинное слово')
+      .required('Введите имя'),
+  lastName: Yup.string()
+      .min(2, 'Слишком короткое слово')
+      .max(30, 'Слишком длинное слово')
+      .required('Введите фамилию'),
+  phone: Yup.number()
+      .min(2, 'Слишком короткое имя')
+      .max(30, 'Слишком длинное имя')
+      .required('Введите номер'),
+  country: Yup.string()
+      .min(2, 'Слишком короткое слово')
+      .max(30, 'Слишком длинное слово')
+      .required('Введите страну'),
+});

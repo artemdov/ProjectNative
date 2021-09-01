@@ -20,6 +20,8 @@ import {
 } from '../../store/selectors';
 import {setIsLoadingPost, setPosts} from '../../store/actions/feedAction';
 import storage from '@react-native-firebase/storage';
+import {setIsLoadingUserPost} from "../../store/actions/profileUserAction";
+import {setOtherUserInfo, setOtherUserPosts} from "../../store/actions/otherProfileUserAction";
 
 export const FeedScreen: React.FC<any> = ({navigation}) => {
   const dispatch = useDispatch();
@@ -66,11 +68,55 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
       item={item}
       onDelete={handleDelete}
       onPress={() => {
-        user.uid === item.userId
-          ? navigation.navigate(screenNames.PROFILE_SCREEN)
-          : navigation.navigate(screenNames.OTHER_PROFILE_SCREEN, {
-              userId: item.userId,
+        const fetchUserPosts = () => {
+          dispatch(setIsLoadingUserPost(true));
+          const postsRef = firebase.database().ref('usersPost');
+          const onLoadingFeed = postsRef.on('value', snapshot => {
+            const listData: any = [];
+            snapshot.forEach(childSnapshot => {
+              const userId = childSnapshot.val().userId;
+              if (userId === item.userId) {
+                const {id, userId, post, postImg, postTime, likes, userImage} =
+                    childSnapshot.val();
+                listData.push({
+                  id,
+                  userId,
+                  userImage,
+                  postTime,
+                  post,
+                  postImg,
+                  likes,
+                });
+              }
             });
+            dispatch(setOtherUserPosts(listData));
+            dispatch(setIsLoadingUserPost(false));
+          });
+          return () => {
+            postsRef.off('value', onLoadingFeed);
+          };
+        };
+
+        const getUser = async () => {
+          await firebase
+              .database()
+              .ref(`users/${item.userId}`)
+              .on('value', snapshot => {
+                if (snapshot.exists()) {
+                  dispatch(setOtherUserInfo(snapshot.val()));
+                }
+              });
+        };
+        {
+          user.uid === item.userId
+              ? navigation.navigate(screenNames.PROFILE_SCREEN)
+              :
+             /* useEffect(() => {
+            getUser().then(() => console.log('user success'));
+            fetchUserPosts();
+          }, []);*/
+          navigation.navigate(screenNames.OTHER_PROFILE_SCREEN), {userId: item.userId};
+        }
       }}
     />
   );
@@ -82,7 +128,7 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
       [
         {
           text: 'Отмена',
-          onPress: () => console.log('Cancel pressed'),
+          onPress: () => {},
           style: 'cancel',
         },
         {

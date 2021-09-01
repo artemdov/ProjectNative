@@ -8,8 +8,9 @@ import {Formik} from 'formik';
 import {useDispatch} from 'react-redux';
 import {onSubmitLogIn} from '../../store/actions/authAction';
 import {rem, vrem} from '../../consts/size';
+import screenNames from "../../navigation/ScreenNames";
 
-export const LoginScreen = () => {
+export const LoginScreen: React.FC<any> = ({navigation}) => {
   const dispatch = useDispatch();
   const onSubmit = (values: any) => {
     dispatch(onSubmitLogIn(values));
@@ -53,7 +54,7 @@ export const LoginScreen = () => {
                   secureTextEntry={true}
                 />
                 <View style={styles.button}>
-                  <CustomFormButton title='Вход' onPress={handleSubmit} />
+                  <CustomFormButton title="Вход" onPress={handleSubmit} />
                 </View>
               </View>
             )}

@@ -68,7 +68,7 @@ export const AddPostScreen: React.FC<any> = ({navigation}) => {
       .ref(`usersPost/${key}`)
       .update({
         id: key,
-        userId: user.uid || null,
+        userId: user.uid,
         post: postValue,
         postImg: imageUrl,
         postTime: firebase.database.ServerValue.TIMESTAMP,

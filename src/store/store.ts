@@ -5,12 +5,14 @@ import {feedReducer} from './reducers/feedReducer';
 import {composeWithDevTools} from 'redux-devtools-extension';
 import {artworksReducer} from './reducers/artworksReducer';
 import {profileUserReducer} from './reducers/profileUserReducer';
+import {otherProfileUserReducer} from './reducers/otherProfileUserReducer';
 
 export const rootReducer = combineReducers({
   auth: authReducer,
   feed: feedReducer,
-  data: artworksReducer,
-  userInfo: profileUserReducer,
+  artworks: artworksReducer,
+  user: profileUserReducer,
+  otherUser: otherProfileUserReducer,
 });
 export const store = createStore(
   rootReducer,

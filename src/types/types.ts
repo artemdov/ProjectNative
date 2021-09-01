@@ -25,7 +25,6 @@ import {
   upLoadingUserImage,
   setUserPosts,
   setIsLoadingUserPost,
-  setCurrentUserInfo,
 } from '../store/actions/profileUserAction';
 
 export type myOptionsType = {
@@ -115,14 +114,16 @@ type ProfileUserType =
   | ReturnType<typeof upLoadingUserImage>
   | ReturnType<typeof setTransferredUserImage>
   | ReturnType<typeof setUserImage>
-  | ReturnType<typeof setOtherUserPosts>
-  | ReturnType<typeof setOtherUserInfo>
   | ReturnType<typeof setUserPosts>
-  | ReturnType<typeof setIsLoadingUserPost>
-  | ReturnType<typeof setCurrentUserInfo>;
+  | ReturnType<typeof setIsLoadingUserPost>;
+
+type OtherProfileUserType =
+  | ReturnType<typeof setOtherUserPosts>
+  | ReturnType<typeof setOtherUserInfo>;
 
 export type ActionType =
   | ArtworkActionType
   | AuthActionType
   | feedActionType
-  | ProfileUserType;
+  | ProfileUserType
+  | OtherProfileUserType;

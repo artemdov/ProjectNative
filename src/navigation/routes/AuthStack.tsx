@@ -3,7 +3,10 @@ import {createStackNavigator} from '@react-navigation/stack';
 import screenNames from '../ScreenNames';
 import {LandingScreen} from '../../screens/Landing/LandingScreen';
 import {RegistrationScreen} from '../../screens/Auth/RegistrationScreen';
-import {myOptions, withoutHeader} from '../options';
+import {
+  myOptions,
+  withoutHeader,
+} from '../options';
 import {LoginScreen} from '../../screens/Auth/LoginScreen';
 
 const Stack = createStackNavigator();

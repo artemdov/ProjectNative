@@ -16,12 +16,12 @@ import {
 } from '../../store/selectors';
 import firebase from 'firebase';
 import {PostCard} from '../../components/PostCard';
+import {setIsLoadingUserPost} from '../../store/actions/profileUserAction';
+import {photoUserProfile} from '../../utils/helpers';
 import {
-  setIsLoadingUserPost,
   setOtherUserInfo,
   setOtherUserPosts,
-} from '../../store/actions/profileUserAction';
-import {photoUserProfile} from '../../utils/helpers';
+} from '../../store/actions/otherProfileUserAction';
 
 export const OtherProfileScreen: React.FC<any> = ({route}) => {
   const otherUserPosts: any = useSelector(getOtherUserPostsSelector);

@@ -1,6 +1,9 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import {EditProfileScreenOptions, withoutHeader} from '../options';
+import {
+  EditProfileScreenOptions,
+  withoutHeader,
+} from '../options';
 import screenNames from '../ScreenNames';
 import {ProfileScreen} from '../../screens/Profile/ProfileScreen';
 import {EditProfileScreen} from '../../screens/Profile/EditProfileScreen';
@@ -20,5 +23,11 @@ export const ProfileStack: React.FC<any> = () => (
       // @ts-ignore
       options={EditProfileScreenOptions}
     />
+      <Stack.Screen
+          name={screenNames.CREATE_PROFILE_INFO_SCREEN}
+          component={EditProfileScreen}
+          // @ts-ignore
+          options={{...EditProfileScreenOptions, headerTitle: 'Создать профиль'}}
+      />
   </Stack.Navigator>
 );

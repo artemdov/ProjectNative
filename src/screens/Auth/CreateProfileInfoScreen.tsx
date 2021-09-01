@@ -8,13 +8,10 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useDispatch, useSelector} from 'react-redux';
 import {
-  getImageUserSelector,
-  getUserInfoSelector,
   getUserSelector,
   isLoadingEditUserSelector,
   isTransferredEditUserSelector,
@@ -28,15 +25,12 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {photoUserProfile, uploadImage} from '../../utils/helpers';
 import {CustomProfileButton} from '../../components/common/CustomProfileButton';
 import {setOtherUserInfo} from '../../store/actions/otherProfileUserAction';
+import screenNames from '../../navigation/ScreenNames';
 
-export const EditProfileScreen: React.FC<any> = ({navigation}) => {
-  const userInfo: any = useSelector(getUserInfoSelector);
-  const userImage = useSelector(getImageUserSelector);
+export const CreateProfileInfoScreen: React.FC<any> = ({navigation}) => {
   const user: any = useSelector(getUserSelector);
   const isLoadingInfo = useSelector(isLoadingEditUserSelector);
   const isTransferred = useSelector(isTransferredEditUserSelector);
-  const userFirstName = userInfo && userInfo.firstName;
-  const userLastName = userInfo && userInfo.lastName;
   const dispatch = useDispatch();
 
   const [firstName, setFirstName] = useState('');
@@ -47,6 +41,8 @@ export const EditProfileScreen: React.FC<any> = ({navigation}) => {
 
   const [country, setCountry] = useState('');
 
+  const [usersImage, setUsersImage] = useState<any>('');
+
   const takePhotoFromCamera = () => {
     ImagePicker.openCamera({
       width: 300,
@@ -55,7 +51,7 @@ export const EditProfileScreen: React.FC<any> = ({navigation}) => {
       freeStyleCropEnabled: true,
     }).then(image => {
       const imageUri = Platform.OS === 'ios' ? image.sourceURL : image.path;
-      dispatch(setUserImage(imageUri));
+      setUsersImage(imageUri);
     });
   };
 
@@ -67,15 +63,15 @@ export const EditProfileScreen: React.FC<any> = ({navigation}) => {
       freeStyleCropEnabled: true,
     }).then(image => {
       const imageUri = Platform.OS === 'ios' ? image.sourceURL : image.path;
-      dispatch(setUserImage(imageUri));
+      setUsersImage(imageUri);
     });
   };
 
-  const handleUpdate = async () => {
-    let imgUrl = await uploadImage(userImage);
+  const updateUserInfo = async () => {
+    let imgUrl = await uploadImage(usersImage);
     dispatch(setUserImage(''));
-    if (imgUrl == null && userInfo.userImage) {
-      imgUrl = userInfo.userImage;
+    if (imgUrl == null && usersImage) {
+      imgUrl = usersImage;
     }
     await firebase.database().ref(`users/${user.uid}`).update({
       firstName: firstName,
@@ -93,35 +89,18 @@ export const EditProfileScreen: React.FC<any> = ({navigation}) => {
           dispatch(setUserInfo(snapshot.val()));
           dispatch(setOtherUserInfo(snapshot.val()));
         }
-      })
-      .then(() => {
-        navigation.goBack();
       });
+    navigation.navigate(screenNames.MAIN_BOTTOM_SCREEN);
   };
 
   return (
     <KeyboardAwareScrollView style={styles.container}>
       <View style={styles.userWrapper}>
-        {userInfo && userInfo.userImage ? (
-          <Image
-            source={{uri: (userImage && userImage) || photoUserProfile}}
-            style={styles.imageUser}
-          />
-        ) : (
-          <View style={styles.photoUser}>
-            <MaterialCommunityIcons
-              name="camera"
-              size={55}
-              color="#000"
-              style={styles.photoIcon}
-            />
-          </View>
-        )}
-        <Text style={styles.userName}>
-          {`${userFirstName || 'Без имени'} ${
-            (userFirstName && userLastName) || ''
-          }`}
-        </Text>
+        <Image
+          source={{uri: usersImage || photoUserProfile}}
+          style={styles.imageUser}
+        />
+        <Text style={styles.userName}>{`${firstName} ${lastName}`}</Text>
       </View>
       <View style={styles.action}>
         <FontAwesome name="user-o" color="#333333" size={20} />
@@ -176,7 +155,7 @@ export const EditProfileScreen: React.FC<any> = ({navigation}) => {
       ) : (
         <View>
           <View style={styles.button}>
-            <CustomProfileButton title="Обновить" onPress={handleUpdate} />
+            <CustomProfileButton title="Продолжить" onPress={updateUserInfo} />
           </View>
           <ActionButton size={rem(50)} buttonColor="#2e64e5">
             <ActionButton.Item
@@ -215,7 +194,7 @@ const styles = StyleSheet.create({
   photoUser: {
     width: rem(90),
     height: vrem(110),
-    backgroundColor: '#666',
+    backgroundColor: '#b3b3b3',
     justifyContent: 'center',
     alignItems: 'center',
   },

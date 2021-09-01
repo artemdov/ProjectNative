@@ -5,8 +5,8 @@ import {
 } from '../../types/types';
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import {Dispatch} from 'redux';
-import firebase from "firebase";
-import {photoUserProfile} from "../../utils/helpers";
+import firebase from 'firebase';
+import {photoUserProfile} from '../../utils/helpers';
 
 export const setIsLoggedIn = (value: boolean) =>
   ({
@@ -36,25 +36,24 @@ export const onSubmitRegistration =
   (data: OnSubmitRegistrationDataType) => async (dispatch: Dispatch) => {
     try {
       dispatch(setLoadingStatus(true));
-      const res = await auth()
-        .createUserWithEmailAndPassword(data.email, data.password)
-              if (res.user) {
-                  dispatch(setIsLoggedIn(true));
-                  dispatch(setLoadingStatus(false));
-              }
-              await firebase
-                  .database()
-                  .ref(`users/${res.user.uid}`)
-                  .update({
-                      email: data.email,
-                      firstName: 'Без имени',
-                      lastName: '',
-                      phone: '',
-                      country: '',
-                      userId: res.user.uid,
-                      userImage: photoUserProfile,
-                      createdAt: firebase.database.ServerValue.TIMESTAMP,
-                  }).then(()=>console.log('user registered'))
+      const res = await auth().createUserWithEmailAndPassword(
+        data.email,
+        data.password,
+      );
+      if (res.user) {
+        dispatch(setIsLoggedIn(true));
+        dispatch(setLoadingStatus(false));
+      }
+      await firebase.database().ref(`users/${res.user.uid}`).update({
+        email: data.email,
+        firstName: '',
+        lastName: '',
+        phone: '',
+        country: '',
+        userId: res.user.uid,
+        userImage: photoUserProfile,
+        createdAt: firebase.database.ServerValue.TIMESTAMP,
+      });
     }
     catch (err) {
       dispatch(errorMessage(err));
@@ -65,12 +64,10 @@ export const onSubmitLogIn =
   (data: OnSubmitLoginType) => async (dispatch: Dispatch) => {
     try {
       dispatch(setLoadingStatus(true));
-      await auth()
-        .signInWithEmailAndPassword(data.email, data.password);
+      await auth().signInWithEmailAndPassword(data.email, data.password);
       dispatch(setIsLoggedIn(true));
       dispatch(setLoadingStatus(false));
-    }
-    catch (err) {
+    } catch (err) {
       dispatch(errorMessage(err));
       dispatch(setLoadingStatus(false));
     }

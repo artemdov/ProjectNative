@@ -1,5 +1,10 @@
 import React from 'react';
-import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import {CustomFormButton} from '../../components/common/CustomFormButton';
 import {CustomFormTextInput} from '../../components/common/CustomFormTextInput';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
@@ -7,14 +12,14 @@ import {Formik} from 'formik';
 import {RegistrationSchema} from '../../consts/validation';
 import {useDispatch} from 'react-redux';
 import {onSubmitRegistration} from '../../store/actions/authAction';
-import screenNames from '../../navigation/ScreenNames';
 import {rem, vrem} from '../../consts/size';
+import screenNames from "../../navigation/ScreenNames";
 
 export const RegistrationScreen: React.FC<any> = ({navigation}) => {
   const dispatch = useDispatch();
   const onSubmit = (values: any) => {
     dispatch(onSubmitRegistration(values));
-    navigation.navigate(screenNames.LOGIN_SCREEN);
+
   };
 
   return (
@@ -64,7 +69,7 @@ export const RegistrationScreen: React.FC<any> = ({navigation}) => {
                   secureTextEntry={true}
                 />
                 <View style={styles.button}>
-                  <CustomFormButton title='Продолжить' onPress={handleSubmit} />
+                  <CustomFormButton title="Продолжить" onPress={handleSubmit} />
                 </View>
               </View>
             )}
@@ -84,6 +89,13 @@ const styles = StyleSheet.create({
     fontSize: rem(26),
     marginVertical: vrem(50),
     color: '#ffff',
+  },
+  updateInfoButton: {
+    marginVertical: vrem(2),
+  },
+  navButtonText: {
+    fontSize: rem(14),
+    color: '#000',
   },
   button: {
     marginTop: vrem(42),

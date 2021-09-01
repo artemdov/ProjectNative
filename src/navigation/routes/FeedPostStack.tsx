@@ -4,8 +4,8 @@ import {FeedScreen} from '../../screens/Feed/FeedScreen';
 import {AddPostScreen} from '../../screens/Feed/AddPostScreen';
 import {addPostOptions, profileOptions, withoutHeader} from '../options';
 import screenNames from '../ScreenNames';
-import {ProfileScreen} from "../../screens/Profile/ProfileScreen";
-import {OtherProfileScreen} from "../../screens/Profile/OtherProfileScreen";
+import {ProfileScreen} from '../../screens/Profile/ProfileScreen';
+import {OtherProfileScreen} from '../../screens/Profile/OtherProfileScreen';
 
 const Stack = createStackNavigator<any>();
 
@@ -22,17 +22,17 @@ export const FeedPostStack = () => (
       // @ts-ignore
       options={addPostOptions}
     />
-      <Stack.Screen
-          name={screenNames.PROFILE_SCREEN}
-          component={ProfileScreen}
-          // @ts-ignore
-          options={profileOptions}
-      />
-      <Stack.Screen
-          name={screenNames.OTHER_PROFILE_SCREEN}
-          component={OtherProfileScreen}
-          // @ts-ignore
-          options={profileOptions}
-      />
+    <Stack.Screen
+      name={screenNames.PROFILE_SCREEN}
+      component={ProfileScreen}
+      // @ts-ignore
+      options={profileOptions}
+    />
+    <Stack.Screen
+      name={screenNames.OTHER_PROFILE_SCREEN}
+      component={OtherProfileScreen}
+      // @ts-ignore
+      options={profileOptions}
+    />
   </Stack.Navigator>
 );
