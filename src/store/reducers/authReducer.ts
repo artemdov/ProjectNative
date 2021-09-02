@@ -6,7 +6,7 @@ const initialState = {
   loading: true,
   error: '',
   isLoggedIn: false,
-  isInfo: false,
+  profileSetupFinished: false,
 };
 type initialStateType = typeof initialState;
 
@@ -20,8 +20,8 @@ export const authReducer = (state = initialState, action: ActionType) => {
       return <initialStateType>{...state, error: action.payload};
     case actionTypes.auth.LOGIN:
       return <initialStateType>{...state, isLoggedIn: action.payload};
-    case actionTypes.auth.INFO:
-      return <initialStateType>{...state, isInfo: action.payload};
+    case actionTypes.auth.SETUP_PROFILE:
+      return <initialStateType>{...state, profileSetupFinished: action.payload};
     default:
       return state;
   }

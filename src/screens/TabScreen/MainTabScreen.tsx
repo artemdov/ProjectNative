@@ -7,6 +7,8 @@ import {rem} from '../../consts/size';
 import {FeedPostStack} from '../../navigation/routes/FeedPostStack';
 import {ArtworkStack} from '../../navigation/routes/ArtworkStack';
 import {ProfileStack} from '../../navigation/routes/ProfileStack';
+import {useSelector} from "react-redux";
+import {isProfileSetupFinishedSelector} from "../../store/selectors";
 
 const Tab = createBottomTabNavigator<any>();
 const notFocused = 0.51;
@@ -31,7 +33,10 @@ const FeedTabBarIcon: React.FC<any> = ({focused}) => (
   />
 );
 
-export const MainTabScreen = () => (
+export const MainTabScreen = () => {
+    const isProfileSetupFinished = useSelector(isProfileSetupFinishedSelector)
+
+    return (
   <Tab.Navigator tabBarOptions={bottomTabBarOptions}>
     <Tab.Screen
       name={screenNames.PROFILE_STACK}
@@ -41,24 +46,26 @@ export const MainTabScreen = () => (
         tabBarIcon: profileTabBarIcon,
       }}
     />
-    <Tab.Screen
-      name={screenNames.FEED_POST_STACK}
-      component={FeedPostStack}
-      options={{
-        tabBarLabel: 'Лента',
-        tabBarIcon: FeedTabBarIcon,
-      }}
-    />
-    <Tab.Screen
+      {isProfileSetupFinished &&
+      (<Tab.Screen
+          name={screenNames.FEED_POST_STACK}
+          component={FeedPostStack}
+          options={{
+              tabBarLabel: 'Лента',
+              tabBarIcon: FeedTabBarIcon,
+          }}
+      />)}
+      {isProfileSetupFinished &&
+      (<Tab.Screen
       name={screenNames.ARTWORK_API_STACK}
       component={ArtworkStack}
       options={{
-        tabBarLabel: 'Данные',
-        tabBarIcon: ArtworkTabBarIcon,
+          tabBarLabel: 'Данные',
+          tabBarIcon: ArtworkTabBarIcon,
       }}
-    />
+      />)}
   </Tab.Navigator>
-);
+)};
 
 const styles = StyleSheet.create({
   icon: {

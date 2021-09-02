@@ -4,7 +4,7 @@ const actionTypes = {
     SET_ERROR: 'SET_ERROR',
     SET_LOADING: 'SET_LOADING',
     LOGIN: 'LOGIN',
-    INFO: 'INFO',
+    SETUP_PROFILE: 'SETUP_PROFILE',
 
   },
   feed: {

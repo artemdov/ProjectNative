@@ -24,10 +24,9 @@ import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {photoUserProfile, uploadImage} from '../../utils/helpers';
 import {CustomProfileButton} from '../../components/common/CustomProfileButton';
-import screenNames from '../../navigation/ScreenNames';
-import {setInfo} from "../../store/actions/authAction";
+import {setProfileSetup} from "../../store/actions/authAction";
 
-export const CreateProfileInfoScreen: React.FC<any> = ({navigation}) => {
+export const CreateProfileInfoScreen: React.FC<any> = () => {
   const user: any = useSelector(getUserSelector);
   const isLoadingInfo = useSelector(isLoadingEditUserSelector);
   const isTransferred = useSelector(isTransferredEditUserSelector);
@@ -73,6 +72,7 @@ export const CreateProfileInfoScreen: React.FC<any> = ({navigation}) => {
     if (imgUrl == null && usersImage) {
       imgUrl = usersImage;
     }
+    dispatch(setProfileSetup(true))
     await firebase.database().ref(`users/${user.uid}`).update({
       firstName: firstName,
       lastName: lastName,
@@ -89,7 +89,6 @@ export const CreateProfileInfoScreen: React.FC<any> = ({navigation}) => {
           dispatch(setUserInfo(snapshot.val()));
         }
       });
-    dispatch(setInfo(true))
   };
 
   return (

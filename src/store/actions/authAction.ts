@@ -32,17 +32,18 @@ export const setLoadingStatus = (value: boolean) =>
     payload: value,
   } as const);
 
-export const setInfo = (value: boolean) =>
+export const setProfileSetup = (profileSetupFinished: boolean) =>
     ({
-        type: actionTypes.auth.INFO,
-        payload: value,
+        type: actionTypes.auth.SETUP_PROFILE,
+        payload: profileSetupFinished,
     } as const);
 
 export const onSubmitRegistration =
   (data: OnSubmitRegistrationDataType) => async (dispatch: Dispatch) => {
     try {
       dispatch(setLoadingStatus(true));
-      const res = await auth().createUserWithEmailAndPassword(
+        dispatch(setProfileSetup(false))
+        const res = await auth().createUserWithEmailAndPassword(
         data.email,
         data.password,
       );
@@ -60,7 +61,6 @@ export const onSubmitRegistration =
         userImage: photoUserProfile,
         createdAt: firebase.database.ServerValue.TIMESTAMP,
       });
-        dispatch(setInfo(false))
     }
     catch (err) {
       dispatch(errorMessage(err));
@@ -71,10 +71,10 @@ export const onSubmitLogIn =
   (data: OnSubmitLoginType) => async (dispatch: Dispatch) => {
     try {
       dispatch(setLoadingStatus(true));
-      await auth().signInWithEmailAndPassword(data.email, data.password);
+      dispatch(setProfileSetup(true));
+        await auth().signInWithEmailAndPassword(data.email, data.password);
       dispatch(setIsLoggedIn(true));
       dispatch(setLoadingStatus(false));
-      dispatch(setInfo(true))
 
     } catch (err) {
       dispatch(errorMessage(err));

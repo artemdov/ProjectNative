@@ -9,17 +9,16 @@ import {ProfileScreen} from '../../screens/Profile/ProfileScreen';
 import {EditProfileScreen} from '../../screens/Profile/EditProfileScreen';
 import {CreateProfileInfoScreen} from "../../screens/Auth/CreateProfileInfoScreen";
 import {useSelector} from "react-redux";
-import {isInfoSelector} from "../../store/selectors";
+import {isProfileSetupFinishedSelector} from "../../store/selectors";
 
 const Stack = createStackNavigator();
 
 export const ProfileStack: React.FC<any> = () => {
-    const isInfo = useSelector(isInfoSelector)
-    console.log('isInfo', isInfo)
+    const isProfileSetupFinished = useSelector(isProfileSetupFinishedSelector);
 
     return (
         <Stack.Navigator>
-            {isInfo ?
+            {isProfileSetupFinished ?
                 (<Stack.Screen
                     name={screenNames.PROFILE_SCREEN}
                     component={ProfileScreen}

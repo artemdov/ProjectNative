@@ -13,9 +13,8 @@ import {RegistrationSchema} from '../../consts/validation';
 import {useDispatch} from 'react-redux';
 import {onSubmitRegistration} from '../../store/actions/authAction';
 import {rem, vrem} from '../../consts/size';
-import screenNames from "../../navigation/ScreenNames";
 
-export const RegistrationScreen: React.FC<any> = ({navigation}) => {
+export const RegistrationScreen: React.FC<any> = () => {
   const dispatch = useDispatch();
   const onSubmit = (values: any) => {
     dispatch(onSubmitRegistration(values));
@@ -68,11 +67,6 @@ export const RegistrationScreen: React.FC<any> = ({navigation}) => {
                   secureTextEntry={true}
                 />
                 <View style={styles.button}>
-                  <TouchableOpacity
-                      style={styles.navButton}
-                      onPress={() => navigation.navigate(screenNames.CREATE_PROFILE_INFO_SCREEN)}>
-                    <Text style={styles.navButtonText}>Создать аккаунт</Text>
-                  </TouchableOpacity>
                   <CustomFormButton title="Продолжить" onPress={handleSubmit} />
                 </View>
               </View>
@@ -96,13 +90,6 @@ const styles = StyleSheet.create({
   },
   updateInfoButton: {
     marginVertical: vrem(2),
-  },
-  navButtonText: {
-    fontSize: rem(14),
-    color: '#000',
-  },
-  navButton: {
-    marginTop: 15,
   },
   button: {
     marginTop: vrem(42),
