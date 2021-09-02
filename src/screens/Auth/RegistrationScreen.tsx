@@ -2,7 +2,7 @@ import React from 'react';
 import {
   SafeAreaView,
   StyleSheet,
-  Text,
+  Text, TouchableOpacity,
   View,
 } from 'react-native';
 import {CustomFormButton} from '../../components/common/CustomFormButton';
@@ -19,7 +19,6 @@ export const RegistrationScreen: React.FC<any> = ({navigation}) => {
   const dispatch = useDispatch();
   const onSubmit = (values: any) => {
     dispatch(onSubmitRegistration(values));
-
   };
 
   return (
@@ -69,6 +68,11 @@ export const RegistrationScreen: React.FC<any> = ({navigation}) => {
                   secureTextEntry={true}
                 />
                 <View style={styles.button}>
+                  <TouchableOpacity
+                      style={styles.navButton}
+                      onPress={() => navigation.navigate(screenNames.CREATE_PROFILE_INFO_SCREEN)}>
+                    <Text style={styles.navButtonText}>Создать аккаунт</Text>
+                  </TouchableOpacity>
                   <CustomFormButton title="Продолжить" onPress={handleSubmit} />
                 </View>
               </View>
@@ -96,6 +100,9 @@ const styles = StyleSheet.create({
   navButtonText: {
     fontSize: rem(14),
     color: '#000',
+  },
+  navButton: {
+    marginTop: 15,
   },
   button: {
     marginTop: vrem(42),

@@ -4,9 +4,8 @@ const actionTypes = {
     SET_ERROR: 'SET_ERROR',
     SET_LOADING: 'SET_LOADING',
     LOGIN: 'LOGIN',
-    LOGOUT: 'LOGOUT',
-    SIGNUP: 'SIGNUP',
-    IS_AUTHENTICATED: 'IS_AUTHENTICATED',
+    INFO: 'INFO',
+
   },
   feed: {
     SET_IMAGE: 'SET_IMAGE',

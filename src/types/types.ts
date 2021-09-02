@@ -5,7 +5,7 @@ import {
   errorMessage,
   setLoadingStatus,
   setIsLoggedIn,
-  setUser,
+  setUser, setInfo,
 } from '../store/actions/authAction';
 import {setArtworks, isLoadingArtworks} from '../store/actions/artworksAction';
 import {
@@ -17,15 +17,14 @@ import {
   setTransferred,
 } from '../store/actions/feedAction';
 import {
-  setOtherUserInfo,
   setTransferredUserImage,
   setUserImage,
   setUserInfo,
-  setOtherUserPosts,
   upLoadingUserImage,
   setUserPosts,
   setIsLoadingUserPost,
 } from '../store/actions/profileUserAction';
+import {setOtherUserInfo, setOtherUserPosts} from "../store/actions/otherProfileUserAction";
 
 export type myOptionsType = {
   title: string;
@@ -95,7 +94,8 @@ type AuthActionType =
   | ReturnType<typeof setIsLoggedIn>
   | ReturnType<typeof errorMessage>
   | ReturnType<typeof setLoadingStatus>
-  | ReturnType<typeof setUser>;
+  | ReturnType<typeof setUser>
+  | ReturnType<typeof setInfo>;
 
 type ArtworkActionType =
   | ReturnType<typeof setArtworks>

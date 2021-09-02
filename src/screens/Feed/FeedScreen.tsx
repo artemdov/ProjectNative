@@ -107,16 +107,15 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
                 }
               });
         };
-        {
+        /*{
           user.uid === item.userId
               ? navigation.navigate(screenNames.PROFILE_SCREEN)
-              :
-             /* useEffect(() => {
+              :*/
+
             getUser().then(() => console.log('user success'));
             fetchUserPosts();
-          }, []);*/
-          navigation.navigate(screenNames.OTHER_PROFILE_SCREEN), {userId: item.userId};
-        }
+          navigation.navigate(screenNames.OTHER_PROFILE_SCREEN);
+
       }}
     />
   );

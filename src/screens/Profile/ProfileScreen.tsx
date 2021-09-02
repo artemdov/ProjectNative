@@ -45,8 +45,6 @@ export const ProfileScreen: React.FC<any> = ({navigation}) => {
 
   const userLastName = userInfo && userInfo.lastName;
 
-  const nameInfo = userFirstName === '' && userLastName === '';
-
   const handleDelete = (postId: string) => {
     Alert.alert(
       'Удалить этот пост',
@@ -116,10 +114,6 @@ export const ProfileScreen: React.FC<any> = ({navigation}) => {
     navigation.navigate(screenNames.EDIT_PROFILE_SCREEN);
   };
 
-  const onPressCreateUserInfo = () => {
-    navigation.navigate(screenNames.CREATE_PROFILE_INFO_SCREEN);
-  };
-
   const getUser = async () => {
     await firebase
       .database()
@@ -175,19 +169,15 @@ export const ProfileScreen: React.FC<any> = ({navigation}) => {
           showsVerticalScrollIndicator={false}>
           <Image style={styles.userImage} source={{uri: imageURL}} />
           <Text style={styles.userName}>
-            {`${userFirstName} ${
-              (userFirstName && userLastName) 
+            {`${userFirstName || 'Без имени'} ${
+              (userFirstName && userLastName) || ''
             }`}
           </Text>
           <View style={styles.userButtonWrapper}>
-            {!nameInfo ?
-              <CustomProfileButton
-                  title="Редактировать профиль"
-                  onPress={onPressEditProfile}
-              />
-              : <CustomProfileButton
-                    title="Создать профиль"
-                    onPress={onPressCreateUserInfo} />}
+            <CustomProfileButton
+              title="Редактировать профиль"
+              onPress={onPressEditProfile}
+            />
             <CustomProfileButton title="Выйти" onPress={onPressLogout} />
           </View>
           {userPosts.map((item: any) => (

@@ -24,8 +24,8 @@ import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {photoUserProfile, uploadImage} from '../../utils/helpers';
 import {CustomProfileButton} from '../../components/common/CustomProfileButton';
-import {setOtherUserInfo} from '../../store/actions/otherProfileUserAction';
 import screenNames from '../../navigation/ScreenNames';
+import {setInfo} from "../../store/actions/authAction";
 
 export const CreateProfileInfoScreen: React.FC<any> = ({navigation}) => {
   const user: any = useSelector(getUserSelector);
@@ -87,10 +87,9 @@ export const CreateProfileInfoScreen: React.FC<any> = ({navigation}) => {
       .then(snapshot => {
         if (snapshot.exists()) {
           dispatch(setUserInfo(snapshot.val()));
-          dispatch(setOtherUserInfo(snapshot.val()));
         }
       });
-    navigation.navigate(screenNames.MAIN_BOTTOM_SCREEN);
+    dispatch(setInfo(true))
   };
 
   return (

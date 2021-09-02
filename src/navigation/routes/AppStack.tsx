@@ -9,7 +9,6 @@ import {withoutHeader} from '../options';
 import {isLoadingSelector, getUserSelector} from '../../store/selectors';
 import {LoadingScreen} from '../../screens/Loading/LoadingScreen';
 import {MainTabScreen} from '../../screens/TabScreen/MainTabScreen';
-import UserInfoStack from "./UserInfoStack";
 
 const Stack = createStackNavigator<any>();
 
@@ -37,8 +36,8 @@ export const AppStack = () => {
         />
       ) : isUser ? (
         <Stack.Screen
-          name={screenNames.USER_INFO_STACK}
-          component={UserInfoStack}
+          name={screenNames.MAIN_BOTTOM_SCREEN}
+          component={MainTabScreen}
           options={withoutHeader()}
         />
       ) : (

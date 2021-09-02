@@ -102,21 +102,10 @@ export const EditProfileScreen: React.FC<any> = ({navigation}) => {
   return (
     <KeyboardAwareScrollView style={styles.container}>
       <View style={styles.userWrapper}>
-        {userInfo && userInfo.userImage ? (
-          <Image
-            source={{uri: (userImage && userImage) || photoUserProfile}}
+        <Image
+            source={{uri: userImage || photoUserProfile}}
             style={styles.imageUser}
-          />
-        ) : (
-          <View style={styles.photoUser}>
-            <MaterialCommunityIcons
-              name="camera"
-              size={55}
-              color="#000"
-              style={styles.photoIcon}
-            />
-          </View>
-        )}
+        />
         <Text style={styles.userName}>
           {`${userFirstName || 'Без имени'} ${
             (userFirstName && userLastName) || ''
