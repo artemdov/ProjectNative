@@ -26,18 +26,15 @@ import {
   setUserInfo,
   setUserPosts,
 } from '../../store/actions/profileUserAction';
-import {photoUserProfile} from '../../utils/helpers';
 import {CustomProfileButton} from '../../components/common/CustomProfileButton';
 import storage from '@react-native-firebase/storage';
+import {photoUserProfile} from "../../consts/photoUserProfile";
 
 export const ProfileScreen: React.FC<any> = ({navigation}) => {
   const userPosts: any = useSelector(getUserPostsSelector);
-  const user: any = useSelector(getUserSelector);
   const userInfo: any = useSelector(getUserInfoSelector);
   const isLoadingUserPost = useSelector(isLoadingUserPostSelector);
   const dispatch = useDispatch();
-
-  const userUID = user && user.uid;
 
   const imageURL = (userInfo && userInfo.userImage) || photoUserProfile;
 
@@ -113,51 +110,6 @@ export const ProfileScreen: React.FC<any> = ({navigation}) => {
   const onPressEditProfile = () => {
     navigation.navigate(screenNames.EDIT_PROFILE_SCREEN);
   };
-
-  const getUser = async () => {
-    await firebase
-      .database()
-      .ref(`users/${userUID}`)
-      .on('value', snapshot => {
-        if (snapshot.exists()) {
-          dispatch(setUserInfo(snapshot.val()));
-        }
-      });
-  };
-
-  const fetchUserPosts = () => {
-    dispatch(setIsLoadingUserPost(true));
-    const postsRef = firebase.database().ref('usersPost');
-    const onLoadingFeed = postsRef.on('value', snapshot => {
-      const listData: any = [];
-      snapshot.forEach(childSnapshot => {
-        const userId = childSnapshot.val().userId;
-        if (userId === userUID) {
-          const {id, userId, post, postImg, postTime, likes, userImage} =
-            childSnapshot.val();
-          listData.push({
-            id,
-            userId,
-            userImage,
-            postTime,
-            post,
-            postImg,
-            likes,
-          });
-        }
-      });
-      dispatch(setUserPosts(listData));
-      dispatch(setIsLoadingUserPost(false));
-    });
-    return () => {
-      postsRef.off('value', onLoadingFeed);
-    };
-  };
-
-  useEffect(() => {
-    getUser().then(() => console.log('user success'));
-    fetchUserPosts();
-  }, []);
 
   return (
     <SafeAreaView style={styles.container}>

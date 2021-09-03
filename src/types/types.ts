@@ -5,7 +5,7 @@ import {
   errorMessage,
   setLoadingStatus,
   setIsLoggedIn,
-  setUser, setInfo,
+  setUser, setProfileSetup,
 } from '../store/actions/authAction';
 import {setArtworks, isLoadingArtworks} from '../store/actions/artworksAction';
 import {
@@ -95,7 +95,7 @@ type AuthActionType =
   | ReturnType<typeof errorMessage>
   | ReturnType<typeof setLoadingStatus>
   | ReturnType<typeof setUser>
-  | ReturnType<typeof setInfo>;
+  | ReturnType<typeof setProfileSetup>;
 
 type ArtworkActionType =
   | ReturnType<typeof setArtworks>

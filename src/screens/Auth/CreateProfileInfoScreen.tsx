@@ -17,14 +17,14 @@ import {
   isTransferredEditUserSelector,
 } from '../../store/selectors';
 import firebase from 'firebase';
-import {setUserImage, setUserInfo} from '../../store/actions/profileUserAction';
+import {setUserImage, setUserInfo, uploadImage} from '../../store/actions/profileUserAction';
 import ImagePicker from 'react-native-image-crop-picker';
 import {rem, vrem} from '../../consts/size';
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {photoUserProfile, uploadImage} from '../../utils/helpers';
 import {CustomProfileButton} from '../../components/common/CustomProfileButton';
 import {setProfileSetup} from "../../store/actions/authAction";
+import {photoUserProfile} from "../../consts/photoUserProfile";
 
 export const CreateProfileInfoScreen: React.FC<any> = () => {
   const user: any = useSelector(getUserSelector);
@@ -67,7 +67,7 @@ export const CreateProfileInfoScreen: React.FC<any> = () => {
   };
 
   const updateUserInfo = async () => {
-    let imgUrl = await uploadImage(usersImage);
+    let imgUrl = await dispatch(uploadImage(usersImage));
     dispatch(setUserImage(''));
     if (imgUrl == null && usersImage) {
       imgUrl = usersImage;

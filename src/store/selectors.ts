@@ -18,7 +18,7 @@ export const getPostsSelector = (state: AppRootStateType) => state.feed.posts;
 export const getCommentsSelector = (state: AppRootStateType) =>
   state.feed.comments;
 export const getArtworksSelector = (state: AppRootStateType) =>
-  state.artworks.artworks;
+  state.artworks.artworksInfo;
 export const isLoadingArtworksSelector = (state: AppRootStateType) =>
   state.artworks.isLoadingArtworks;
 export const isLoadingEditUserSelector = (state: AppRootStateType) =>

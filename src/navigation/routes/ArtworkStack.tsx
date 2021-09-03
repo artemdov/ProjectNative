@@ -1,6 +1,6 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import {ArtworkDetailScreenOptions, withoutHeader} from '../options';
+import {artworkDetailScreenOptions, withoutHeader} from '../options';
 import screenNames from '../ScreenNames';
 import {ArtworkListScreen} from '../../screens/Artworks/ArtworkListScreen';
 import {ArtworkDetailScreen} from '../../screens/Artworks/ArtworkDetailScreen';
@@ -17,7 +17,7 @@ export const ArtworkStack: React.FC<any> = () => (
     <Stack.Screen
       name={screenNames.ARTWORK_DETAIL_SCREEN}
       component={ArtworkDetailScreen}
-      options={ArtworkDetailScreenOptions}
+      options={artworkDetailScreenOptions}
     />
   </Stack.Navigator>
 );

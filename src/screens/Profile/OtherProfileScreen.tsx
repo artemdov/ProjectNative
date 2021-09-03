@@ -7,79 +7,28 @@ import {
   StyleSheet,
   Text,
 } from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {rem, vrem} from '../../consts/size';
 import {
   getOtherUserInfoSelector,
   getOtherUserPostsSelector,
   isLoadingUserPostSelector,
 } from '../../store/selectors';
-import firebase from 'firebase';
 import {PostCard} from '../../components/PostCard';
-import {setIsLoadingUserPost} from '../../store/actions/profileUserAction';
-import {photoUserProfile} from '../../utils/helpers';
-import {
-  setOtherUserInfo,
-  setOtherUserPosts,
-} from '../../store/actions/otherProfileUserAction';
+import {photoUserProfile} from "../../consts/photoUserProfile";
 
-export const OtherProfileScreen: React.FC<any> = ({route}) => {
+export const OtherProfileScreen: React.FC<any> = () => {
   const otherUserPosts: any = useSelector(getOtherUserPostsSelector);
   const otherUserInfo: any = useSelector(getOtherUserInfoSelector);
   const isLoadingUserPost = useSelector(isLoadingUserPostSelector);
-  const dispatch = useDispatch();
+  console.log('otherUserPosts', otherUserPosts)
+  console.log('otherUserInfo', otherUserInfo)
 
-  const userImageURL =
-    (otherUserInfo && otherUserInfo.userImage) || photoUserProfile;
+  const userImageURL = (otherUserInfo && otherUserInfo.userImage) || photoUserProfile;
 
   const userFirstName = otherUserInfo && otherUserInfo.firstName;
 
   const userLastName = otherUserInfo && otherUserInfo.lastName;
-
-  const fetchUserPosts = () => {
-    dispatch(setIsLoadingUserPost(true));
-    const postsRef = firebase.database().ref('usersPost');
-    const onLoadingFeed = postsRef.on('value', snapshot => {
-      const listData: any = [];
-      snapshot.forEach(childSnapshot => {
-        const userId = childSnapshot.val().userId;
-        if (route.params && userId === route.params.userId) {
-          const {id, userId, post, postImg, postTime, likes, userImage} =
-            childSnapshot.val();
-          listData.push({
-            id,
-            userId,
-            userImage,
-            postTime,
-            post,
-            postImg,
-            likes,
-          });
-        }
-      });
-      dispatch(setOtherUserPosts(listData));
-      dispatch(setIsLoadingUserPost(false));
-    });
-    return () => {
-      postsRef.off('value', onLoadingFeed);
-    };
-  };
-
-  const getUser = async () => {
-    await firebase
-      .database()
-      .ref(`users/${route.params && route.params.userId}`)
-      .on('value', snapshot => {
-        if (snapshot.exists()) {
-          dispatch(setOtherUserInfo(snapshot.val()));
-        }
-      });
-  };
-
-  useEffect(() => {
-    getUser().then(() => console.log('user success'));
-    fetchUserPosts();
-  }, []);
 
   return (
     <SafeAreaView style={styles.profileContainer}>

@@ -32,7 +32,7 @@ export const profileOptions = {
   },
   headerBackTitleVisible: false,
 };
-export const EditProfileScreenOptions = {
+export const editProfileScreenOptions = {
   headerTitle: 'Редактировать профиль',
   headerBackTitleVisible: false,
   headerTitleAlign: 'center',
@@ -42,7 +42,7 @@ export const EditProfileScreenOptions = {
     elevation: 0,
   },
 };
-export const ArtworkDetailScreenOptions = {
+export const artworkDetailScreenOptions = {
   title: '',
   headerTintColor: '#fff',
   headerStyle: {...commonHeaderOptions, backgroundColor: '#4f016d'},

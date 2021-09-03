@@ -6,7 +6,8 @@ import {
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import {Dispatch} from 'redux';
 import firebase from 'firebase';
-import {photoUserProfile} from '../../utils/helpers';
+import {photoUserProfile} from "../../consts/photoUserProfile";
+import {setUserInfo, setUserPosts} from "./profileUserAction";
 
 export const setIsLoggedIn = (value: boolean) =>
   ({
@@ -41,7 +42,6 @@ export const setProfileSetup = (profileSetupFinished: boolean) =>
 export const onSubmitRegistration =
   (data: OnSubmitRegistrationDataType) => async (dispatch: Dispatch) => {
     try {
-      dispatch(setLoadingStatus(true));
         dispatch(setProfileSetup(false))
         const res = await auth().createUserWithEmailAndPassword(
         data.email,
@@ -70,9 +70,36 @@ export const onSubmitRegistration =
 export const onSubmitLogIn =
   (data: OnSubmitLoginType) => async (dispatch: Dispatch) => {
     try {
-      dispatch(setLoadingStatus(true));
-      dispatch(setProfileSetup(true));
-        await auth().signInWithEmailAndPassword(data.email, data.password);
+        const res = await auth().signInWithEmailAndPassword(data.email, data.password);
+        await firebase
+            .database()
+            .ref(`users/${res.user.uid}`)
+            .on('value', snapshot => {
+                if (snapshot.exists()) {
+                    dispatch(setUserInfo(snapshot.val()));
+                }
+            });
+        await firebase.database().ref('usersPost')
+            .on('value', snapshot => {
+                const listData: any = [];
+                snapshot.forEach(childSnapshot => {
+                    const userId = childSnapshot.val().userId;
+                    if (userId === res.user.uid) {
+                        const {id, userId, post, postImg, postTime, likes, userImage} =
+                            childSnapshot.val();
+                        listData.push({
+                            id,
+                            userId,
+                            userImage,
+                            postTime,
+                            post,
+                            postImg,
+                            likes,
+                        });
+                    }
+                });
+                dispatch(setUserPosts(listData));
+            });
       dispatch(setIsLoggedIn(true));
       dispatch(setLoadingStatus(false));
 

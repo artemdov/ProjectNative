@@ -2,10 +2,10 @@ import actionTypes from '../actionTypes';
 import {Dispatch} from 'redux';
 import {API} from '../../api/api';
 
-export const setArtworks = (artworks: []) =>
+export const setArtworks = (artworksInfo: []) =>
   ({
     type: actionTypes.artworks.SET_ARTWORKS,
-    payload: artworks,
+    payload: artworksInfo,
   } as const);
 
 export const isLoadingArtworks = (isLoading: boolean) =>

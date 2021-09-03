@@ -20,14 +20,14 @@ import {
   isTransferredEditUserSelector,
 } from '../../store/selectors';
 import firebase from 'firebase';
-import {setUserImage, setUserInfo} from '../../store/actions/profileUserAction';
+import {setUserImage, setUserInfo, uploadImage} from '../../store/actions/profileUserAction';
 import ImagePicker from 'react-native-image-crop-picker';
 import {rem, vrem} from '../../consts/size';
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {photoUserProfile, uploadImage} from '../../utils/helpers';
 import {CustomProfileButton} from '../../components/common/CustomProfileButton';
 import {setOtherUserInfo} from '../../store/actions/otherProfileUserAction';
+import {photoUserProfile} from "../../consts/photoUserProfile";
 
 export const EditProfileScreen: React.FC<any> = ({navigation}) => {
   const userInfo: any = useSelector(getUserInfoSelector);
@@ -72,7 +72,7 @@ export const EditProfileScreen: React.FC<any> = ({navigation}) => {
   };
 
   const handleUpdate = async () => {
-    let imgUrl = await uploadImage(userImage);
+    let imgUrl = await dispatch(uploadImage(userImage));
     dispatch(setUserImage(''));
     if (imgUrl == null && userInfo.userImage) {
       imgUrl = userInfo.userImage;
@@ -91,7 +91,6 @@ export const EditProfileScreen: React.FC<any> = ({navigation}) => {
       .then(snapshot => {
         if (snapshot.exists()) {
           dispatch(setUserInfo(snapshot.val()));
-          dispatch(setOtherUserInfo(snapshot.val()));
         }
       })
       .then(() => {

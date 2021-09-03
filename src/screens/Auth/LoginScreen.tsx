@@ -8,11 +8,11 @@ import {Formik} from 'formik';
 import {useDispatch} from 'react-redux';
 import {onSubmitLogIn} from '../../store/actions/authAction';
 import {rem, vrem} from '../../consts/size';
-import screenNames from "../../navigation/ScreenNames";
 
 export const LoginScreen: React.FC<any> = () => {
   const dispatch = useDispatch();
-  const onSubmit = (values: any) => {
+
+  const onSubmit = async (values: any) => {
     dispatch(onSubmitLogIn(values));
   };
 

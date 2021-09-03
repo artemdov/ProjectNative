@@ -6,7 +6,7 @@ const initialState = {
   loading: true,
   error: '',
   isLoggedIn: false,
-  profileSetupFinished: false,
+  profileSetupFinished: true,
 };
 type initialStateType = typeof initialState;
 
