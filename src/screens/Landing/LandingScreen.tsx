@@ -18,10 +18,10 @@ export const LandingScreen: React.FC<any> = ({navigation}) => {
       <Text style={styles.header}>Добро пожаловать в приложение</Text>
       <View style={styles.buttonWrapper}>
         <View style={styles.buttonEnter}>
-          <CustomFormButton title='Вход' onPress={onPressSubmit} />
+          <CustomFormButton title="Вход" onPress={onPressSubmit} />
         </View>
         <View style={styles.buttonRegistration}>
-          <CustomFormButton title='Регистрация' onPress={onPressRegister} />
+          <CustomFormButton title="Регистрация" onPress={onPressRegister} />
         </View>
       </View>
     </SafeAreaView>

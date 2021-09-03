@@ -20,8 +20,11 @@ import {
 } from '../../store/selectors';
 import {setIsLoadingPost, setPosts} from '../../store/actions/feedAction';
 import storage from '@react-native-firebase/storage';
-import {setIsLoadingUserPost} from "../../store/actions/profileUserAction";
-import {setOtherUserInfo, setOtherUserPosts} from "../../store/actions/otherProfileUserAction";
+import {setIsLoadingUserPost} from '../../store/actions/profileUserAction';
+import {
+  setOtherUserInfo,
+  setOtherUserPosts,
+} from '../../store/actions/otherProfileUserAction';
 
 export const FeedScreen: React.FC<any> = ({navigation}) => {
   const dispatch = useDispatch();
@@ -74,10 +77,10 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
           const onLoadingFeed = postsRef.on('value', snapshot => {
             const listData: any = [];
             snapshot.forEach(childSnapshot => {
-              const userId = childSnapshot.val().userId;
-              if (userId === item.userId) {
+              const currentUserId = childSnapshot.val().userId;
+              if (currentUserId === item.userId) {
                 const {id, userId, post, postImg, postTime, likes, userImage} =
-                    childSnapshot.val();
+                  childSnapshot.val();
                 listData.push({
                   id,
                   userId,
@@ -99,22 +102,21 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
 
         const getUser = async () => {
           await firebase
-              .database()
-              .ref(`users/${item.userId}`)
-              .on('value', snapshot => {
-                if (snapshot.exists()) {
-                  dispatch(setOtherUserInfo(snapshot.val()));
-                }
-              });
+            .database()
+            .ref(`users/${item.userId}`)
+            .on('value', snapshot => {
+              if (snapshot.exists()) {
+                dispatch(setOtherUserInfo(snapshot.val()));
+              }
+            });
         };
         {
           user.uid === item.userId
-              ? navigation.navigate(screenNames.PROFILE_SCREEN)
-              :
-        getUser().then(() => console.log('user success'));
-        fetchUserPosts();
-        navigation.navigate(screenNames.OTHER_PROFILE_SCREEN);
-      }
+            ? navigation.navigate(screenNames.PROFILE_SCREEN)
+            : getUser().then(() => console.log('user success'));
+          fetchUserPosts();
+          navigation.navigate(screenNames.OTHER_PROFILE_SCREEN);
+        }
       }}
     />
   );

@@ -3,12 +3,8 @@ import {createStackNavigator} from '@react-navigation/stack';
 import screenNames from '../ScreenNames';
 import {LandingScreen} from '../../screens/Landing/LandingScreen';
 import {RegistrationScreen} from '../../screens/Auth/RegistrationScreen';
-import {
-  myOptions,
-  withoutHeader,
-} from '../options';
-import {LoginScreen} from '../../screens/Auth/LoginScreen';
-import {LoginStack} from "./LoginStack";
+import {myOptions, withoutHeader} from '../options';
+import {LoginStack} from './LoginStack';
 
 const Stack = createStackNavigator();
 

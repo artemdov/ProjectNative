@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  Text, TouchableOpacity,
-  View,
-} from 'react-native';
+import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import {CustomFormButton} from '../../components/common/CustomFormButton';
 import {CustomFormTextInput} from '../../components/common/CustomFormTextInput';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';

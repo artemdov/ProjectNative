@@ -14,7 +14,7 @@ import {CommentInput} from './CommentInput';
 import {Comment} from './Comment';
 import {setCommentMenuVisible, setComments} from '../store/actions/feedAction';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {photoUserProfile} from '../utils/helpers';
+import {photoUserProfile} from '../consts/photoUserProfile';
 
 export const PostCard: React.FC<any> = ({item, onDelete, onPress}) => {
   const dispatch = useDispatch();
@@ -27,6 +27,7 @@ export const PostCard: React.FC<any> = ({item, onDelete, onPress}) => {
   const [currentUser, setCurrentUser] = useState<any>(null);
 
   const userFirstName = currentUser && currentUser.firstName;
+
   const userLastName = currentUser && currentUser.lastName;
 
   const userImageURL =
@@ -39,7 +40,6 @@ export const PostCard: React.FC<any> = ({item, onDelete, onPress}) => {
       .on('value', snapshot => {
         if (snapshot.exists()) {
           setCurrentUser(snapshot.val());
-          //dispatch(setCurrentUserInfo(snapshot.val()))
         }
       });
   };
@@ -97,7 +97,7 @@ export const PostCard: React.FC<any> = ({item, onDelete, onPress}) => {
           .ref(`usersPost/${item.id}/likes/${user.uid}`)
           .remove()
           .then(() => {
-            setLikes(likes.filter((item: string) => item !== user.uid));
+            setLikes(likes.filter((likeId: string) => likeId !== user.uid));
           });
       } else {
         firebase

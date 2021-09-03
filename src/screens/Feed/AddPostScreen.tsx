@@ -24,7 +24,7 @@ import {CustomFormButton} from '../../components/common/CustomFormButton';
 import {rem, vrem} from '../../consts/size';
 import {setImage} from '../../store/actions/feedAction';
 import firebase from 'firebase';
-import {setUserPosts, uploadImage} from "../../store/actions/profileUserAction";
+import {setUserPosts, uploadImage} from '../../store/actions/profileUserAction';
 
 export const AddPostScreen: React.FC<any> = ({navigation}) => {
   const newImage = useSelector(getImageSelector);
@@ -84,30 +84,30 @@ export const AddPostScreen: React.FC<any> = ({navigation}) => {
       .catch(err => {
         console.log(err);
       });
-    await firebase.database().ref('usersPost')
-        .on('value', snapshot => {
-          const listData: any = [];
-          snapshot.forEach(childSnapshot => {
-            const userId = childSnapshot.val().userId;
-            if (userId === userUID) {
-              const {id, userId, post, postImg, postTime, likes, userImage} =
-                  childSnapshot.val();
-              listData.push({
-                id,
-                userId,
-                userImage,
-                postTime,
-                post,
-                postImg,
-                likes,
-              });
-            }
-          })
-          dispatch(setUserPosts(listData));
-        })
+    await firebase
+      .database()
+      .ref('usersPost')
+      .on('value', snapshot => {
+        const listData: any = [];
+        snapshot.forEach(childSnapshot => {
+          const userId = childSnapshot.val().userId;
+          if (userId === userUID) {
+            const {id, userId, post, postImg, postTime, likes, userImage} =
+              childSnapshot.val();
+            listData.push({
+              id,
+              userId,
+              userImage,
+              postTime,
+              post,
+              postImg,
+              likes,
+            });
+          }
+        });
+        dispatch(setUserPosts(listData));
+      });
   };
-
-
 
   const onChangePost = (value: string) => {
     setPostValue(value);

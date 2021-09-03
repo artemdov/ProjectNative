@@ -5,7 +5,8 @@ import {
   errorMessage,
   setLoadingStatus,
   setIsLoggedIn,
-  setUser, setProfileSetup,
+  setUser,
+  setProfileSetup,
 } from '../store/actions/authAction';
 import {setArtworks, isLoadingArtworks} from '../store/actions/artworksAction';
 import {
@@ -24,7 +25,10 @@ import {
   setUserPosts,
   setIsLoadingUserPost,
 } from '../store/actions/profileUserAction';
-import {setOtherUserInfo, setOtherUserPosts} from "../store/actions/otherProfileUserAction";
+import {
+  setOtherUserInfo,
+  setOtherUserPosts,
+} from '../store/actions/otherProfileUserAction';
 
 export type myOptionsType = {
   title: string;

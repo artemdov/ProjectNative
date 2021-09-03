@@ -21,14 +21,9 @@ import {
 } from '../../store/selectors';
 import firebase from 'firebase';
 import {PostCard} from '../../components/PostCard';
-import {
-  setIsLoadingUserPost,
-  setUserInfo,
-  setUserPosts,
-} from '../../store/actions/profileUserAction';
 import {CustomProfileButton} from '../../components/common/CustomProfileButton';
 import storage from '@react-native-firebase/storage';
-import {photoUserProfile} from "../../consts/photoUserProfile";
+import {photoUserProfile} from '../../consts/photoUserProfile';
 
 export const ProfileScreen: React.FC<any> = ({navigation}) => {
   const userPosts: any = useSelector(getUserPostsSelector);

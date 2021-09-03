@@ -1,8 +1,7 @@
 import actionTypes from '../actionTypes';
-import {Dispatch} from "redux";
-import storage from "@react-native-firebase/storage";
-import {Alert} from "react-native";
-
+import {Dispatch} from 'redux';
+import storage from '@react-native-firebase/storage';
+import {Alert} from 'react-native';
 
 export const setUserInfo = (userInfo: any) =>
   ({
@@ -41,36 +40,34 @@ export const setIsLoadingUserPost = (isLoadingPost: boolean) =>
   } as const);
 
 export const uploadImage = (image: string) => async (dispatch: Dispatch) => {
-    if (!image) {
-        return null;
-    }
-    const uploadUri = image;
-    let fileName = uploadUri.substring(uploadUri.lastIndexOf('/') + 1);
-    const extension = fileName.split('.').pop();
-    const name = fileName.split('.').slice(0, -1).join('.');
-    fileName = name + Date.now() + '.' + extension;
-    const storageRef = storage().ref(`photos/${fileName}`);
-    const task = storageRef.putFile(uploadUri);
-    task.on('state_changed', taskSnapshot => {
-        dispatch(
-            setTransferredUserImage(
-                Math.round(taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) *
-                100,
-            ),
-        );
-    });
-    try {
-        dispatch(upLoadingUserImage(true));
-        dispatch(setTransferredUserImage(0));
-        await task;
-        const url = await storageRef.getDownloadURL();
-        dispatch(upLoadingUserImage(false));
-        return url;
-    }
-    catch (err) {
-        Alert.alert(err);
-        return '';
-    }
+  if (!image) {
+    return null;
+  }
+  const uploadUri = image;
+  let fileName = uploadUri.substring(uploadUri.lastIndexOf('/') + 1);
+  const extension = fileName.split('.').pop();
+  const name = fileName.split('.').slice(0, -1).join('.');
+  fileName = name + Date.now() + '.' + extension;
+  const storageRef = storage().ref(`photos/${fileName}`);
+  const task = storageRef.putFile(uploadUri);
+  task.on('state_changed', taskSnapshot => {
+    dispatch(
+      setTransferredUserImage(
+        Math.round(taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) *
+          100,
+      ),
+    );
+  });
+  try {
+    dispatch(upLoadingUserImage(true));
+    dispatch(setTransferredUserImage(0));
+    await task;
+    const url = await storageRef.getDownloadURL();
+    dispatch(upLoadingUserImage(false));
+    return url;
+  }
+  catch (err) {
+    Alert.alert(err);
+    return '';
+  }
 };
-
-

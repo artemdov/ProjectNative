@@ -6,8 +6,8 @@ import {
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import {Dispatch} from 'redux';
 import firebase from 'firebase';
-import {photoUserProfile} from "../../consts/photoUserProfile";
-import {setUserInfo, setUserPosts} from "./profileUserAction";
+import {photoUserProfile} from '../../consts/photoUserProfile';
+import {setUserInfo, setUserPosts} from './profileUserAction';
 
 export const setIsLoggedIn = (value: boolean) =>
   ({
@@ -34,16 +34,16 @@ export const setLoadingStatus = (value: boolean) =>
   } as const);
 
 export const setProfileSetup = (profileSetupFinished: boolean) =>
-    ({
-        type: actionTypes.auth.SETUP_PROFILE,
-        payload: profileSetupFinished,
-    } as const);
+  ({
+    type: actionTypes.auth.SETUP_PROFILE,
+    payload: profileSetupFinished,
+  } as const);
 
 export const onSubmitRegistration =
   (data: OnSubmitRegistrationDataType) => async (dispatch: Dispatch) => {
     try {
-        dispatch(setProfileSetup(false))
-        const res = await auth().createUserWithEmailAndPassword(
+      dispatch(setProfileSetup(false));
+      const res = await auth().createUserWithEmailAndPassword(
         data.email,
         data.password,
       );
@@ -70,40 +70,45 @@ export const onSubmitRegistration =
 export const onSubmitLogIn =
   (data: OnSubmitLoginType) => async (dispatch: Dispatch) => {
     try {
-        const res = await auth().signInWithEmailAndPassword(data.email, data.password);
-        await firebase
-            .database()
-            .ref(`users/${res.user.uid}`)
-            .on('value', snapshot => {
-                if (snapshot.exists()) {
-                    dispatch(setUserInfo(snapshot.val()));
-                }
-            });
-        await firebase.database().ref('usersPost')
-            .on('value', snapshot => {
-                const listData: any = [];
-                snapshot.forEach(childSnapshot => {
-                    const userId = childSnapshot.val().userId;
-                    if (userId === res.user.uid) {
-                        const {id, userId, post, postImg, postTime, likes, userImage} =
-                            childSnapshot.val();
-                        listData.push({
-                            id,
-                            userId,
-                            userImage,
-                            postTime,
-                            post,
-                            postImg,
-                            likes,
-                        });
-                    }
-                });
-                dispatch(setUserPosts(listData));
-            });
+      const res = await auth().signInWithEmailAndPassword(
+        data.email,
+        data.password,
+      );
+      await firebase
+        .database()
+        .ref(`users/${res.user.uid}`)
+        .on('value', snapshot => {
+          if (snapshot.exists()) {
+            dispatch(setUserInfo(snapshot.val()));
+          }
+        });
+      await firebase
+        .database()
+        .ref('usersPost')
+        .on('value', snapshot => {
+          const listData: any = [];
+          snapshot.forEach(childSnapshot => {
+            const currentUserId = childSnapshot.val().userId;
+            if (currentUserId === res.user.uid) {
+              const {id, userId, post, postImg, postTime, likes, userImage} =
+                childSnapshot.val();
+              listData.push({
+                id,
+                userId,
+                userImage,
+                postTime,
+                post,
+                postImg,
+                likes,
+              });
+            }
+          });
+          dispatch(setUserPosts(listData));
+        });
       dispatch(setIsLoggedIn(true));
       dispatch(setLoadingStatus(false));
-
-    } catch (err) {
+    }
+    catch (err) {
       dispatch(errorMessage(err));
       dispatch(setLoadingStatus(false));
     }

@@ -1,7 +1,6 @@
 import React from 'react';
 import {View, StyleSheet, Text, TextInput} from 'react-native';
-import {height as h, rem, vrem} from '../../consts/size';
-import {width as w} from '../../consts/size';
+import {rem, vrem} from '../../consts/size';
 import {CustomFormTextInputType} from '../../types/types';
 
 export const CustomFormTextInput: React.FC<CustomFormTextInputType> = ({

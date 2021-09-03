@@ -3,7 +3,7 @@ import {AppRootStateType} from '../types/types';
 export const isLoggedInSelector = (state: AppRootStateType) =>
   state.auth.isLoggedIn;
 export const isProfileSetupFinishedSelector = (state: AppRootStateType) =>
-    state.auth.profileSetupFinished;
+  state.auth.profileSetupFinished;
 export const isLoadingSelector = (state: AppRootStateType) =>
   state.auth.loading;
 export const isCommentVisibleSelector = (state: AppRootStateType) =>

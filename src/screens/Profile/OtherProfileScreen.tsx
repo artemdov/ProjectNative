@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {
   ActivityIndicator,
   Image,
@@ -15,16 +15,15 @@ import {
   isLoadingUserPostSelector,
 } from '../../store/selectors';
 import {PostCard} from '../../components/PostCard';
-import {photoUserProfile} from "../../consts/photoUserProfile";
+import {photoUserProfile} from '../../consts/photoUserProfile';
 
 export const OtherProfileScreen: React.FC<any> = () => {
   const otherUserPosts: any = useSelector(getOtherUserPostsSelector);
   const otherUserInfo: any = useSelector(getOtherUserInfoSelector);
   const isLoadingUserPost = useSelector(isLoadingUserPostSelector);
-  console.log('otherUserPosts', otherUserPosts)
-  console.log('otherUserInfo', otherUserInfo)
 
-  const userImageURL = (otherUserInfo && otherUserInfo.userImage) || photoUserProfile;
+  const userImageURL =
+    (otherUserInfo && otherUserInfo.userImage) || photoUserProfile;
 
   const userFirstName = otherUserInfo && otherUserInfo.firstName;
 

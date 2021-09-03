@@ -8,7 +8,6 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useDispatch, useSelector} from 'react-redux';
@@ -20,14 +19,17 @@ import {
   isTransferredEditUserSelector,
 } from '../../store/selectors';
 import firebase from 'firebase';
-import {setUserImage, setUserInfo, uploadImage} from '../../store/actions/profileUserAction';
+import {
+  setUserImage,
+  setUserInfo,
+  uploadImage,
+} from '../../store/actions/profileUserAction';
 import ImagePicker from 'react-native-image-crop-picker';
 import {rem, vrem} from '../../consts/size';
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {CustomProfileButton} from '../../components/common/CustomProfileButton';
-import {setOtherUserInfo} from '../../store/actions/otherProfileUserAction';
-import {photoUserProfile} from "../../consts/photoUserProfile";
+import {photoUserProfile} from '../../consts/photoUserProfile';
 
 export const EditProfileScreen: React.FC<any> = ({navigation}) => {
   const userInfo: any = useSelector(getUserInfoSelector);
@@ -35,9 +37,11 @@ export const EditProfileScreen: React.FC<any> = ({navigation}) => {
   const user: any = useSelector(getUserSelector);
   const isLoadingInfo = useSelector(isLoadingEditUserSelector);
   const isTransferred = useSelector(isTransferredEditUserSelector);
-  const userFirstName = userInfo && userInfo.firstName;
-  const userLastName = userInfo && userInfo.lastName;
   const dispatch = useDispatch();
+
+  const userFirstName = userInfo && userInfo.firstName;
+
+  const userLastName = userInfo && userInfo.lastName;
 
   const [firstName, setFirstName] = useState('');
 
@@ -102,8 +106,8 @@ export const EditProfileScreen: React.FC<any> = ({navigation}) => {
     <KeyboardAwareScrollView style={styles.container}>
       <View style={styles.userWrapper}>
         <Image
-            source={{uri: userImage || photoUserProfile}}
-            style={styles.imageUser}
+          source={{uri: userImage || photoUserProfile}}
+          style={styles.imageUser}
         />
         <Text style={styles.userName}>
           {`${userFirstName || 'Без имени'} ${
