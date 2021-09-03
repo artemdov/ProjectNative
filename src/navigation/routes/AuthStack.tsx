@@ -8,6 +8,7 @@ import {
   withoutHeader,
 } from '../options';
 import {LoginScreen} from '../../screens/Auth/LoginScreen';
+import {LoginStack} from "./LoginStack";
 
 const Stack = createStackNavigator();
 
@@ -20,8 +21,8 @@ const AuthStack = () => {
         options={withoutHeader()}
       />
       <Stack.Screen
-        name={screenNames.LOGIN_SCREEN}
-        component={LoginScreen}
+        name={screenNames.LOGIN_STACK}
+        component={LoginStack}
         options={myOptions}
       />
       <Stack.Screen

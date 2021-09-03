@@ -10,7 +10,7 @@ import {onSubmitLogIn} from '../../store/actions/authAction';
 import {rem, vrem} from '../../consts/size';
 import screenNames from "../../navigation/ScreenNames";
 
-export const LoginScreen: React.FC<any> = ({navigation}) => {
+export const LoginScreen: React.FC<any> = () => {
   const dispatch = useDispatch();
   const onSubmit = (values: any) => {
     dispatch(onSubmitLogIn(values));
@@ -67,6 +67,8 @@ export const LoginScreen: React.FC<any> = ({navigation}) => {
 
 const styles = StyleSheet.create({
   containerKeyboard: {
+    height: '100%',
+    width: '100%',
     backgroundColor: '#8a2be2',
   },
   header: {

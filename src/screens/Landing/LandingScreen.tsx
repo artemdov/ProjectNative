@@ -6,7 +6,7 @@ import screenNames from '../../navigation/ScreenNames';
 
 export const LandingScreen: React.FC<any> = ({navigation}) => {
   const onPressSubmit = () => {
-    navigation.navigate(screenNames.LOGIN_SCREEN);
+    navigation.navigate(screenNames.LOGIN_STACK);
   };
 
   const onPressRegister = () => {

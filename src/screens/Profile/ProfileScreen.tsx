@@ -10,7 +10,7 @@ import {
   View,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {onSubmitLogOut} from '../../store/actions/authAction';
+import {onSubmitLogOut, setProfileSetup} from '../../store/actions/authAction';
 import screenNames from '../../navigation/ScreenNames';
 import {rem, vrem} from '../../consts/size';
 import {
