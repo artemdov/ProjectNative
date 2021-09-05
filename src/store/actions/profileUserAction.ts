@@ -2,8 +2,9 @@ import actionTypes from '../actionTypes';
 import {Dispatch} from 'redux';
 import storage from '@react-native-firebase/storage';
 import {Alert} from 'react-native';
+import {PostType, UserInfoType} from '../../types/types';
 
-export const setUserInfo = (userInfo: any) =>
+export const setUserInfo = (userInfo: UserInfoType) =>
   ({
     type: actionTypes.profileUser.SET_USER_INFO,
     payload: userInfo,
@@ -27,7 +28,7 @@ export const setUserImage = (image?: string) =>
     payload: image,
   } as const);
 
-export const setUserPosts = (posts: any) =>
+export const setUserPosts = (posts: PostType[]) =>
   ({
     type: actionTypes.profileUser.SET_USER_POSTS,
     payload: posts,
@@ -65,8 +66,7 @@ export const uploadImage = (image: string) => async (dispatch: Dispatch) => {
     const url = await storageRef.getDownloadURL();
     dispatch(upLoadingUserImage(false));
     return url;
-  }
-  catch (err) {
+  } catch (err) {
     Alert.alert(err);
     return '';
   }

@@ -62,7 +62,7 @@ export const AddPostScreen: React.FC<any> = ({navigation}) => {
   };
 
   const submitPost = async () => {
-    const key: any = await firebase.database().ref().push().key;
+    const key: string | null = await firebase.database().ref().push().key;
     const imageUrl = await dispatch(uploadImage(newImage));
     dispatch(setImage(''));
     await firebase
@@ -90,8 +90,8 @@ export const AddPostScreen: React.FC<any> = ({navigation}) => {
       .on('value', snapshot => {
         const listData: any = [];
         snapshot.forEach(childSnapshot => {
-          const userId = childSnapshot.val().userId;
-          if (userId === userUID) {
+          const currentUserId = childSnapshot.val().userId;
+          if (currentUserId === userUID) {
             const {id, userId, post, postImg, postTime, likes, userImage} =
               childSnapshot.val();
             listData.push({

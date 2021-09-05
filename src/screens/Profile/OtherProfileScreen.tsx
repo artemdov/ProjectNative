@@ -16,9 +16,10 @@ import {
 } from '../../store/selectors';
 import {PostCard} from '../../components/PostCard';
 import {photoUserProfile} from '../../consts/photoUserProfile';
+import {PostType} from '../../types/types';
 
 export const OtherProfileScreen: React.FC<any> = () => {
-  const otherUserPosts: any = useSelector(getOtherUserPostsSelector);
+  const otherUserPosts: PostType[] = useSelector(getOtherUserPostsSelector);
   const otherUserInfo: any = useSelector(getOtherUserInfoSelector);
   const isLoadingUserPost = useSelector(isLoadingUserPostSelector);
 

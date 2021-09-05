@@ -25,11 +25,12 @@ import {
   setOtherUserInfo,
   setOtherUserPosts,
 } from '../../store/actions/otherProfileUserAction';
+import {PostType} from '../../types/types';
 
 export const FeedScreen: React.FC<any> = ({navigation}) => {
   const dispatch = useDispatch();
   const isLoadingPost = useSelector(isLoadingPostSelector);
-  const posts: any = useSelector(getPostsSelector);
+  const posts: PostType[] = useSelector(getPostsSelector);
   const user: any = useSelector(getUserSelector);
 
   const onPressAddPost = () => navigation.navigate(screenNames.ADD_POST_SCREEN);

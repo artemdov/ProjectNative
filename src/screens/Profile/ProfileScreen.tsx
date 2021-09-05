@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -10,13 +10,12 @@ import {
   View,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {onSubmitLogOut, setProfileSetup} from '../../store/actions/authAction';
+import {onSubmitLogOut} from '../../store/actions/authAction';
 import screenNames from '../../navigation/ScreenNames';
 import {rem, vrem} from '../../consts/size';
 import {
   getUserInfoSelector,
   getUserPostsSelector,
-  getUserSelector,
   isLoadingUserPostSelector,
 } from '../../store/selectors';
 import firebase from 'firebase';
@@ -24,9 +23,10 @@ import {PostCard} from '../../components/PostCard';
 import {CustomProfileButton} from '../../components/common/CustomProfileButton';
 import storage from '@react-native-firebase/storage';
 import {photoUserProfile} from '../../consts/photoUserProfile';
+import {PostType} from '../../types/types';
 
 export const ProfileScreen: React.FC<any> = ({navigation}) => {
-  const userPosts: any = useSelector(getUserPostsSelector);
+  const userPosts: PostType[] = useSelector(getUserPostsSelector);
   const userInfo: any = useSelector(getUserInfoSelector);
   const isLoadingUserPost = useSelector(isLoadingUserPostSelector);
   const dispatch = useDispatch();
