@@ -70,7 +70,8 @@ export type OnSubmitLoginType = {
 export type PostType = {
   id: string;
   userId: string;
-  userName?: string;
+  firstName?: string;
+  lastName?: string;
   userImage?: string;
   postTime: number;
   post?: string;

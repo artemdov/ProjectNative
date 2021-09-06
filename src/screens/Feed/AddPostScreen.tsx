@@ -18,6 +18,8 @@ import {
   isTransferredSelector,
   getImageSelector,
   isLoadingEditUserSelector,
+  getUserInfoSelector,
+  getUserPostsSelector,
 } from '../../store/selectors';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {CustomFormButton} from '../../components/common/CustomFormButton';
@@ -25,6 +27,7 @@ import {rem, vrem} from '../../consts/size';
 import {setImage} from '../../store/actions/feedAction';
 import firebase from 'firebase';
 import {setUserPosts, uploadImage} from '../../store/actions/profileUserAction';
+import {PostType} from '../../types/types';
 
 export const AddPostScreen: React.FC<any> = ({navigation}) => {
   const newImage = useSelector(getImageSelector);
@@ -32,6 +35,10 @@ export const AddPostScreen: React.FC<any> = ({navigation}) => {
   const isTransferred = useSelector(isTransferredSelector);
   const isLoadingImage = useSelector(isLoadingEditUserSelector);
   const dispatch = useDispatch();
+  const userInfo: any = useSelector(getUserInfoSelector);
+  const userPosts: PostType[] = useSelector(getUserPostsSelector);
+  console.log('userPost', userPosts);
+  console.log('userInfo', userInfo);
 
   const userUID = user && user.uid;
 
@@ -70,6 +77,9 @@ export const AddPostScreen: React.FC<any> = ({navigation}) => {
       .ref(`usersPost/${key}`)
       .update({
         id: key,
+        firstName: userInfo.firstName,
+        lastName: userInfo.lastName,
+        userImage: userInfo.userImage,
         userId: user.uid,
         post: postValue,
         postImg: imageUrl,
@@ -92,12 +102,23 @@ export const AddPostScreen: React.FC<any> = ({navigation}) => {
         snapshot.forEach(childSnapshot => {
           const currentUserId = childSnapshot.val().userId;
           if (currentUserId === userUID) {
-            const {id, userId, post, postImg, postTime, likes, userImage} =
-              childSnapshot.val();
+            const {
+              id,
+              firstName,
+              lastName,
+              userId,
+              post,
+              postImg,
+              postTime,
+              likes,
+              userImage,
+            } = childSnapshot.val();
             listData.push({
               id,
-              userId,
+              firstName,
+              lastName,
               userImage,
+              userId,
               postTime,
               post,
               postImg,
@@ -107,10 +128,6 @@ export const AddPostScreen: React.FC<any> = ({navigation}) => {
         });
         dispatch(setUserPosts(listData));
       });
-  };
-
-  const onChangePost = (value: string) => {
-    setPostValue(value);
   };
 
   return (
@@ -141,7 +158,7 @@ export const AddPostScreen: React.FC<any> = ({navigation}) => {
           placeholder="Подпись к фото"
           multiline
           value={postValue}
-          onChangeText={onChangePost}
+          onChangeText={setPostValue}
         />
         <ActionButton
           size={rem(50)}

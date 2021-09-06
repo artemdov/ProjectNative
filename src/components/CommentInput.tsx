@@ -7,23 +7,20 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {rem} from '../consts/size';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {getUserInfoSelector, getUserSelector} from '../store/selectors';
 import firebase from 'firebase';
+import {setComments} from '../store/actions/feedAction';
 
 export const CommentInput: React.FC<any> = ({item}) => {
   const commentKey: any = firebase.database().ref().push().key;
   const user: any = useSelector(getUserSelector);
   const userInfo: any = useSelector(getUserInfoSelector);
-
+  const dispatch = useDispatch();
   const [commentValue, setCommentValue] = useState('');
 
-  const onChangeCommentValue = (value: string) => {
-    setCommentValue(value);
-  };
-
-  const addComment = () => {
-    firebase
+  const addComment = async () => {
+    await firebase
       .database()
       .ref(`comments/${commentKey}`)
       .update({
@@ -38,6 +35,25 @@ export const CommentInput: React.FC<any> = ({item}) => {
         setCommentValue('');
         console.log('comment added');
       });
+    await firebase
+      .database()
+      .ref('comments/')
+      .on('value', snapshot => {
+        const commentsMap: any = [];
+        snapshot.forEach(childSnapshot => {
+          const {comment, createdAt, postId, userId, userName, userImage} =
+            childSnapshot.val();
+          commentsMap.push({
+            comment,
+            createdAt,
+            postId,
+            userId,
+            userName,
+            userImage,
+          });
+        });
+        dispatch(setComments(commentsMap));
+      });
   };
 
   return (
@@ -47,7 +63,7 @@ export const CommentInput: React.FC<any> = ({item}) => {
         placeholder="Комментарий"
         multiline
         value={commentValue}
-        onChangeText={onChangeCommentValue}
+        onChangeText={setCommentValue}
       />
       <TouchableOpacity onPress={addComment} style={styles.button}>
         <Text style={styles.buttonName}>Отправить</Text>

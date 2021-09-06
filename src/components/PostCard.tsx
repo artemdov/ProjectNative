@@ -12,65 +12,15 @@ import moment from 'moment';
 import firebase from 'firebase';
 import {CommentInput} from './CommentInput';
 import {Comment} from './Comment';
-import {setCommentMenuVisible, setComments} from '../store/actions/feedAction';
+import {setCommentMenuVisible} from '../store/actions/feedAction';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {photoUserProfile} from '../consts/photoUserProfile';
 
 export const PostCard: React.FC<any> = ({item, onDelete, onPress}) => {
   const dispatch = useDispatch();
   const comments = useSelector(getCommentsSelector);
   const user: any = useSelector(getUserSelector);
   const isCommentVisibleMenu = useSelector(isCommentVisibleSelector);
-
   let [likes, setLikes] = useState<any[]>([]);
-
-  const [currentUser, setCurrentUser] = useState<any>(null);
-
-  const userFirstName = currentUser && currentUser.firstName;
-
-  const userLastName = currentUser && currentUser.lastName;
-
-  const userImageURL =
-    (currentUser && currentUser.userImage) || photoUserProfile;
-
-  const getUser = async () => {
-    await firebase
-      .database()
-      .ref(`users/${item.userId}`)
-      .on('value', snapshot => {
-        if (snapshot.exists()) {
-          setCurrentUser(snapshot.val());
-        }
-      });
-  };
-
-  const fetchComments = () => {
-    const postCommentsRef = firebase.database().ref('comments/');
-    const onLoadingComments = postCommentsRef.on('value', snapshot => {
-      const commentsMap: any = [];
-      snapshot.forEach(childSnapshot => {
-        const {comment, createdAt, postId, userId, userName, userImage} =
-          childSnapshot.val();
-        commentsMap.push({
-          comment,
-          createdAt,
-          postId,
-          userId,
-          userName,
-          userImage,
-        });
-      });
-      dispatch(setComments(commentsMap));
-    });
-    return () => {
-      postCommentsRef.off('value', onLoadingComments);
-    };
-  };
-
-  useEffect(() => {
-    getUser().then(() => console.log('user success'));
-    fetchComments();
-  }, []);
 
   useEffect(() => {
     if (item.likes) {
@@ -139,12 +89,12 @@ export const PostCard: React.FC<any> = ({item, onDelete, onPress}) => {
   return (
     <View style={styles.card} key={item.id}>
       <View style={styles.userInfo}>
-        <Image style={styles.userImage} source={{uri: userImageURL}} />
+        <Image style={styles.userImage} source={{uri: item.userImage}} />
         <View style={styles.userInfoText}>
           <TouchableOpacity onPress={onPress}>
             <Text style={styles.userName}>
-              {`${userFirstName || 'Без имени'} ${
-                (userFirstName && userLastName) || ''
+              {`${item.firstName || 'Без имени'} ${
+                (item.firstName && item.lastName) || ''
               }`}
             </Text>
           </TouchableOpacity>

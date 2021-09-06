@@ -90,10 +90,21 @@ export const onSubmitLogIn =
           snapshot.forEach(childSnapshot => {
             const currentUserId = childSnapshot.val().userId;
             if (currentUserId === res.user.uid) {
-              const {id, userId, post, postImg, postTime, likes, userImage} =
-                childSnapshot.val();
+              const {
+                id,
+                firstName,
+                lastName,
+                userId,
+                post,
+                postImg,
+                postTime,
+                likes,
+                userImage,
+              } = childSnapshot.val();
               listData.push({
                 id,
+                firstName,
+                lastName,
                 userId,
                 userImage,
                 postTime,

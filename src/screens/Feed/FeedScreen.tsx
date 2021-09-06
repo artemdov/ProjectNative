@@ -18,7 +18,11 @@ import {
   getPostsSelector,
   getUserSelector,
 } from '../../store/selectors';
-import {setIsLoadingPost, setPosts} from '../../store/actions/feedAction';
+import {
+  setComments,
+  setIsLoadingPost,
+  setPosts,
+} from '../../store/actions/feedAction';
 import storage from '@react-native-firebase/storage';
 import {setIsLoadingUserPost} from '../../store/actions/profileUserAction';
 import {
@@ -32,33 +36,61 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
   const isLoadingPost = useSelector(isLoadingPostSelector);
   const posts: PostType[] = useSelector(getPostsSelector);
   const user: any = useSelector(getUserSelector);
-
   const onPressAddPost = () => navigation.navigate(screenNames.ADD_POST_SCREEN);
 
   const fetch = () => {
     dispatch(setIsLoadingPost(true));
-    const postsRef = firebase.database().ref('usersPost');
-    const onLoadingFeed = postsRef.on('value', snapshot => {
-      const listData: any = [];
-      snapshot.forEach(childSnapshot => {
-        const {id, userId, post, postImg, postTime, likes, userImage} =
-          childSnapshot.val();
-        listData.push({
-          id,
-          userId,
-          userImage,
-          postTime,
-          post,
-          postImg,
-          likes,
+    firebase
+      .database()
+      .ref('usersPost')
+      .on('value', snapshot => {
+        const listData: any = [];
+        snapshot.forEach(childSnapshot => {
+          const {
+            id,
+            firstName,
+            lastName,
+            userId,
+            post,
+            postImg,
+            postTime,
+            likes,
+            userImage,
+          } = childSnapshot.val();
+          listData.push({
+            id,
+            firstName,
+            lastName,
+            userId,
+            userImage,
+            postTime,
+            post,
+            postImg,
+            likes,
+          });
         });
+        dispatch(setPosts(listData));
+        dispatch(setIsLoadingPost(false));
       });
-      dispatch(setPosts(listData));
-      dispatch(setIsLoadingPost(false));
-    });
-    return () => {
-      postsRef.off('value', onLoadingFeed);
-    };
+    firebase
+      .database()
+      .ref('comments/')
+      .on('value', snapshot => {
+        const commentsMap: any = [];
+        snapshot.forEach(childSnapshot => {
+          const {comment, createdAt, postId, userId, userName, userImage} =
+            childSnapshot.val();
+          commentsMap.push({
+            comment,
+            createdAt,
+            postId,
+            userId,
+            userName,
+            userImage,
+          });
+        });
+        dispatch(setComments(commentsMap));
+      });
   };
 
   useEffect(() => {
@@ -80,10 +112,21 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
             snapshot.forEach(childSnapshot => {
               const currentUserId = childSnapshot.val().userId;
               if (currentUserId === item.userId) {
-                const {id, userId, post, postImg, postTime, likes, userImage} =
-                  childSnapshot.val();
+                const {
+                  id,
+                  firstName,
+                  lastName,
+                  userId,
+                  post,
+                  postImg,
+                  postTime,
+                  likes,
+                  userImage,
+                } = childSnapshot.val();
                 listData.push({
                   id,
+                  firstName,
+                  lastName,
                   userId,
                   userImage,
                   postTime,
@@ -101,8 +144,8 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
           };
         };
 
-        const getUser = async () => {
-          await firebase
+        const getUser = () => {
+          firebase
             .database()
             .ref(`users/${item.userId}`)
             .on('value', snapshot => {
@@ -111,12 +154,12 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
               }
             });
         };
+        getUser();
+        fetchUserPosts();
         {
           user.uid === item.userId
             ? navigation.navigate(screenNames.PROFILE_SCREEN)
-            : getUser().then(() => console.log('user success'));
-          fetchUserPosts();
-          navigation.navigate(screenNames.OTHER_PROFILE_SCREEN);
+            : navigation.navigate(screenNames.OTHER_PROFILE_SCREEN);
         }
       }}
     />
