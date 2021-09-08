@@ -1,8 +1,8 @@
-import {rem} from '../consts/size';
+import {rem, vrem} from '../consts/size';
 
 export const commonHeaderOptions = {
   backgroundColor: '#0c0c30',
-  height: 50,
+  height: vrem(60),
 };
 export const myOptions = {
   title: 'Вход',
