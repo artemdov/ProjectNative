@@ -245,7 +245,7 @@ const styles = StyleSheet.create({
     color: '#ffffff',
   },
   button: {
-    marginTop: vrem(200),
+    marginTop: vrem(210),
     paddingHorizontal: rem(80),
   },
   userName: {
