@@ -30,11 +30,13 @@ import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {CustomProfileButton} from '../../components/common/CustomProfileButton';
 import {photoUserProfile} from '../../consts/photoUserProfile';
+import {UserInfoType} from '../../types/types';
+import {FirebaseAuthTypes} from '@react-native-firebase/auth';
 
 export const EditProfileScreen: React.FC<any> = ({navigation}) => {
-  const userInfo: any = useSelector(getUserInfoSelector);
+  const userInfo: UserInfoType | null = useSelector(getUserInfoSelector);
   const userImage = useSelector(getImageUserSelector);
-  const user: any = useSelector(getUserSelector);
+  const user: FirebaseAuthTypes.User | null = useSelector(getUserSelector);
   const isLoadingInfo = useSelector(isLoadingEditUserSelector);
   const isTransferred = useSelector(isTransferredEditUserSelector);
   const dispatch = useDispatch();
@@ -42,6 +44,10 @@ export const EditProfileScreen: React.FC<any> = ({navigation}) => {
   const userFirstName = userInfo && userInfo.firstName;
 
   const userLastName = userInfo && userInfo.lastName;
+
+  const userUID = user && user.uid;
+
+  const imageUser = userInfo && userInfo.userImage;
 
   const [firstName, setFirstName] = useState('');
 
@@ -76,12 +82,12 @@ export const EditProfileScreen: React.FC<any> = ({navigation}) => {
   };
 
   const handleUpdate = async () => {
-    let imgUrl = await dispatch(uploadImage(userImage));
+    let imgUrl: any = await dispatch(uploadImage(userImage));
     dispatch(setUserImage(''));
-    if (imgUrl == null && userInfo.userImage) {
-      imgUrl = userInfo.userImage;
+    if (imgUrl == null && imageUser) {
+      imgUrl = imageUser;
     }
-    await firebase.database().ref(`users/${user.uid}`).update({
+    await firebase.database().ref(`users/${userUID}`).update({
       firstName: firstName,
       lastName: lastName,
       phone: phone,
@@ -90,7 +96,7 @@ export const EditProfileScreen: React.FC<any> = ({navigation}) => {
     });
     await firebase
       .database()
-      .ref(`users/${user.uid}`)
+      .ref(`users/${userUID}`)
       .get()
       .then(snapshot => {
         if (snapshot.exists()) {

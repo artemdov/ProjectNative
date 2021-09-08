@@ -1,8 +1,8 @@
-import {ActionType} from '../../types/types';
+import {ActionType, UserInfoType} from '../../types/types';
 import actionTypes from '../actionTypes';
 
 const initialState = {
-  userInfo: null,
+  userInfo: null as UserInfoType | null,
   userImage: '',
   upLoadingUserInfo: false,
   transferredImage: 0,

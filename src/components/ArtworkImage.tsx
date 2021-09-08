@@ -7,7 +7,7 @@ import {artworkImageUrl} from '../utils/helpers';
 export const ArtworkImage: React.FC<any> = ({data, onPress}) => {
   const imageName = data.title;
 
-  const imageId: any = data.image_id;
+  const imageId: string = data.image_id;
 
   return (
     <TouchableOpacity style={styles.imageContainer} onPress={onPress}>

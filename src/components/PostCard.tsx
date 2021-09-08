@@ -14,12 +14,17 @@ import {CommentInput} from './CommentInput';
 import {Comment} from './Comment';
 import {setCommentMenuVisible} from '../store/actions/feedAction';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {FirebaseAuthTypes} from '@react-native-firebase/auth';
+import {CommentType} from '../types/types';
 
 export const PostCard: React.FC<any> = ({item, onDelete, onPress}) => {
   const dispatch = useDispatch();
   const comments = useSelector(getCommentsSelector);
-  const user: any = useSelector(getUserSelector);
+  const user: FirebaseAuthTypes.User | null = useSelector(getUserSelector);
   const isCommentVisibleMenu = useSelector(isCommentVisibleSelector);
+
+  const userUID = user && user.uid;
+
   let [likes, setLikes] = useState<any[]>([]);
 
   useEffect(() => {
@@ -32,32 +37,32 @@ export const PostCard: React.FC<any> = ({item, onDelete, onPress}) => {
     if (likes && likes.length === 0) {
       firebase
         .database()
-        .ref(`usersPost/${item.id}/likes/${user.uid}`)
+        .ref(`usersPost/${item.id}/likes/${userUID}`)
         .set({
           isLike: true,
         })
         .then(() => {
-          setLikes([...likes, user.uid]);
+          setLikes([...likes, userUID]);
         });
     } else {
-      const isLiked = likes.find((likeId: string) => likeId === user.uid);
+      const isLiked = likes.find((likeId: string) => likeId === userUID);
       if (isLiked) {
         firebase
           .database()
-          .ref(`usersPost/${item.id}/likes/${user.uid}`)
+          .ref(`usersPost/${item.id}/likes/${userUID}`)
           .remove()
           .then(() => {
-            setLikes(likes.filter((likeId: string) => likeId !== user.uid));
+            setLikes(likes.filter((likeId: string) => likeId !== userUID));
           });
       } else {
         firebase
           .database()
-          .ref(`usersPost/${item.id}/likes/${user.uid}`)
+          .ref(`usersPost/${item.id}/likes/${userUID}`)
           .set({
             isLike: true,
           })
           .then(() => {
-            setLikes([...likes, user.uid]);
+            setLikes([...likes, userUID]);
           });
       }
     }
@@ -120,7 +125,7 @@ export const PostCard: React.FC<any> = ({item, onDelete, onPress}) => {
           </View>
         </TouchableOpacity>
         <Text style={styles.interactionText}>{commentsFromUsersId.length}</Text>
-        {user && user.uid === item.userId && (
+        {userUID === item.userId && (
           <TouchableOpacity onPress={deletePostHandler}>
             <View style={styles.interactionHeart}>
               <Ionicons name="trash-bin-outline" size={24} color="#000" />
@@ -132,7 +137,7 @@ export const PostCard: React.FC<any> = ({item, onDelete, onPress}) => {
         <View>
           <CommentInput item={item} />
           {comments &&
-            comments.map((comment: any) => {
+            comments.map((comment: CommentType) => {
               if (item.id === comment.postId) {
                 return (
                   <Comment

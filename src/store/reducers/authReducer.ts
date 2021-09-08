@@ -1,8 +1,9 @@
 import actionTypes from '../actionTypes';
 import {ActionType} from '../../types/types';
+import {FirebaseAuthTypes} from '@react-native-firebase/auth';
 
 const initialState = {
-  user: null,
+  user: null as FirebaseAuthTypes.User | null,
   loading: true,
   error: '',
   isLoggedIn: false,

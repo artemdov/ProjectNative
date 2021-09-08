@@ -16,11 +16,13 @@ import {
 } from '../../store/selectors';
 import {PostCard} from '../../components/PostCard';
 import {photoUserProfile} from '../../consts/photoUserProfile';
-import {PostType} from '../../types/types';
+import {PostType, UserInfoType} from '../../types/types';
 
 export const OtherProfileScreen: React.FC<any> = () => {
   const otherUserPosts: PostType[] = useSelector(getOtherUserPostsSelector);
-  const otherUserInfo: any = useSelector(getOtherUserInfoSelector);
+  const otherUserInfo: UserInfoType | null = useSelector(
+    getOtherUserInfoSelector,
+  );
   const isLoadingUserPost = useSelector(isLoadingUserPostSelector);
 
   const userImageURL =
@@ -44,7 +46,7 @@ export const OtherProfileScreen: React.FC<any> = () => {
               (userFirstName && userLastName) || ''
             }`}
           </Text>
-          {otherUserPosts.map((item: any) => (
+          {otherUserPosts.map((item: PostType) => (
             <PostCard key={item.id} item={item} />
           ))}
         </ScrollView>

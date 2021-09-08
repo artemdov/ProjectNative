@@ -1,8 +1,8 @@
-import {ActionType} from '../../types/types';
+import {ActionType, UserInfoType} from '../../types/types';
 import actionTypes from '../actionTypes';
 
 const initialState = {
-  otherUserInfo: null,
+  otherUserInfo: null as UserInfoType | null,
   otherUserPosts: [],
 };
 type initialStateType = typeof initialState;

@@ -5,7 +5,6 @@ const actionTypes = {
     SET_LOADING: 'SET_LOADING',
     LOGIN: 'LOGIN',
     SETUP_PROFILE: 'SETUP_PROFILE',
-
   },
   feed: {
     SET_IMAGE: 'SET_IMAGE',

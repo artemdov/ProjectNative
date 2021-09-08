@@ -30,12 +30,16 @@ import {
   setOtherUserPosts,
 } from '../../store/actions/otherProfileUserAction';
 import {PostType} from '../../types/types';
+import {FirebaseAuthTypes} from '@react-native-firebase/auth';
 
 export const FeedScreen: React.FC<any> = ({navigation}) => {
   const dispatch = useDispatch();
   const isLoadingPost = useSelector(isLoadingPostSelector);
   const posts: PostType[] = useSelector(getPostsSelector);
-  const user: any = useSelector(getUserSelector);
+  const user: FirebaseAuthTypes.User | null = useSelector(getUserSelector);
+
+  const userUID = user && user.uid;
+
   const onPressAddPost = () => navigation.navigate(screenNames.ADD_POST_SCREEN);
 
   const fetch = () => {
@@ -76,7 +80,7 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
       .database()
       .ref('comments/')
       .on('value', snapshot => {
-        const commentsMap: any = [];
+        const commentsMap: any[] = [];
         snapshot.forEach(childSnapshot => {
           const {comment, createdAt, postId, userId, userName, userImage} =
             childSnapshot.val();
@@ -99,7 +103,7 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
 
   const keyExtractor = (item: {id: string}) => item.id;
 
-  const renderItem = ({item}: any) => (
+  const renderItem: ({item}: {item: PostType}) => JSX.Element = ({item}) => (
     <PostCard
       item={item}
       onDelete={handleDelete}
@@ -157,7 +161,7 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
         getUser();
         fetchUserPosts();
         {
-          user.uid === item.userId
+          userUID === item.userId
             ? navigation.navigate(screenNames.PROFILE_SCREEN)
             : navigation.navigate(screenNames.OTHER_PROFILE_SCREEN);
         }

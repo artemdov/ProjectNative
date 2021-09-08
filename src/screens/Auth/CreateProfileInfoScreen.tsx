@@ -29,12 +29,15 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {CustomProfileButton} from '../../components/common/CustomProfileButton';
 import {setProfileSetup} from '../../store/actions/authAction';
 import {photoUserProfile} from '../../consts/photoUserProfile';
+import {FirebaseAuthTypes} from '@react-native-firebase/auth';
 
 export const CreateProfileInfoScreen: React.FC<any> = () => {
-  const user: any = useSelector(getUserSelector);
+  const user: FirebaseAuthTypes.User | null = useSelector(getUserSelector);
   const isLoadingInfo = useSelector(isLoadingEditUserSelector);
   const isTransferred = useSelector(isTransferredEditUserSelector);
   const dispatch = useDispatch();
+
+  const userUID = user && user.uid;
 
   const [firstName, setFirstName] = useState('');
 
@@ -77,7 +80,7 @@ export const CreateProfileInfoScreen: React.FC<any> = () => {
       imgUrl = usersImage;
     }
     dispatch(setProfileSetup(true));
-    await firebase.database().ref(`users/${user.uid}`).update({
+    await firebase.database().ref(`users/${userUID}`).update({
       firstName: firstName,
       lastName: lastName,
       phone: phone,
@@ -86,7 +89,7 @@ export const CreateProfileInfoScreen: React.FC<any> = () => {
     });
     await firebase
       .database()
-      .ref(`users/${user.uid}`)
+      .ref(`users/${userUID}`)
       .get()
       .then(snapshot => {
         if (snapshot.exists()) {

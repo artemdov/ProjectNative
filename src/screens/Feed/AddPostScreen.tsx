@@ -19,7 +19,6 @@ import {
   getImageSelector,
   isLoadingEditUserSelector,
   getUserInfoSelector,
-  getUserPostsSelector,
 } from '../../store/selectors';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {CustomFormButton} from '../../components/common/CustomFormButton';
@@ -27,20 +26,24 @@ import {rem, vrem} from '../../consts/size';
 import {setImage} from '../../store/actions/feedAction';
 import firebase from 'firebase';
 import {setUserPosts, uploadImage} from '../../store/actions/profileUserAction';
-import {PostType} from '../../types/types';
+import {UserInfoType} from '../../types/types';
+import {FirebaseAuthTypes} from '@react-native-firebase/auth';
 
 export const AddPostScreen: React.FC<any> = ({navigation}) => {
   const newImage = useSelector(getImageSelector);
-  const user: any = useSelector(getUserSelector);
+  const user: FirebaseAuthTypes.User | null = useSelector(getUserSelector);
   const isTransferred = useSelector(isTransferredSelector);
   const isLoadingImage = useSelector(isLoadingEditUserSelector);
   const dispatch = useDispatch();
-  const userInfo: any = useSelector(getUserInfoSelector);
-  const userPosts: PostType[] = useSelector(getUserPostsSelector);
-  console.log('userPost', userPosts);
-  console.log('userInfo', userInfo);
+  const userInfo: UserInfoType | null = useSelector(getUserInfoSelector);
 
   const userUID = user && user.uid;
+
+  const imageUser = userInfo && userInfo.userImage;
+
+  const userFirstName = userInfo && userInfo.firstName;
+
+  const userLastName = userInfo && userInfo.lastName;
 
   const [postValue, setPostValue] = useState('');
 
@@ -77,10 +80,10 @@ export const AddPostScreen: React.FC<any> = ({navigation}) => {
       .ref(`usersPost/${key}`)
       .update({
         id: key,
-        firstName: userInfo.firstName,
-        lastName: userInfo.lastName,
-        userImage: userInfo.userImage,
-        userId: user.uid,
+        firstName: userFirstName,
+        lastName: userLastName,
+        userImage: imageUser,
+        userId: userUID,
         post: postValue,
         postImg: imageUrl,
         postTime: firebase.database.ServerValue.TIMESTAMP,

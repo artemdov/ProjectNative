@@ -23,11 +23,11 @@ import {PostCard} from '../../components/PostCard';
 import {CustomProfileButton} from '../../components/common/CustomProfileButton';
 import storage from '@react-native-firebase/storage';
 import {photoUserProfile} from '../../consts/photoUserProfile';
-import {PostType} from '../../types/types';
+import {PostType, UserInfoType} from '../../types/types';
 
 export const ProfileScreen: React.FC<any> = ({navigation}) => {
   const userPosts: PostType[] = useSelector(getUserPostsSelector);
-  const userInfo: any = useSelector(getUserInfoSelector);
+  const userInfo: UserInfoType | null = useSelector(getUserInfoSelector);
   const isLoadingUserPost = useSelector(isLoadingUserPostSelector);
   const dispatch = useDispatch();
 
@@ -127,7 +127,7 @@ export const ProfileScreen: React.FC<any> = ({navigation}) => {
             />
             <CustomProfileButton title="Выйти" onPress={onPressLogout} />
           </View>
-          {userPosts.map((item: any) => (
+          {userPosts.map((item: PostType) => (
             <PostCard key={item.id} item={item} onDelete={handleDelete} />
           ))}
         </ScrollView>

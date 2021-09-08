@@ -11,12 +11,23 @@ import {useDispatch, useSelector} from 'react-redux';
 import {getUserInfoSelector, getUserSelector} from '../store/selectors';
 import firebase from 'firebase';
 import {setComments} from '../store/actions/feedAction';
+import {FirebaseAuthTypes} from '@react-native-firebase/auth';
+import {UserInfoType} from '../types/types';
 
 export const CommentInput: React.FC<any> = ({item}) => {
-  const commentKey: any = firebase.database().ref().push().key;
-  const user: any = useSelector(getUserSelector);
-  const userInfo: any = useSelector(getUserInfoSelector);
+  const commentKey: string | null = firebase.database().ref().push().key;
+  const user: FirebaseAuthTypes.User | null = useSelector(getUserSelector);
+  const userInfo: UserInfoType | null = useSelector(getUserInfoSelector);
   const dispatch = useDispatch();
+
+  const userUID = user && user.uid;
+
+  const image = userInfo && userInfo.userImage;
+
+  const firstName = userInfo && userInfo.firstName;
+
+  const lastName = userInfo && userInfo.lastName;
+
   const [commentValue, setCommentValue] = useState('');
 
   const addComment = async () => {
@@ -27,9 +38,9 @@ export const CommentInput: React.FC<any> = ({item}) => {
         comment: commentValue,
         createdAt: firebase.database.ServerValue.TIMESTAMP,
         postId: item.id,
-        userId: user.uid,
-        userName: `${userInfo.firstName} ${userInfo.lastName}`,
-        userImage: userInfo.userImage,
+        userId: userUID,
+        userName: `${firstName} ${lastName}`,
+        userImage: image,
       })
       .then(() => {
         setCommentValue('');
@@ -39,7 +50,7 @@ export const CommentInput: React.FC<any> = ({item}) => {
       .database()
       .ref('comments/')
       .on('value', snapshot => {
-        const commentsMap: any = [];
+        const commentsMap: any[] = [];
         snapshot.forEach(childSnapshot => {
           const {comment, createdAt, postId, userId, userName, userImage} =
             childSnapshot.val();

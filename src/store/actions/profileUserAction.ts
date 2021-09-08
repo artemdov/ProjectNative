@@ -4,7 +4,7 @@ import storage from '@react-native-firebase/storage';
 import {Alert} from 'react-native';
 import {PostType, UserInfoType} from '../../types/types';
 
-export const setUserInfo = (userInfo: UserInfoType) =>
+export const setUserInfo = (userInfo: UserInfoType | null) =>
   ({
     type: actionTypes.profileUser.SET_USER_INFO,
     payload: userInfo,
