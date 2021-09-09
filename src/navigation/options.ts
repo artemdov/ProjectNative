@@ -4,7 +4,7 @@ export const commonHeaderOptions = {
   backgroundColor: '#0c0c30',
   height: vrem(60),
 };
-export const myOptions = {
+export const loginOptions = {
   title: 'Вход',
   headerTintColor: '#fff',
   headerStyle: commonHeaderOptions,
@@ -32,7 +32,7 @@ export const profileOptions = {
   },
   headerBackTitleVisible: false,
 };
-export const editProfileScreenOptions = {
+export const editProfileOptions = {
   headerTitle: 'Редактировать профиль',
   headerBackTitleVisible: false,
   headerTitleAlign: 'center',

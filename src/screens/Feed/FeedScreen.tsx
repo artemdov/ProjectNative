@@ -24,11 +24,11 @@ import {
   setPosts,
 } from '../../store/actions/feedAction';
 import storage from '@react-native-firebase/storage';
-import {setIsLoadingUserPost} from '../../store/actions/profileUserAction';
+import {setIsLoadingUserPost} from '../../store/actions/userProfileAction';
 import {
   setOtherUserInfo,
   setOtherUserPosts,
-} from '../../store/actions/otherProfileUserAction';
+} from '../../store/actions/otherUserProfileAction';
 import {PostType} from '../../types/types';
 import {FirebaseAuthTypes} from '@react-native-firebase/auth';
 

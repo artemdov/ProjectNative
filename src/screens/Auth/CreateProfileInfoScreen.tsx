@@ -14,14 +14,14 @@ import {useDispatch, useSelector} from 'react-redux';
 import {
   getUserSelector,
   isLoadingEditUserSelector,
-  isTransferredEditUserSelector,
+  progressLoadingImageSelector,
 } from '../../store/selectors';
 import firebase from 'firebase';
 import {
   setUserImage,
   setUserInfo,
   uploadImage,
-} from '../../store/actions/profileUserAction';
+} from '../../store/actions/userProfileAction';
 import ImagePicker from 'react-native-image-crop-picker';
 import {rem, vrem} from '../../consts/size';
 import ActionButton from 'react-native-action-button';
@@ -34,7 +34,7 @@ import {FirebaseAuthTypes} from '@react-native-firebase/auth';
 export const CreateProfileInfoScreen: React.FC<any> = () => {
   const user: FirebaseAuthTypes.User | null = useSelector(getUserSelector);
   const isLoadingInfo = useSelector(isLoadingEditUserSelector);
-  const isTransferred = useSelector(isTransferredEditUserSelector);
+  const progressLoadingImage = useSelector(progressLoadingImageSelector);
   const dispatch = useDispatch();
 
   const userUID = user && user.uid;
@@ -154,7 +154,7 @@ export const CreateProfileInfoScreen: React.FC<any> = () => {
       </View>
       {isLoadingInfo ? (
         <View style={styles.statusLoadingWrapper}>
-          <Text>{isTransferred} % Загружено!</Text>
+          <Text>{progressLoadingImage} % Загружено!</Text>
           <ActivityIndicator size="large" color="#0000ff" />
         </View>
       ) : (

@@ -12,18 +12,18 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useDispatch, useSelector} from 'react-redux';
 import {
-  getImageUserSelector,
+  getUserImageSelector,
   getUserInfoSelector,
   getUserSelector,
   isLoadingEditUserSelector,
-  isTransferredEditUserSelector,
+  progressLoadingImageSelector,
 } from '../../store/selectors';
 import firebase from 'firebase';
 import {
   setUserImage,
   setUserInfo,
   uploadImage,
-} from '../../store/actions/profileUserAction';
+} from '../../store/actions/userProfileAction';
 import ImagePicker from 'react-native-image-crop-picker';
 import {rem, vrem} from '../../consts/size';
 import ActionButton from 'react-native-action-button';
@@ -35,10 +35,10 @@ import {FirebaseAuthTypes} from '@react-native-firebase/auth';
 
 export const EditProfileScreen: React.FC<any> = ({navigation}) => {
   const userInfo: UserInfoType | null = useSelector(getUserInfoSelector);
-  const userImage = useSelector(getImageUserSelector);
+  const userImage = useSelector(getUserImageSelector);
   const user: FirebaseAuthTypes.User | null = useSelector(getUserSelector);
   const isLoadingInfo = useSelector(isLoadingEditUserSelector);
-  const isTransferred = useSelector(isTransferredEditUserSelector);
+  const progressLoadingImage = useSelector(progressLoadingImageSelector);
   const dispatch = useDispatch();
 
   const userFirstName = userInfo && userInfo.firstName;
@@ -168,7 +168,7 @@ export const EditProfileScreen: React.FC<any> = ({navigation}) => {
       </View>
       {isLoadingInfo ? (
         <View style={styles.statusLoadingWrapper}>
-          <Text>{isTransferred} % Загружено!</Text>
+          <Text>{progressLoadingImage} % Загружено!</Text>
           <ActivityIndicator size="large" color="#0000ff" />
         </View>
       ) : (
@@ -227,15 +227,15 @@ const styles = StyleSheet.create({
   },
   action: {
     flexDirection: 'row',
-    paddingBottom: vrem(4),
+    paddingBottom: vrem(2),
     paddingLeft: rem(5),
-    marginVertical: vrem(6),
+    marginVertical: vrem(4),
     borderBottomWidth: vrem(2),
     borderBottomColor: '#f2f2f2',
   },
   textInput: {
     flex: 1,
-    marginTop: vrem(-20),
+    marginTop: rem(-18),
     paddingLeft: rem(10),
     color: '#333333',
     opacity: 0.6,
@@ -245,8 +245,9 @@ const styles = StyleSheet.create({
     color: '#ffffff',
   },
   button: {
-    marginTop: vrem(210),
-    paddingHorizontal: rem(80),
+    marginTop: vrem(160),
+    marginVertical: 32,
+    paddingHorizontal: rem(85),
   },
   userName: {
     fontSize: rem(14),

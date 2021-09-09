@@ -15,20 +15,19 @@ import {
   setImage,
   setIsLoadingPost,
   setPosts,
-  setTransferred,
 } from '../store/actions/feedAction';
 import {
-  setTransferredUserImage,
+  setProgressLoadingUserImage,
   setUserImage,
   setUserInfo,
   upLoadingUserImage,
   setUserPosts,
   setIsLoadingUserPost,
-} from '../store/actions/profileUserAction';
+} from '../store/actions/userProfileAction';
 import {
   setOtherUserInfo,
   setOtherUserPosts,
-} from '../store/actions/otherProfileUserAction';
+} from '../store/actions/otherUserProfileAction';
 
 export type myOptionsType = {
   title: string;
@@ -121,13 +120,12 @@ type feedActionType =
   | ReturnType<typeof setComments>
   | ReturnType<typeof setImage>
   | ReturnType<typeof setCommentMenuVisible>
-  | ReturnType<typeof setIsLoadingPost>
-  | ReturnType<typeof setTransferred>;
+  | ReturnType<typeof setIsLoadingPost>;
 
 type ProfileUserType =
   | ReturnType<typeof setUserInfo>
   | ReturnType<typeof upLoadingUserImage>
-  | ReturnType<typeof setTransferredUserImage>
+  | ReturnType<typeof setProgressLoadingUserImage>
   | ReturnType<typeof setUserImage>
   | ReturnType<typeof setUserPosts>
   | ReturnType<typeof setIsLoadingUserPost>;

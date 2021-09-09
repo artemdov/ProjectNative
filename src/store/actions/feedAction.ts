@@ -29,9 +29,3 @@ export const setIsLoadingPost = (isLoadingPost: boolean) =>
     type: actionTypes.feed.SET_IS_LOADING_POST,
     payload: isLoadingPost,
   } as const);
-
-export const setTransferred = (transferred: number) =>
-  ({
-    type: actionTypes.feed.SET_TRANSFERRED,
-    payload: transferred,
-  } as const);

@@ -6,37 +6,37 @@ import {PostType, UserInfoType} from '../../types/types';
 
 export const setUserInfo = (userInfo: UserInfoType | null) =>
   ({
-    type: actionTypes.profileUser.SET_USER_INFO,
+    type: actionTypes.userProfile.SET_USER_INFO,
     payload: userInfo,
   } as const);
 
 export const upLoadingUserImage = (uploading: boolean) =>
   ({
-    type: actionTypes.profileUser.SET_UPLOADING_USER_IMAGE,
+    type: actionTypes.userProfile.SET_UPLOADING_USER_IMAGE,
     payload: uploading,
   } as const);
 
-export const setTransferredUserImage = (transferred: number) =>
+export const setProgressLoadingUserImage = (progressLoading: number) =>
   ({
-    type: actionTypes.profileUser.SET_TRANSFERRED_IMAGE,
-    payload: transferred,
+    type: actionTypes.userProfile.SET_PROGRESS_LOADING_IMAGE,
+    payload: progressLoading,
   } as const);
 
 export const setUserImage = (image?: string) =>
   ({
-    type: actionTypes.profileUser.SET_USER_IMAGE,
+    type: actionTypes.userProfile.SET_USER_IMAGE,
     payload: image,
   } as const);
 
 export const setUserPosts = (posts: PostType[]) =>
   ({
-    type: actionTypes.profileUser.SET_USER_POSTS,
+    type: actionTypes.userProfile.SET_USER_POSTS,
     payload: posts,
   } as const);
 
 export const setIsLoadingUserPost = (isLoadingPost: boolean) =>
   ({
-    type: actionTypes.profileUser.SET_IS_LOADING_USER_POST,
+    type: actionTypes.userProfile.SET_IS_LOADING_USER_POST,
     payload: isLoadingPost,
   } as const);
 
@@ -53,7 +53,7 @@ export const uploadImage = (image: string) => async (dispatch: Dispatch) => {
   const task = storageRef.putFile(uploadUri);
   task.on('state_changed', taskSnapshot => {
     dispatch(
-      setTransferredUserImage(
+      setProgressLoadingUserImage(
         Math.round(taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) *
           100,
       ),
@@ -61,7 +61,7 @@ export const uploadImage = (image: string) => async (dispatch: Dispatch) => {
   });
   try {
     dispatch(upLoadingUserImage(true));
-    dispatch(setTransferredUserImage(0));
+    dispatch(setProgressLoadingUserImage(0));
     await task;
     const url = await storageRef.getDownloadURL();
     dispatch(upLoadingUserImage(false));

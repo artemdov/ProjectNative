@@ -12,8 +12,6 @@ export const getUserSelector = (state: AppRootStateType) => state.auth.user;
 export const getImageSelector = (state: AppRootStateType) => state.feed.image;
 export const isLoadingPostSelector = (state: AppRootStateType) =>
   state.feed.isLoadingPost;
-export const isTransferredSelector = (state: AppRootStateType) =>
-  state.feed.transferred;
 export const getPostsSelector = (state: AppRootStateType) => state.feed.posts;
 export const getCommentsSelector = (state: AppRootStateType) =>
   state.feed.comments;
@@ -23,11 +21,11 @@ export const isLoadingArtworksSelector = (state: AppRootStateType) =>
   state.artworks.isLoadingArtworks;
 export const isLoadingEditUserSelector = (state: AppRootStateType) =>
   state.user.upLoadingUserInfo;
-export const isTransferredEditUserSelector = (state: AppRootStateType) =>
-  state.user.transferredImage;
+export const progressLoadingImageSelector = (state: AppRootStateType) =>
+  state.user.progressLoadingImage;
 export const getUserInfoSelector = (state: AppRootStateType) =>
   state.user.userInfo;
-export const getImageUserSelector = (state: AppRootStateType) =>
+export const getUserImageSelector = (state: AppRootStateType) =>
   state.user.userImage;
 export const getUserPostsSelector = (state: AppRootStateType) =>
   state.user.userPosts;

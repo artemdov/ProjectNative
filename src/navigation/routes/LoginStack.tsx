@@ -2,7 +2,7 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import screenNames from '../ScreenNames';
 import {useSelector} from 'react-redux';
-import {editProfileScreenOptions, withoutHeader} from '../options';
+import {editProfileOptions, withoutHeader} from '../options';
 import {isProfileSetupFinishedSelector} from '../../store/selectors';
 import {LoginScreen} from '../../screens/Auth/LoginScreen';
 import {CreateProfileInfoScreen} from '../../screens/Auth/CreateProfileInfoScreen';
@@ -26,7 +26,7 @@ export const LoginStack = () => {
           component={CreateProfileInfoScreen}
           // @ts-ignore
           options={{
-            ...editProfileScreenOptions,
+            ...editProfileOptions,
             headerTitle: 'Создать профиль',
           }}
         />

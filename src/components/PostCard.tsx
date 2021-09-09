@@ -25,7 +25,7 @@ export const PostCard: React.FC<any> = ({item, onDelete, onPress}) => {
 
   const userUID = user && user.uid;
 
-  let [likes, setLikes] = useState<any[]>([]);
+  let [likes, setLikes] = useState<(string | null)[]>([]);
 
   useEffect(() => {
     if (item.likes) {
@@ -34,7 +34,16 @@ export const PostCard: React.FC<any> = ({item, onDelete, onPress}) => {
   }, []);
 
   const likeToggled = () => {
-    if (likes && likes.length === 0) {
+    const isLiked = likes.includes(userUID);
+    if (isLiked) {
+      firebase
+        .database()
+        .ref(`usersPost/${item.id}/likes/${userUID}`)
+        .remove()
+        .then(() => {
+          setLikes(likes.filter((likeId: string | null) => likeId !== userUID));
+        });
+    } else {
       firebase
         .database()
         .ref(`usersPost/${item.id}/likes/${userUID}`)
@@ -44,27 +53,6 @@ export const PostCard: React.FC<any> = ({item, onDelete, onPress}) => {
         .then(() => {
           setLikes([...likes, userUID]);
         });
-    } else {
-      const isLiked = likes.find((likeId: string) => likeId === userUID);
-      if (isLiked) {
-        firebase
-          .database()
-          .ref(`usersPost/${item.id}/likes/${userUID}`)
-          .remove()
-          .then(() => {
-            setLikes(likes.filter((likeId: string) => likeId !== userUID));
-          });
-      } else {
-        firebase
-          .database()
-          .ref(`usersPost/${item.id}/likes/${userUID}`)
-          .set({
-            isLike: true,
-          })
-          .then(() => {
-            setLikes([...likes, userUID]);
-          });
-      }
     }
   };
 
@@ -75,7 +63,7 @@ export const PostCard: React.FC<any> = ({item, onDelete, onPress}) => {
   const deletePostHandler = () => onDelete(item.id);
 
   const isPostLiked =
-    likes && likes.find((userId: string) => user && userId === user.uid);
+    likes && likes.find((userId: string | null) => user && userId === user.uid);
 
   const likeIcon = isPostLiked ? 'heart' : 'heart-outline';
 
@@ -118,7 +106,7 @@ export const PostCard: React.FC<any> = ({item, onDelete, onPress}) => {
             <Ionicons name={likeIcon} size={24} color={likeIconColor} />
           </View>
         </TouchableOpacity>
-        <Text style={styles.interactionText}>{likes ? likes.length : 0}</Text>
+        <Text style={styles.interactionText}>{likes.length}</Text>
         <TouchableOpacity onPress={commentHandler}>
           <View style={styles.interactionComment}>
             <EvilIcons name="comment" size={30} color="#000" />

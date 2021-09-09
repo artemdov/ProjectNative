@@ -7,7 +7,7 @@ import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import {Dispatch} from 'redux';
 import firebase from 'firebase';
 import {photoUserProfile} from '../../consts/photoUserProfile';
-import {setUserInfo, setUserPosts} from './profileUserAction';
+import {setUserInfo, setUserPosts} from './userProfileAction';
 
 export const setIsLoggedIn = (value: boolean) =>
   ({
@@ -35,7 +35,7 @@ export const setLoadingStatus = (value: boolean) =>
 
 export const setProfileSetup = (profileSetupFinished: boolean) =>
   ({
-    type: actionTypes.auth.SETUP_PROFILE,
+    type: actionTypes.auth.SET_PROFILE_SETUP_FINISHED,
     payload: profileSetupFinished,
   } as const);
 

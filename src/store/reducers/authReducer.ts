@@ -21,7 +21,7 @@ export const authReducer = (state = initialState, action: ActionType) => {
       return <initialStateType>{...state, error: action.payload};
     case actionTypes.auth.LOGIN:
       return <initialStateType>{...state, isLoggedIn: action.payload};
-    case actionTypes.auth.SETUP_PROFILE:
+    case actionTypes.auth.SET_PROFILE_SETUP_FINISHED:
       return <initialStateType>{...state, profileSetupFinished: action.payload};
     default:
       return state;

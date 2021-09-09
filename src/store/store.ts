@@ -4,15 +4,15 @@ import {authReducer} from './reducers/authReducer';
 import {feedReducer} from './reducers/feedReducer';
 import {composeWithDevTools} from 'redux-devtools-extension';
 import {artworksReducer} from './reducers/artworksReducer';
-import {profileUserReducer} from './reducers/profileUserReducer';
-import {otherProfileUserReducer} from './reducers/otherProfileUserReducer';
+import {UserProfileReducer} from './reducers/userProfileReducer';
+import {otherUserProfileReducer} from './reducers/otherUserProfileReducer';
 
 export const rootReducer = combineReducers({
   auth: authReducer,
   feed: feedReducer,
   artworks: artworksReducer,
-  user: profileUserReducer,
-  otherUser: otherProfileUserReducer,
+  user: UserProfileReducer,
+  otherUser: otherUserProfileReducer,
 });
 export const store = createStore(
   rootReducer,

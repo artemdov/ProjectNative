@@ -7,14 +7,14 @@ const initialState = {
 };
 type initialStateType = typeof initialState;
 
-export const otherProfileUserReducer = (
+export const otherUserProfileReducer = (
   state = initialState,
   action: ActionType,
 ) => {
   switch (action.type) {
-    case actionTypes.otherProfileUser.SET_OTHER_USER_INFO:
+    case actionTypes.otherUserProfile.SET_OTHER_USER_INFO:
       return <initialStateType>{...state, otherUserInfo: action.payload};
-    case actionTypes.otherProfileUser.SET_OTHER_USER_POSTS:
+    case actionTypes.otherUserProfile.SET_OTHER_USER_POSTS:
       return <initialStateType>{...state, otherUserPosts: action.payload};
     default:
       return state;

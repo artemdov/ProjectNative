@@ -3,7 +3,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import screenNames from '../ScreenNames';
 import {LandingScreen} from '../../screens/Landing/LandingScreen';
 import {RegistrationScreen} from '../../screens/Auth/RegistrationScreen';
-import {myOptions, withoutHeader} from '../options';
+import {loginOptions, withoutHeader} from '../options';
 import {LoginStack} from './LoginStack';
 
 const Stack = createStackNavigator();
@@ -19,12 +19,12 @@ const AuthStack = () => {
       <Stack.Screen
         name={screenNames.LOGIN_STACK}
         component={LoginStack}
-        options={myOptions}
+        options={loginOptions}
       />
       <Stack.Screen
         name={screenNames.REGISTRATION_SCREEN}
         component={RegistrationScreen}
-        options={{...myOptions, title: 'Регистрация'}}
+        options={{...loginOptions, title: 'Регистрация'}}
       />
     </Stack.Navigator>
   );

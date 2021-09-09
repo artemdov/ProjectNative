@@ -15,24 +15,24 @@ import ImagePicker from 'react-native-image-crop-picker';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   getUserSelector,
-  isTransferredSelector,
   getImageSelector,
   isLoadingEditUserSelector,
   getUserInfoSelector,
+  progressLoadingImageSelector,
 } from '../../store/selectors';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {CustomFormButton} from '../../components/common/CustomFormButton';
 import {rem, vrem} from '../../consts/size';
 import {setImage} from '../../store/actions/feedAction';
 import firebase from 'firebase';
-import {setUserPosts, uploadImage} from '../../store/actions/profileUserAction';
+import {setUserPosts, uploadImage} from '../../store/actions/userProfileAction';
 import {UserInfoType} from '../../types/types';
 import {FirebaseAuthTypes} from '@react-native-firebase/auth';
 
 export const AddPostScreen: React.FC<any> = ({navigation}) => {
   const newImage = useSelector(getImageSelector);
   const user: FirebaseAuthTypes.User | null = useSelector(getUserSelector);
-  const isTransferred = useSelector(isTransferredSelector);
+  const progressLoading = useSelector(progressLoadingImageSelector);
   const isLoadingImage = useSelector(isLoadingEditUserSelector);
   const dispatch = useDispatch();
   const userInfo: UserInfoType | null = useSelector(getUserInfoSelector);
@@ -148,7 +148,7 @@ export const AddPostScreen: React.FC<any> = ({navigation}) => {
         )}
         {isLoadingImage ? (
           <View style={styles.statusLoadingWrapper}>
-            <Text>{isTransferred} % Загружено!</Text>
+            <Text>{progressLoading} % Загружено!</Text>
             <ActivityIndicator size="large" color="#0000ff" />
           </View>
         ) : (
