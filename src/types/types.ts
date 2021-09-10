@@ -80,14 +80,14 @@ export type PostType = {
   };
 };
 export type UserInfoType = {
-  country: string;
-  createdAt: number;
-  email: string;
+  country?: string;
+  createdAt?: number;
+  email?: string;
   firstName: string;
   lastName: string;
-  phone: string;
-  userId: string;
-  userImage: string;
+  phone?: string;
+  userId?: string;
+  userImage?: string;
 };
 export type CommentType = {
   comment?: string;

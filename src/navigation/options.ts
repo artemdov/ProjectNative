@@ -20,6 +20,9 @@ export const addPostOptions = {
     shadowColor: '#2e64e515',
     elevation: 0,
   },
+  headerTitleStyle: {
+    fontSize: rem(22),
+  },
   headerBackTitleVisible: false,
 };
 export const profileOptions = {
@@ -37,9 +40,12 @@ export const editProfileOptions = {
   headerBackTitleVisible: false,
   headerTitleAlign: 'center',
   headerStyle: {
-    backgroundColor: '#fff',
+    height: vrem(60),
     shadowColor: '#fff',
     elevation: 0,
+  },
+  headerTitleStyle: {
+    fontSize: rem(22),
   },
 };
 export const artworkDetailScreenOptions = {

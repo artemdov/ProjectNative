@@ -12,6 +12,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useDispatch, useSelector} from 'react-redux';
 import {
+  getUserInfoSelector,
   getUserSelector,
   isLoadingEditUserSelector,
   progressLoadingImageSelector,
@@ -30,24 +31,26 @@ import {CustomProfileButton} from '../../components/common/CustomProfileButton';
 import {setProfileSetup} from '../../store/actions/authAction';
 import {photoUserProfile} from '../../consts/photoUserProfile';
 import {FirebaseAuthTypes} from '@react-native-firebase/auth';
+import {UserInfoType} from '../../types/types';
 
 export const CreateProfileInfoScreen: React.FC<any> = () => {
   const user: FirebaseAuthTypes.User | null = useSelector(getUserSelector);
   const isLoadingInfo = useSelector(isLoadingEditUserSelector);
+  const userInfo: UserInfoType | null = useSelector(getUserInfoSelector);
   const progressLoadingImage = useSelector(progressLoadingImageSelector);
   const dispatch = useDispatch();
 
   const userUID = user && user.uid;
 
-  const [firstName, setFirstName] = useState('');
+  const [firstName, setFirstName] = useState<string>('');
 
-  const [lastName, setLastName] = useState('');
+  const [lastName, setLastName] = useState<string>('');
 
-  const [phone, setPhone] = useState('');
+  const [phone, setPhone] = useState<string>('');
 
-  const [country, setCountry] = useState('');
+  const [country, setCountry] = useState<string>('');
 
-  const [usersImage, setUsersImage] = useState<any>('');
+  const [usersImage, setUsersImage] = useState<string | undefined>('');
 
   const takePhotoFromCamera = () => {
     ImagePicker.openCamera({
@@ -56,7 +59,8 @@ export const CreateProfileInfoScreen: React.FC<any> = () => {
       cropping: true,
       freeStyleCropEnabled: true,
     }).then(image => {
-      const imageUri = Platform.OS === 'ios' ? image.sourceURL : image.path;
+      const imageUri: string | undefined =
+        Platform.OS === 'ios' ? image.sourceURL : image.path;
       setUsersImage(imageUri);
     });
   };
@@ -68,34 +72,42 @@ export const CreateProfileInfoScreen: React.FC<any> = () => {
       cropping: true,
       freeStyleCropEnabled: true,
     }).then(image => {
-      const imageUri = Platform.OS === 'ios' ? image.sourceURL : image.path;
+      const imageUri: string | undefined =
+        Platform.OS === 'ios' ? image.sourceURL : image.path;
       setUsersImage(imageUri);
     });
   };
 
   const updateUserInfo = async () => {
-    let imgUrl = await dispatch(uploadImage(usersImage));
+    // @ts-ignore
+    let imgUrl: string = await dispatch(uploadImage(usersImage));
     dispatch(setUserImage(''));
     if (imgUrl == null && usersImage) {
       imgUrl = usersImage;
     }
-    dispatch(setProfileSetup(true));
-    await firebase.database().ref(`users/${userUID}`).update({
-      firstName: firstName,
-      lastName: lastName,
-      phone: phone,
-      country: country,
-      userImage: imgUrl,
-    });
-    await firebase
-      .database()
-      .ref(`users/${userUID}`)
-      .get()
-      .then(snapshot => {
-        if (snapshot.exists()) {
-          dispatch(setUserInfo(snapshot.val()));
-        }
+    try {
+      await firebase.database().ref(`users/${userUID}`).update({
+        firstName,
+        lastName,
+        phone,
+        country,
+        userImage: imgUrl,
       });
+      dispatch(
+        setUserInfo({
+          ...userInfo,
+          firstName,
+          lastName,
+          phone,
+          country,
+          userImage: imgUrl,
+        }),
+      );
+      dispatch(setProfileSetup(true));
+    }
+    catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -103,11 +115,11 @@ export const CreateProfileInfoScreen: React.FC<any> = () => {
       <View style={styles.userWrapper}>
         <Image
           source={{uri: usersImage || photoUserProfile}}
-          style={styles.imageUser}
+          style={styles.userImage}
         />
         <Text style={styles.userName}>{`${firstName} ${lastName}`}</Text>
       </View>
-      <View style={styles.action}>
+      <View style={styles.inputWrapper}>
         <FontAwesome name="user-o" color="#333333" size={20} />
         <TextInput
           placeholder="Имя"
@@ -118,7 +130,7 @@ export const CreateProfileInfoScreen: React.FC<any> = () => {
           style={styles.textInput}
         />
       </View>
-      <View style={styles.action}>
+      <View style={styles.inputWrapper}>
         <FontAwesome name="user-o" color="#333333" size={20} />
         <TextInput
           placeholder="Фамилия"
@@ -129,7 +141,7 @@ export const CreateProfileInfoScreen: React.FC<any> = () => {
           style={styles.textInput}
         />
       </View>
-      <View style={styles.action}>
+      <View style={styles.inputWrapper}>
         <FontAwesome name="phone" color="#333333" size={20} />
         <TextInput
           placeholder="Телефон"
@@ -141,7 +153,7 @@ export const CreateProfileInfoScreen: React.FC<any> = () => {
           style={styles.textInput}
         />
       </View>
-      <View style={styles.action}>
+      <View style={styles.inputWrapper}>
         <FontAwesome name="globe" color="#333333" size={20} />
         <TextInput
           placeholder="Страна"
@@ -191,12 +203,12 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
   },
-  imageUser: {
+  userImage: {
     width: rem(90),
     height: vrem(110),
     borderRadius: rem(50),
   },
-  photoUser: {
+  userPhoto: {
     width: rem(90),
     height: vrem(110),
     backgroundColor: '#b3b3b3',
@@ -211,7 +223,7 @@ const styles = StyleSheet.create({
     borderColor: '#fff',
     borderRadius: rem(11),
   },
-  action: {
+  inputWrapper: {
     flexDirection: 'row',
     paddingBottom: vrem(4),
     paddingLeft: rem(5),

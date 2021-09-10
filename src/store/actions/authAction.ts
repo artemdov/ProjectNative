@@ -43,6 +43,7 @@ export const onSubmitRegistration =
   (data: OnSubmitRegistrationDataType) => async (dispatch: Dispatch) => {
     try {
       dispatch(setProfileSetup(false));
+      dispatch(setUserPosts([]));
       const res = await auth().createUserWithEmailAndPassword(
         data.email,
         data.password,

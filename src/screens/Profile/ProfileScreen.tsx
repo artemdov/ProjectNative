@@ -44,7 +44,6 @@ export const ProfileScreen: React.FC<any> = ({navigation}) => {
       [
         {
           text: 'Отмена',
-          onPress: () => {},
           style: 'cancel',
         },
         {
@@ -58,42 +57,52 @@ export const ProfileScreen: React.FC<any> = ({navigation}) => {
   };
 
   const deletePost = (postId: string) => {
-    firebase
-      .database()
-      .ref(`usersPost/${postId}`)
-      .get()
-      .then(snapshot => {
-        if (snapshot.exists()) {
-          const {postImg} = snapshot.val();
-          if (postImg) {
-            const storageRef = storage().refFromURL(postImg);
-            const imageRef = storage().ref(storageRef.fullPath);
-            imageRef
-              .delete()
-              .then(() => {
-                console.log(`${postImg} удалена!`);
-                deleteFirebaseData(postId);
-              })
-              .catch(err => {
-                console.log(err);
-              });
-          } else {
-            deleteFirebaseData(postId);
-          }
-        }
-      });
-
-    const deleteFirebaseData = (postId: string) => {
+    try {
       firebase
         .database()
         .ref(`usersPost/${postId}`)
-        .remove()
-        .then(() => {
-          Alert.alert('Пост удален', 'Ваш пост удален успешно!');
-        })
-        .catch(err => {
-          console.log(err);
+        .get()
+        .then(snapshot => {
+          if (snapshot.exists()) {
+            const {postImg} = snapshot.val();
+            if (postImg) {
+              const storageRef = storage().refFromURL(postImg);
+              const imageRef = storage().ref(storageRef.fullPath);
+              imageRef
+                .delete()
+                .then(() => {
+                  console.log(`${postImg} удалена!`);
+                  deleteFirebaseData(postId);
+                })
+                .catch(err => {
+                  console.log(err);
+                });
+            } else {
+              deleteFirebaseData(postId);
+            }
+          }
         });
+    }
+    catch (error) {
+      console.log(error);
+    }
+
+    const deleteFirebaseData = (postId: string) => {
+      try {
+        firebase
+          .database()
+          .ref(`usersPost/${postId}`)
+          .remove()
+          .then(() => {
+            Alert.alert('Пост удален', 'Ваш пост удален успешно!');
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      }
+      catch (error) {
+        console.log(error);
+      }
     };
   };
 

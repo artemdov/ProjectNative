@@ -40,34 +40,36 @@ export const setIsLoadingUserPost = (isLoadingPost: boolean) =>
     payload: isLoadingPost,
   } as const);
 
-export const uploadImage = (image: string) => async (dispatch: Dispatch) => {
-  if (!image) {
-    return null;
-  }
-  const uploadUri = image;
-  let fileName = uploadUri.substring(uploadUri.lastIndexOf('/') + 1);
-  const extension = fileName.split('.').pop();
-  const name = fileName.split('.').slice(0, -1).join('.');
-  fileName = name + Date.now() + '.' + extension;
-  const storageRef = storage().ref(`photos/${fileName}`);
-  const task = storageRef.putFile(uploadUri);
-  task.on('state_changed', taskSnapshot => {
-    dispatch(
-      setProgressLoadingUserImage(
-        Math.round(taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) *
-          100,
-      ),
-    );
-  });
-  try {
-    dispatch(upLoadingUserImage(true));
-    dispatch(setProgressLoadingUserImage(0));
-    await task;
-    const url = await storageRef.getDownloadURL();
-    dispatch(upLoadingUserImage(false));
-    return url;
-  } catch (err) {
-    Alert.alert(err);
-    return '';
-  }
-};
+export const uploadImage =
+  (image: string | undefined) => async (dispatch: Dispatch) => {
+    if (!image) {
+      return null;
+    }
+    const uploadUri = image;
+    let fileName = uploadUri.substring(uploadUri.lastIndexOf('/') + 1);
+    const extension = fileName.split('.').pop();
+    const name = fileName.split('.').slice(0, -1).join('.');
+    fileName = name + Date.now() + '.' + extension;
+    const storageRef = storage().ref(`photos/${fileName}`);
+    const task = storageRef.putFile(uploadUri);
+    task.on('state_changed', taskSnapshot => {
+      dispatch(
+        setProgressLoadingUserImage(
+          Math.round(taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) *
+            100,
+        ),
+      );
+    });
+    try {
+      dispatch(upLoadingUserImage(true));
+      dispatch(setProgressLoadingUserImage(0));
+      await task;
+      const url = await storageRef.getDownloadURL();
+      dispatch(upLoadingUserImage(false));
+      return url;
+    }
+    catch (err) {
+      Alert.alert(err);
+      return '';
+    }
+  };

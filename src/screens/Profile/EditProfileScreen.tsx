@@ -49,13 +49,13 @@ export const EditProfileScreen: React.FC<any> = ({navigation}) => {
 
   const imageUser = userInfo && userInfo.userImage;
 
-  const [firstName, setFirstName] = useState('');
+  const [firstName, setFirstName] = useState<string>('');
 
-  const [lastName, setLastName] = useState('');
+  const [lastName, setLastName] = useState<string>('');
 
-  const [phone, setPhone] = useState('');
+  const [phone, setPhone] = useState<string>('');
 
-  const [country, setCountry] = useState('');
+  const [country, setCountry] = useState<string>('');
 
   const takePhotoFromCamera = () => {
     ImagePicker.openCamera({
@@ -82,30 +82,35 @@ export const EditProfileScreen: React.FC<any> = ({navigation}) => {
   };
 
   const handleUpdate = async () => {
-    let imgUrl: any = await dispatch(uploadImage(userImage));
-    dispatch(setUserImage(''));
-    if (imgUrl == null && imageUser) {
-      imgUrl = imageUser;
-    }
-    await firebase.database().ref(`users/${userUID}`).update({
-      firstName: firstName,
-      lastName: lastName,
-      phone: phone,
-      country: country,
-      userImage: imgUrl,
-    });
-    await firebase
-      .database()
-      .ref(`users/${userUID}`)
-      .get()
-      .then(snapshot => {
-        if (snapshot.exists()) {
-          dispatch(setUserInfo(snapshot.val()));
-        }
-      })
-      .then(() => {
-        navigation.goBack();
+    try {
+      let imgUrl: any = await dispatch(uploadImage(userImage));
+      dispatch(setUserImage(''));
+      if (imgUrl == null && imageUser) {
+        imgUrl = imageUser;
+      }
+      await firebase.database().ref(`users/${userUID}`).update({
+        firstName: firstName,
+        lastName: lastName,
+        phone: phone,
+        country: country,
+        userImage: imgUrl,
       });
+      await firebase
+        .database()
+        .ref(`users/${userUID}`)
+        .get()
+        .then(snapshot => {
+          if (snapshot.exists()) {
+            dispatch(setUserInfo(snapshot.val()));
+          }
+        })
+        .then(() => {
+          navigation.goBack();
+        });
+    }
+    catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -113,7 +118,7 @@ export const EditProfileScreen: React.FC<any> = ({navigation}) => {
       <View style={styles.userWrapper}>
         <Image
           source={{uri: userImage || photoUserProfile}}
-          style={styles.imageUser}
+          style={styles.userImage}
         />
         <Text style={styles.userName}>
           {`${userFirstName || 'Без имени'} ${
@@ -121,8 +126,8 @@ export const EditProfileScreen: React.FC<any> = ({navigation}) => {
           }`}
         </Text>
       </View>
-      <View style={styles.action}>
-        <FontAwesome name="user-o" color="#333333" size={20} />
+      <View style={styles.inputWrapper}>
+        <FontAwesome name="user-o" color="#333333" size={rem(21)} />
         <TextInput
           placeholder="Имя"
           placeholderTextColor="#666666"
@@ -132,8 +137,8 @@ export const EditProfileScreen: React.FC<any> = ({navigation}) => {
           style={styles.textInput}
         />
       </View>
-      <View style={styles.action}>
-        <FontAwesome name="user-o" color="#333333" size={20} />
+      <View style={styles.inputWrapper}>
+        <FontAwesome name="user-o" color="#333333" size={rem(21)} />
         <TextInput
           placeholder="Фамилия"
           placeholderTextColor="#666666"
@@ -143,8 +148,8 @@ export const EditProfileScreen: React.FC<any> = ({navigation}) => {
           style={styles.textInput}
         />
       </View>
-      <View style={styles.action}>
-        <FontAwesome name="phone" color="#333333" size={20} />
+      <View style={styles.inputWrapper}>
+        <FontAwesome name="phone" color="#333333" size={rem(21)} />
         <TextInput
           placeholder="Телефон"
           placeholderTextColor="#666666"
@@ -155,8 +160,8 @@ export const EditProfileScreen: React.FC<any> = ({navigation}) => {
           style={styles.textInput}
         />
       </View>
-      <View style={styles.action}>
-        <FontAwesome name="globe" color="#333333" size={20} />
+      <View style={styles.inputWrapper}>
+        <FontAwesome name="globe" color="#333333" size={rem(21)} />
         <TextInput
           placeholder="Страна"
           placeholderTextColor="#666666"
@@ -172,7 +177,7 @@ export const EditProfileScreen: React.FC<any> = ({navigation}) => {
           <ActivityIndicator size="large" color="#0000ff" />
         </View>
       ) : (
-        <View>
+        <View style={styles.buttonsWrapper}>
           <View style={styles.button}>
             <CustomProfileButton title="Обновить" onPress={handleUpdate} />
           </View>
@@ -198,19 +203,20 @@ export const EditProfileScreen: React.FC<any> = ({navigation}) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    height: '100%',
     backgroundColor: '#fff',
   },
   userWrapper: {
     flexDirection: 'column',
     alignItems: 'center',
   },
-  imageUser: {
+  userImage: {
     width: rem(90),
     height: vrem(110),
+    marginBottom: vrem(50),
     borderRadius: rem(50),
   },
-  photoUser: {
+  userPhoto: {
     width: rem(90),
     height: vrem(110),
     backgroundColor: '#666',
@@ -225,17 +231,17 @@ const styles = StyleSheet.create({
     borderColor: '#fff',
     borderRadius: rem(11),
   },
-  action: {
+  inputWrapper: {
     flexDirection: 'row',
-    paddingBottom: vrem(2),
     paddingLeft: rem(5),
     marginVertical: vrem(4),
+    paddingTop: -17,
     borderBottomWidth: vrem(2),
     borderBottomColor: '#f2f2f2',
   },
   textInput: {
-    flex: 1,
-    marginTop: rem(-18),
+    fontSize: rem(14),
+    marginTop: -13,
     paddingLeft: rem(10),
     color: '#333333',
     opacity: 0.6,
@@ -245,9 +251,12 @@ const styles = StyleSheet.create({
     color: '#ffffff',
   },
   button: {
-    marginTop: vrem(160),
-    marginVertical: 32,
+    marginTop: '30%',
+    marginVertical: rem(12),
     paddingHorizontal: rem(85),
+  },
+  buttonsWrapper: {
+    marginTop: '12%',
   },
   userName: {
     fontSize: rem(14),

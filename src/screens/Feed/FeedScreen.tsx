@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {
   StyleSheet,
   FlatList,
@@ -101,71 +101,88 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
     fetch();
   }, []);
 
+  const fetchUserPosts = useCallback(
+    (item: PostType) => {
+      try {
+        dispatch(setIsLoadingUserPost(true));
+        const postsRef = firebase.database().ref('usersPost');
+        const onLoadingFeed = postsRef.on('value', snapshot => {
+          const listData: any[] = [];
+          snapshot.forEach(childSnapshot => {
+            const currentUserId = childSnapshot.val().userId;
+            if (currentUserId === item.userId) {
+              const {
+                id,
+                firstName,
+                lastName,
+                userId,
+                post,
+                postImg,
+                postTime,
+                likes,
+                userImage,
+              } = childSnapshot.val();
+              listData.push({
+                id,
+                firstName,
+                lastName,
+                userId,
+                userImage,
+                postTime,
+                post,
+                postImg,
+                likes,
+              });
+            }
+          });
+          dispatch(setOtherUserPosts(listData));
+          dispatch(setIsLoadingUserPost(false));
+        });
+        return () => {
+          postsRef.off('value', onLoadingFeed);
+        };
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    [dispatch],
+  );
+
+  const getUser = useCallback(
+    (item: PostType) => {
+      try {
+        firebase
+          .database()
+          .ref(`users/${item.userId}`)
+          .on('value', snapshot => {
+            if (snapshot.exists()) {
+              dispatch(setOtherUserInfo(snapshot.val()));
+            }
+          });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    [dispatch],
+  );
+
   const keyExtractor = (item: {id: string}) => item.id;
+
+  const onPressPostCard = (item: PostType) => {
+    navigation.navigate(
+      userUID === item.userId
+        ? screenNames.PROFILE_SCREEN
+        : screenNames.OTHER_PROFILE_SCREEN,
+      getUser(item),
+      fetchUserPosts(item),
+    );
+  };
 
   const renderItem: ({item}: {item: PostType}) => JSX.Element = ({item}) => (
     <PostCard
       item={item}
       onDelete={handleDelete}
-      onPress={() => {
-        const fetchUserPosts = () => {
-          dispatch(setIsLoadingUserPost(true));
-          const postsRef = firebase.database().ref('usersPost');
-          const onLoadingFeed = postsRef.on('value', snapshot => {
-            const listData: any = [];
-            snapshot.forEach(childSnapshot => {
-              const currentUserId = childSnapshot.val().userId;
-              if (currentUserId === item.userId) {
-                const {
-                  id,
-                  firstName,
-                  lastName,
-                  userId,
-                  post,
-                  postImg,
-                  postTime,
-                  likes,
-                  userImage,
-                } = childSnapshot.val();
-                listData.push({
-                  id,
-                  firstName,
-                  lastName,
-                  userId,
-                  userImage,
-                  postTime,
-                  post,
-                  postImg,
-                  likes,
-                });
-              }
-            });
-            dispatch(setOtherUserPosts(listData));
-            dispatch(setIsLoadingUserPost(false));
-          });
-          return () => {
-            postsRef.off('value', onLoadingFeed);
-          };
-        };
-
-        const getUser = () => {
-          firebase
-            .database()
-            .ref(`users/${item.userId}`)
-            .on('value', snapshot => {
-              if (snapshot.exists()) {
-                dispatch(setOtherUserInfo(snapshot.val()));
-              }
-            });
-        };
-        getUser();
-        fetchUserPosts();
-        {
-          userUID === item.userId
-            ? navigation.navigate(screenNames.PROFILE_SCREEN)
-            : navigation.navigate(screenNames.OTHER_PROFILE_SCREEN);
-        }
-      }}
+      onPress={() => onPressPostCard(item)}
     />
   );
 
@@ -176,7 +193,6 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
       [
         {
           text: 'Отмена',
-          onPress: () => {},
           style: 'cancel',
         },
         {
