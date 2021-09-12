@@ -127,7 +127,12 @@ export const EditProfileScreen: React.FC<any> = ({navigation}) => {
         </Text>
       </View>
       <View style={styles.inputWrapper}>
-        <FontAwesome name="user-o" color="#333333" size={rem(21)} />
+        <FontAwesome
+          style={styles.icon}
+          name="user-o"
+          color="#333333"
+          size={rem(21)}
+        />
         <TextInput
           placeholder="Имя"
           placeholderTextColor="#666666"
@@ -138,7 +143,12 @@ export const EditProfileScreen: React.FC<any> = ({navigation}) => {
         />
       </View>
       <View style={styles.inputWrapper}>
-        <FontAwesome name="user-o" color="#333333" size={rem(21)} />
+        <FontAwesome
+          style={styles.icon}
+          name="user-o"
+          color="#333333"
+          size={rem(21)}
+        />
         <TextInput
           placeholder="Фамилия"
           placeholderTextColor="#666666"
@@ -149,7 +159,12 @@ export const EditProfileScreen: React.FC<any> = ({navigation}) => {
         />
       </View>
       <View style={styles.inputWrapper}>
-        <FontAwesome name="phone" color="#333333" size={rem(21)} />
+        <FontAwesome
+          style={styles.icon}
+          name="phone"
+          color="#333333"
+          size={rem(21)}
+        />
         <TextInput
           placeholder="Телефон"
           placeholderTextColor="#666666"
@@ -161,7 +176,12 @@ export const EditProfileScreen: React.FC<any> = ({navigation}) => {
         />
       </View>
       <View style={styles.inputWrapper}>
-        <FontAwesome name="globe" color="#333333" size={rem(21)} />
+        <FontAwesome
+          style={styles.icon}
+          name="globe"
+          color="#333333"
+          size={rem(21)}
+        />
         <TextInput
           placeholder="Страна"
           placeholderTextColor="#666666"
@@ -181,7 +201,10 @@ export const EditProfileScreen: React.FC<any> = ({navigation}) => {
           <View style={styles.button}>
             <CustomProfileButton title="Обновить" onPress={handleUpdate} />
           </View>
-          <ActionButton size={rem(50)} buttonColor="#2e64e5">
+          <ActionButton
+            style={styles.actionButtonWrapper}
+            size={rem(45)}
+            buttonColor="#2e64e5">
             <ActionButton.Item
               buttonColor="#9b59b6"
               title="Сделать фото"
@@ -203,7 +226,7 @@ export const EditProfileScreen: React.FC<any> = ({navigation}) => {
 
 const styles = StyleSheet.create({
   container: {
-    height: '100%',
+    flex: 1,
     backgroundColor: '#fff',
   },
   userWrapper: {
@@ -212,16 +235,24 @@ const styles = StyleSheet.create({
   },
   userImage: {
     width: rem(90),
-    height: vrem(110),
-    marginBottom: vrem(50),
+    height: vrem(70),
+    marginBottom: vrem(10),
     borderRadius: rem(50),
   },
   userPhoto: {
     width: rem(90),
-    height: vrem(110),
+    height: vrem(70),
     backgroundColor: '#666',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  actionButtonWrapper: {
+    marginBottom: rem(15),
+    marginRight: rem(8),
+    bottom: rem(7),
+  },
+  icon: {
+    marginVertical: rem(11),
   },
   photoIcon: {
     opacity: 0.9,
@@ -234,16 +265,15 @@ const styles = StyleSheet.create({
   inputWrapper: {
     flexDirection: 'row',
     paddingLeft: rem(5),
-    marginVertical: vrem(4),
-    paddingTop: -17,
     borderBottomWidth: vrem(2),
     borderBottomColor: '#f2f2f2',
   },
   textInput: {
     fontSize: rem(14),
-    marginTop: -13,
+    paddingVertical: rem(2),
     paddingLeft: rem(10),
-    color: '#333333',
+    marginBottom: rem(3),
+    color: '#000',
     opacity: 0.6,
   },
   actionButtonIcon: {
@@ -251,12 +281,13 @@ const styles = StyleSheet.create({
     color: '#ffffff',
   },
   button: {
-    marginTop: '30%',
-    marginVertical: rem(12),
-    paddingHorizontal: rem(85),
+    marginTop: rem(80),
+    marginVertical: rem(13),
+    paddingHorizontal: rem(80),
   },
   buttonsWrapper: {
-    marginTop: '12%',
+    bottom: 80,
+    marginTop: vrem(250),
   },
   userName: {
     fontSize: rem(14),

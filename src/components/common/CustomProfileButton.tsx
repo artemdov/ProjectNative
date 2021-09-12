@@ -22,6 +22,7 @@ const styles = StyleSheet.create({
     marginHorizontal: rem(5),
   },
   textStyle: {
+    fontSize: rem(14),
     textAlign: 'center',
     color: '#2e64e5',
   },

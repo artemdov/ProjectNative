@@ -79,13 +79,12 @@ export const CreateProfileInfoScreen: React.FC<any> = () => {
   };
 
   const updateUserInfo = async () => {
-    // @ts-ignore
-    let imgUrl: string = await dispatch(uploadImage(usersImage));
-    dispatch(setUserImage(''));
-    if (imgUrl == null && usersImage) {
-      imgUrl = usersImage;
-    }
     try {
+      let imgUrl: any = await dispatch(uploadImage(usersImage));
+      dispatch(setUserImage(''));
+      if (imgUrl == null && usersImage) {
+        imgUrl = usersImage;
+      }
       await firebase.database().ref(`users/${userUID}`).update({
         firstName,
         lastName,
@@ -120,7 +119,12 @@ export const CreateProfileInfoScreen: React.FC<any> = () => {
         <Text style={styles.userName}>{`${firstName} ${lastName}`}</Text>
       </View>
       <View style={styles.inputWrapper}>
-        <FontAwesome name="user-o" color="#333333" size={20} />
+        <FontAwesome
+          style={styles.icon}
+          name="user-o"
+          color="#333333"
+          size={rem(21)}
+        />
         <TextInput
           placeholder="Имя"
           placeholderTextColor="#666666"
@@ -131,7 +135,12 @@ export const CreateProfileInfoScreen: React.FC<any> = () => {
         />
       </View>
       <View style={styles.inputWrapper}>
-        <FontAwesome name="user-o" color="#333333" size={20} />
+        <FontAwesome
+          style={styles.icon}
+          name="user-o"
+          color="#333333"
+          size={rem(21)}
+        />
         <TextInput
           placeholder="Фамилия"
           placeholderTextColor="#666666"
@@ -142,7 +151,12 @@ export const CreateProfileInfoScreen: React.FC<any> = () => {
         />
       </View>
       <View style={styles.inputWrapper}>
-        <FontAwesome name="phone" color="#333333" size={20} />
+        <FontAwesome
+          style={styles.icon}
+          name="phone"
+          color="#333333"
+          size={rem(21)}
+        />
         <TextInput
           placeholder="Телефон"
           placeholderTextColor="#666666"
@@ -154,7 +168,12 @@ export const CreateProfileInfoScreen: React.FC<any> = () => {
         />
       </View>
       <View style={styles.inputWrapper}>
-        <FontAwesome name="globe" color="#333333" size={20} />
+        <FontAwesome
+          style={styles.icon}
+          name="globe"
+          color="#333333"
+          size={rem(21)}
+        />
         <TextInput
           placeholder="Страна"
           placeholderTextColor="#666666"
@@ -170,11 +189,14 @@ export const CreateProfileInfoScreen: React.FC<any> = () => {
           <ActivityIndicator size="large" color="#0000ff" />
         </View>
       ) : (
-        <View>
+        <View style={styles.buttonsWrapper}>
           <View style={styles.button}>
             <CustomProfileButton title="Продолжить" onPress={updateUserInfo} />
           </View>
-          <ActionButton size={rem(50)} buttonColor="#2e64e5">
+          <ActionButton
+            style={styles.actionButtonWrapper}
+            size={rem(45)}
+            buttonColor="#2e64e5">
             <ActionButton.Item
               buttonColor="#9b59b6"
               title="Сделать фото"
@@ -205,15 +227,24 @@ const styles = StyleSheet.create({
   },
   userImage: {
     width: rem(90),
-    height: vrem(110),
+    height: vrem(70),
+    marginBottom: vrem(10),
     borderRadius: rem(50),
   },
   userPhoto: {
     width: rem(90),
-    height: vrem(110),
-    backgroundColor: '#b3b3b3',
+    height: vrem(70),
+    backgroundColor: '#666',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  actionButtonWrapper: {
+    marginBottom: rem(15),
+    marginRight: rem(8),
+    bottom: rem(7),
+  },
+  icon: {
+    marginVertical: rem(11),
   },
   photoIcon: {
     opacity: 0.9,
@@ -225,17 +256,16 @@ const styles = StyleSheet.create({
   },
   inputWrapper: {
     flexDirection: 'row',
-    paddingBottom: vrem(4),
     paddingLeft: rem(5),
-    marginVertical: vrem(6),
     borderBottomWidth: vrem(2),
     borderBottomColor: '#f2f2f2',
   },
   textInput: {
-    flex: 1,
-    marginTop: vrem(-20),
+    fontSize: rem(14),
+    paddingVertical: rem(2),
     paddingLeft: rem(10),
-    color: '#333333',
+    marginBottom: rem(3),
+    color: '#000',
     opacity: 0.6,
   },
   actionButtonIcon: {
@@ -243,8 +273,13 @@ const styles = StyleSheet.create({
     color: '#ffffff',
   },
   button: {
-    marginTop: vrem(200),
+    marginTop: rem(80),
+    marginVertical: rem(13),
     paddingHorizontal: rem(80),
+  },
+  buttonsWrapper: {
+    bottom: 80,
+    marginTop: vrem(250),
   },
   userName: {
     fontSize: rem(14),
