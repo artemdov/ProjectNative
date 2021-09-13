@@ -30,6 +30,7 @@ export const ProfileScreen: React.FC<any> = ({navigation}) => {
   const userInfo: UserInfoType | null = useSelector(getUserInfoSelector);
   const isLoadingUserPost = useSelector(isLoadingUserPostSelector);
   const dispatch = useDispatch();
+//  console.log('userInfo', userInfo)
 
   const imageURL = (userInfo && userInfo.userImage) || photoUserProfile;
 

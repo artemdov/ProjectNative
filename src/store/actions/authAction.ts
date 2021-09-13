@@ -15,7 +15,7 @@ export const setIsLoggedIn = (value: boolean) =>
     payload: value,
   } as const);
 
-export const setUser = (user: FirebaseAuthTypes.User | null) =>
+export const setUser = (user: FirebaseAuthTypes.UpdateProfile | null) =>
   ({
     type: actionTypes.auth.SET_USER,
     payload: user,
