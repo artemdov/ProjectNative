@@ -10,7 +10,7 @@ import {rem} from '../consts/size';
 import {useDispatch, useSelector} from 'react-redux';
 import {getUserInfoSelector, getUserSelector} from '../store/selectors';
 import firebase from 'firebase';
-import {setComments} from '../store/actions/feedAction';
+import {setUserCommentsFromFirebase} from '../store/actions/feedActions';
 import {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import {UserInfoType} from '../types/types';
 
@@ -31,40 +31,27 @@ export const CommentInput: React.FC<any> = ({item}) => {
   const [commentValue, setCommentValue] = useState('');
 
   const addComment = async () => {
-    await firebase
-      .database()
-      .ref(`comments/${commentKey}`)
-      .update({
-        comment: commentValue,
-        createdAt: firebase.database.ServerValue.TIMESTAMP,
-        postId: item.id,
-        userId: userUID,
-        userName: `${firstName} ${lastName}`,
-        userImage: image,
-      })
-      .then(() => {
-        setCommentValue('');
-        console.log('comment added');
-      });
-    await firebase
-      .database()
-      .ref('comments/')
-      .on('value', snapshot => {
-        const commentsMap: any[] = [];
-        snapshot.forEach(childSnapshot => {
-          const {comment, createdAt, postId, userId, userName, userImage} =
-            childSnapshot.val();
-          commentsMap.push({
-            comment,
-            createdAt,
-            postId,
-            userId,
-            userName,
-            userImage,
-          });
+    try {
+      await firebase
+        .database()
+        .ref(`comments/${commentKey}`)
+        .update({
+          comment: commentValue,
+          createdAt: firebase.database.ServerValue.TIMESTAMP,
+          postId: item.id,
+          userId: userUID,
+          userName: `${firstName} ${lastName}`,
+          userImage: image,
+        })
+        .then(() => {
+          setCommentValue('');
+          console.log('comment added');
         });
-        dispatch(setComments(commentsMap));
-      });
+      dispatch(setUserCommentsFromFirebase());
+    }
+    catch (error) {
+      console.log(error);
+    }
   };
 
   return (

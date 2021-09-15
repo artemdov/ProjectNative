@@ -19,16 +19,16 @@ import {
   getUserSelector,
 } from '../../store/selectors';
 import {
-  setComments,
   setIsLoadingPost,
   setPosts,
-} from '../../store/actions/feedAction';
+  setUserCommentsFromFirebase,
+} from '../../store/actions/feedActions';
 import storage from '@react-native-firebase/storage';
-import {setIsLoadingUserPost} from '../../store/actions/userProfileAction';
+import {setIsLoadingUserPost} from '../../store/actions/userProfileActions';
 import {
   setOtherUserInfo,
   setOtherUserPosts,
-} from '../../store/actions/otherUserProfileAction';
+} from '../../store/actions/otherUserProfileActions';
 import {PostType} from '../../types/types';
 import {FirebaseAuthTypes} from '@react-native-firebase/auth';
 
@@ -43,58 +43,45 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
   const onPressAddPost = () => navigation.navigate(screenNames.ADD_POST_SCREEN);
 
   const fetch = () => {
-    dispatch(setIsLoadingPost(true));
-    firebase
-      .database()
-      .ref('usersPost')
-      .on('value', snapshot => {
-        const listData: any = [];
-        snapshot.forEach(childSnapshot => {
-          const {
-            id,
-            firstName,
-            lastName,
-            userId,
-            post,
-            postImg,
-            postTime,
-            likes,
-            userImage,
-          } = childSnapshot.val();
-          listData.push({
-            id,
-            firstName,
-            lastName,
-            userId,
-            userImage,
-            postTime,
-            post,
-            postImg,
-            likes,
+    try {
+      dispatch(setIsLoadingPost(true));
+      firebase
+        .database()
+        .ref('usersPost')
+        .on('value', snapshot => {
+          const listData: any = [];
+          snapshot.forEach(childSnapshot => {
+            const {
+              id,
+              firstName,
+              lastName,
+              userId,
+              post,
+              postImg,
+              postTime,
+              likes,
+              userImage,
+            } = childSnapshot.val();
+            listData.push({
+              id,
+              firstName,
+              lastName,
+              userId,
+              userImage,
+              postTime,
+              post,
+              postImg,
+              likes,
+            });
           });
+          dispatch(setPosts(listData));
+          dispatch(setIsLoadingPost(false));
         });
-        dispatch(setPosts(listData));
-        dispatch(setIsLoadingPost(false));
-      });
-    firebase
-      .database()
-      .ref('comments/')
-      .on('value', snapshot => {
-        const commentsMap: any[] = [];
-        snapshot.forEach(childSnapshot => {
-          const {comment, createdAt, postId, userId, userName, userImage} =
-            childSnapshot.val();
-          commentsMap.push({
-            comment,
-            createdAt,
-            postId,
-            userId,
-            userName,
-            userImage,
-          });
-        });
-        dispatch(setComments(commentsMap));
-      });
+      dispatch(setUserCommentsFromFirebase());
+    }
+    catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -141,7 +128,8 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
         return () => {
           postsRef.off('value', onLoadingFeed);
         };
-      } catch (error) {
+      }
+      catch (error) {
         console.log(error);
       }
     },
@@ -159,7 +147,8 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
               dispatch(setOtherUserInfo(snapshot.val()));
             }
           });
-      } catch (error) {
+      }
+      catch (error) {
         console.log(error);
       }
     },
@@ -168,13 +157,13 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
 
   const keyExtractor = (item: {id: string}) => item.id;
 
-  const onPressPostCard = (item: PostType) => {
+  const onPressPostCard = async (item: PostType) => {
+    await getUser(item);
+    await fetchUserPosts(item);
     navigation.navigate(
       userUID === item.userId
         ? screenNames.PROFILE_SCREEN
         : screenNames.OTHER_PROFILE_SCREEN,
-      getUser(item),
-      fetchUserPosts(item),
     );
   };
 

@@ -3,7 +3,6 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {editProfileOptions, withoutHeader} from '../options';
 import screenNames from '../ScreenNames';
 import {ProfileScreen} from '../../screens/Profile/ProfileScreen';
-import {EditProfileScreen} from '../../screens/Profile/EditProfileScreen';
 import {CreateProfileInfoScreen} from '../../screens/Auth/CreateProfileInfoScreen';
 import {useSelector} from 'react-redux';
 import {
@@ -18,6 +17,7 @@ export const ProfileStack: React.FC<any> = () => {
   const isProfileSetupFinished = useSelector(isProfileSetupFinishedSelector);
   const userInfo: UserInfoType | null = useSelector(getUserInfoSelector);
   const isUserInfoCompleted = userInfo?.firstName && userInfo.lastName;
+
   return (
     <Stack.Navigator>
       {isUserInfoCompleted && isProfileSetupFinished ? (
@@ -39,7 +39,7 @@ export const ProfileStack: React.FC<any> = () => {
       )}
       <Stack.Screen
         name={screenNames.EDIT_PROFILE_SCREEN}
-        component={EditProfileScreen}
+        component={CreateProfileInfoScreen}
         // @ts-ignore
         options={editProfileOptions}
       />

@@ -7,15 +7,15 @@ import {
   setIsLoggedIn,
   setUser,
   setProfileSetup,
-} from '../store/actions/authAction';
-import {setArtworks, isLoadingArtworks} from '../store/actions/artworksAction';
+} from '../store/actions/authActions';
+import {setArtworks, isLoadingArtworks} from '../store/actions/artworksActions';
 import {
   setCommentMenuVisible,
   setComments,
   setImage,
   setIsLoadingPost,
   setPosts,
-} from '../store/actions/feedAction';
+} from '../store/actions/feedActions';
 import {
   setProgressLoadingUserImage,
   setUserImage,
@@ -23,11 +23,11 @@ import {
   upLoadingUserImage,
   setUserPosts,
   setIsLoadingUserPost,
-} from '../store/actions/userProfileAction';
+} from '../store/actions/userProfileActions';
 import {
   setOtherUserInfo,
   setOtherUserPosts,
-} from '../store/actions/otherUserProfileAction';
+} from '../store/actions/otherUserProfileActions';
 
 export type myOptionsType = {
   title: string;

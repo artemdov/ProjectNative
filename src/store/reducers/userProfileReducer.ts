@@ -11,7 +11,7 @@ const initialState = {
 };
 type initialStateType = typeof initialState;
 
-export const UserProfileReducer = (
+export const userProfileReducer = (
   state = initialState,
   action: ActionType,
 ) => {

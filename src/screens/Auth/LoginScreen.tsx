@@ -6,7 +6,7 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {LoginSchema} from '../../consts/validation';
 import {Formik} from 'formik';
 import {useDispatch} from 'react-redux';
-import {onSubmitLogIn} from '../../store/actions/authAction';
+import {onSubmitLogIn} from '../../store/actions/authActions';
 import {rem, vrem} from '../../consts/size';
 
 export const LoginScreen: React.FC<any> = () => {

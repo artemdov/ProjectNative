@@ -18,7 +18,8 @@ export const getArtworks = () => async (dispatch: Dispatch) => {
   try {
     let response = await API.getArtworks();
     dispatch(setArtworks(response.data.data));
-  } catch (er) {
+  }
+  catch (er) {
     console.log(er);
   }
 };
@@ -27,7 +28,8 @@ export const searchArtwork = (value: string) => async (dispatch: Dispatch) => {
   try {
     let response = await API.searchArtwork(value);
     dispatch(setArtworks(response.data.data));
-  } catch (er) {
+  }
+  catch (er) {
     console.log(er);
   }
 };

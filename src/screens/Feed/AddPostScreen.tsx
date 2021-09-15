@@ -23,11 +23,12 @@ import {
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {CustomFormButton} from '../../components/common/CustomFormButton';
 import {rem, vrem} from '../../consts/size';
-import {setImage} from '../../store/actions/feedAction';
+import {setImage} from '../../store/actions/feedActions';
 import firebase from 'firebase';
-import {setUserPosts, uploadImage} from '../../store/actions/userProfileAction';
+import {uploadImage} from '../../store/actions/userProfileActions';
 import {UserInfoType} from '../../types/types';
 import {FirebaseAuthTypes} from '@react-native-firebase/auth';
+import {setUserPostFromFirebase} from '../../store/actions/authActions';
 
 export const AddPostScreen: React.FC<any> = ({navigation}) => {
   const newImage = useSelector(getImageSelector);
@@ -97,40 +98,7 @@ export const AddPostScreen: React.FC<any> = ({navigation}) => {
       .catch(err => {
         console.log(err);
       });
-    await firebase
-      .database()
-      .ref('usersPost')
-      .on('value', snapshot => {
-        const listData: any = [];
-        snapshot.forEach(childSnapshot => {
-          const currentUserId = childSnapshot.val().userId;
-          if (currentUserId === userUID) {
-            const {
-              id,
-              firstName,
-              lastName,
-              userId,
-              post,
-              postImg,
-              postTime,
-              likes,
-              userImage,
-            } = childSnapshot.val();
-            listData.push({
-              id,
-              firstName,
-              lastName,
-              userImage,
-              userId,
-              postTime,
-              post,
-              postImg,
-              likes,
-            });
-          }
-        });
-        dispatch(setUserPosts(listData));
-      });
+    dispatch(setUserPostFromFirebase(userUID));
   };
 
   return (

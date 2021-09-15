@@ -15,7 +15,7 @@ import {
   isLoadingUserPostSelector,
 } from '../../store/selectors';
 import {PostCard} from '../../components/PostCard';
-import {photoUserProfile} from '../../consts/photoUserProfile';
+import {userImagePlaceholder} from '../../consts/userImagePlaceholder';
 import {PostType, UserInfoType} from '../../types/types';
 
 export const OtherProfileScreen: React.FC<any> = () => {
@@ -24,9 +24,8 @@ export const OtherProfileScreen: React.FC<any> = () => {
     getOtherUserInfoSelector,
   );
   const isLoadingUserPost = useSelector(isLoadingUserPostSelector);
-
   const userImageURL =
-    (otherUserInfo && otherUserInfo.userImage) || photoUserProfile;
+    (otherUserInfo && otherUserInfo.userImage) || userImagePlaceholder;
 
   const userFirstName = otherUserInfo && otherUserInfo.firstName;
 

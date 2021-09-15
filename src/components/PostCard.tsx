@@ -12,7 +12,7 @@ import moment from 'moment';
 import firebase from 'firebase';
 import {CommentInput} from './CommentInput';
 import {Comment} from './Comment';
-import {setCommentMenuVisible} from '../store/actions/feedAction';
+import {setCommentMenuVisible} from '../store/actions/feedActions';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import {CommentType} from '../types/types';

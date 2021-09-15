@@ -10,7 +10,7 @@ import {
   View,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {onSubmitLogOut} from '../../store/actions/authAction';
+import {onSubmitLogOut} from '../../store/actions/authActions';
 import screenNames from '../../navigation/ScreenNames';
 import {rem, vrem} from '../../consts/size';
 import {
@@ -22,7 +22,7 @@ import firebase from 'firebase';
 import {PostCard} from '../../components/PostCard';
 import {CustomProfileButton} from '../../components/common/CustomProfileButton';
 import storage from '@react-native-firebase/storage';
-import {photoUserProfile} from '../../consts/photoUserProfile';
+import {userImagePlaceholder} from '../../consts/userImagePlaceholder';
 import {PostType, UserInfoType} from '../../types/types';
 
 export const ProfileScreen: React.FC<any> = ({navigation}) => {
@@ -31,7 +31,7 @@ export const ProfileScreen: React.FC<any> = ({navigation}) => {
   const isLoadingUserPost = useSelector(isLoadingUserPostSelector);
   const dispatch = useDispatch();
 
-  const imageURL = (userInfo && userInfo.userImage) || photoUserProfile;
+  const imageURL = (userInfo && userInfo.userImage) || userImagePlaceholder;
 
   const userFirstName = userInfo && userInfo.firstName;
 

@@ -1,5 +1,7 @@
 import actionTypes from '../actionTypes';
 import {CommentType, PostType} from '../../types/types';
+import {Dispatch} from 'redux';
+import firebase from 'firebase';
 
 export const setPosts = (posts: PostType[]) =>
   ({
@@ -29,3 +31,30 @@ export const setIsLoadingPost = (isLoadingPost: boolean) =>
     type: actionTypes.feed.SET_IS_LOADING_POST,
     payload: isLoadingPost,
   } as const);
+
+export const setUserCommentsFromFirebase = () => async (dispatch: Dispatch) => {
+  try {
+    await firebase
+      .database()
+      .ref('comments/')
+      .on('value', snapshot => {
+        const commentsMap: any[] = [];
+        snapshot.forEach(childSnapshot => {
+          const {comment, createdAt, postId, userId, userName, userImage} =
+            childSnapshot.val();
+          commentsMap.push({
+            comment,
+            createdAt,
+            postId,
+            userId,
+            userName,
+            userImage,
+          });
+        });
+        dispatch(setComments(commentsMap));
+      });
+  }
+  catch (error) {
+    console.log(error);
+  }
+};

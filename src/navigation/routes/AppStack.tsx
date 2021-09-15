@@ -3,7 +3,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import screenNames from '../ScreenNames';
 import AuthStack from './AuthStack';
 import {useDispatch, useSelector} from 'react-redux';
-import {setLoadingStatus, setUser} from '../../store/actions/authAction';
+import {setLoadingStatus, setUser} from '../../store/actions/authActions';
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import {withoutHeader} from '../options';
 import {isLoadingSelector, getUserSelector} from '../../store/selectors';

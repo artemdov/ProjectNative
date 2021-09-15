@@ -48,7 +48,7 @@ export const editProfileOptions = {
     fontSize: rem(22),
   },
 };
-export const artworkDetailScreenOptions = {
+export const artworkDetailOptions = {
   title: '',
   headerTintColor: '#fff',
   headerStyle: {...commonHeaderOptions, backgroundColor: '#4f016d'},

@@ -22,18 +22,18 @@ import {
   setUserImage,
   setUserInfo,
   uploadImage,
-} from '../../store/actions/userProfileAction';
+} from '../../store/actions/userProfileActions';
 import ImagePicker from 'react-native-image-crop-picker';
 import {rem, vrem} from '../../consts/size';
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {CustomProfileButton} from '../../components/common/CustomProfileButton';
-import {setProfileSetup} from '../../store/actions/authAction';
-import {photoUserProfile} from '../../consts/photoUserProfile';
+import {setProfileSetup} from '../../store/actions/authActions';
+import {userImagePlaceholder} from '../../consts/userImagePlaceholder';
 import {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import {UserInfoType} from '../../types/types';
 
-export const CreateProfileInfoScreen: React.FC<any> = () => {
+export const CreateProfileInfoScreen: React.FC<any> = ({navigation}) => {
   const user: FirebaseAuthTypes.User | null = useSelector(getUserSelector);
   const isLoadingInfo = useSelector(isLoadingEditUserSelector);
   const userInfo: UserInfoType | null = useSelector(getUserInfoSelector);
@@ -85,24 +85,32 @@ export const CreateProfileInfoScreen: React.FC<any> = () => {
       if (imgUrl == null && usersImage) {
         imgUrl = usersImage;
       }
-      await firebase.database().ref(`users/${userUID}`).update({
-        firstName,
-        lastName,
-        phone,
-        country,
-        userImage: imgUrl,
-      });
-      dispatch(
-        setUserInfo({
-          ...userInfo,
-          firstName,
-          lastName,
-          phone,
-          country,
-          userImage: imgUrl,
-        }),
-      );
-      dispatch(setProfileSetup(true));
+      if (firstName !== '' && lastName !== '') {
+        await firebase
+          .database()
+          .ref(`users/${userUID}`)
+          .update({
+            firstName,
+            lastName,
+            phone,
+            country,
+            userImage: imgUrl,
+          })
+          .then(() => {
+            navigation.goBack();
+          });
+        dispatch(
+          setUserInfo({
+            ...userInfo,
+            firstName,
+            lastName,
+            phone,
+            country,
+            userImage: imgUrl,
+          }),
+        );
+        dispatch(setProfileSetup(true));
+      }
     }
     catch (error) {
       console.log(error);
@@ -113,7 +121,7 @@ export const CreateProfileInfoScreen: React.FC<any> = () => {
     <KeyboardAwareScrollView style={styles.container}>
       <View style={styles.userWrapper}>
         <Image
-          source={{uri: usersImage || photoUserProfile}}
+          source={{uri: usersImage || userImagePlaceholder}}
           style={styles.userImage}
         />
         <Text style={styles.userName}>{`${firstName} ${lastName}`}</Text>
@@ -226,8 +234,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   userImage: {
-    width: rem(90),
-    height: vrem(70),
+    width: rem(63),
+    height: vrem(80),
     marginBottom: vrem(10),
     borderRadius: rem(50),
   },

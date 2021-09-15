@@ -25,8 +25,6 @@ export const progressLoadingImageSelector = (state: AppRootStateType) =>
   state.user.progressLoadingImage;
 export const getUserInfoSelector = (state: AppRootStateType) =>
   state.user.userInfo;
-export const getUserImageSelector = (state: AppRootStateType) =>
-  state.user.userImage;
 export const getUserPostsSelector = (state: AppRootStateType) =>
   state.user.userPosts;
 export const getOtherUserPostsSelector = (state: AppRootStateType) =>
