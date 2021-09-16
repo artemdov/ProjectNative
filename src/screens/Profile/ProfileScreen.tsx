@@ -18,12 +18,11 @@ import {
   getUserPostsSelector,
   isLoadingUserPostSelector,
 } from '../../store/selectors';
-import firebase from 'firebase';
 import {PostCard} from '../../components/PostCard';
 import {CustomProfileButton} from '../../components/common/CustomProfileButton';
-import storage from '@react-native-firebase/storage';
 import {userImagePlaceholder} from '../../consts/userImagePlaceholder';
 import {PostType, UserInfoType} from '../../types/types';
+import {deletePostFromFirebase} from '../../store/actions/feedActions';
 
 export const ProfileScreen: React.FC<any> = ({navigation}) => {
   const userPosts: PostType[] = useSelector(getUserPostsSelector);
@@ -48,62 +47,12 @@ export const ProfileScreen: React.FC<any> = ({navigation}) => {
         },
         {
           text: 'Удалить',
-          onPress: () => deletePost(postId),
+          onPress: () => dispatch(deletePostFromFirebase(postId)),
           style: 'cancel',
         },
       ],
       {cancelable: false},
     );
-  };
-
-  const deletePost = (postId: string) => {
-    try {
-      firebase
-        .database()
-        .ref(`usersPost/${postId}`)
-        .get()
-        .then(snapshot => {
-          if (snapshot.exists()) {
-            const {postImg} = snapshot.val();
-            if (postImg) {
-              const storageRef = storage().refFromURL(postImg);
-              const imageRef = storage().ref(storageRef.fullPath);
-              imageRef
-                .delete()
-                .then(() => {
-                  console.log(`${postImg} удалена!`);
-                  deleteFirebaseData(postId);
-                })
-                .catch(err => {
-                  console.log(err);
-                });
-            } else {
-              deleteFirebaseData(postId);
-            }
-          }
-        });
-    }
-    catch (error) {
-      console.log(error);
-    }
-
-    const deleteFirebaseData = (postId: string) => {
-      try {
-        firebase
-          .database()
-          .ref(`usersPost/${postId}`)
-          .remove()
-          .then(() => {
-            Alert.alert('Пост удален', 'Ваш пост удален успешно!');
-          })
-          .catch(err => {
-            console.log(err);
-          });
-      }
-      catch (error) {
-        console.log(error);
-      }
-    };
   };
 
   const onPressLogout = () => {

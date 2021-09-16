@@ -16,7 +16,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {
   getUserSelector,
   getImageSelector,
-  isLoadingEditUserSelector,
+  isLoadingImageSelector,
   getUserInfoSelector,
   progressLoadingImageSelector,
 } from '../../store/selectors';
@@ -33,8 +33,8 @@ import {setUserPostFromFirebase} from '../../store/actions/authActions';
 export const AddPostScreen: React.FC<any> = ({navigation}) => {
   const newImage = useSelector(getImageSelector);
   const user: FirebaseAuthTypes.User | null = useSelector(getUserSelector);
-  const progressLoading = useSelector(progressLoadingImageSelector);
-  const isLoadingImage = useSelector(isLoadingEditUserSelector);
+  const progressLoadingImage = useSelector(progressLoadingImageSelector);
+  const isLoadingImage = useSelector(isLoadingImageSelector);
   const dispatch = useDispatch();
   const userInfo: UserInfoType | null = useSelector(getUserInfoSelector);
 
@@ -76,7 +76,7 @@ export const AddPostScreen: React.FC<any> = ({navigation}) => {
     const key: string | null = await firebase.database().ref().push().key;
     const imageUrl = await dispatch(uploadImage(newImage));
     dispatch(setImage(''));
-    await firebase
+    firebase
       .database()
       .ref(`usersPost/${key}`)
       .update({
@@ -116,7 +116,7 @@ export const AddPostScreen: React.FC<any> = ({navigation}) => {
         )}
         {isLoadingImage ? (
           <View style={styles.statusLoadingWrapper}>
-            <Text>{progressLoading} % Загружено!</Text>
+            <Text>{progressLoadingImage} % Загружено!</Text>
             <ActivityIndicator size="large" color="#0000ff" />
           </View>
         ) : (

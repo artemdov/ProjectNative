@@ -11,78 +11,33 @@ import {rem} from '../../consts/size';
 import {PostCard} from '../../components/PostCard';
 import screenNames from '../../navigation/ScreenNames';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import firebase from 'firebase';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   isLoadingPostSelector,
   getPostsSelector,
   getUserSelector,
 } from '../../store/selectors';
+import {setAllUsersPostsFromFirebase} from '../../store/actions/userProfileActions';
 import {
-  setIsLoadingPost,
-  setPosts,
-  setUserCommentsFromFirebase,
-} from '../../store/actions/feedActions';
-import storage from '@react-native-firebase/storage';
-import {setIsLoadingUserPost} from '../../store/actions/userProfileActions';
-import {
-  setOtherUserInfo,
-  setOtherUserPosts,
+  setOtherUserInfoFromFirebase,
+  setOtherUserPostFromFirebase,
 } from '../../store/actions/otherUserProfileActions';
 import {PostType} from '../../types/types';
 import {FirebaseAuthTypes} from '@react-native-firebase/auth';
+import {deletePostFromFirebase} from '../../store/actions/feedActions';
 
 export const FeedScreen: React.FC<any> = ({navigation}) => {
   const dispatch = useDispatch();
   const isLoadingPost = useSelector(isLoadingPostSelector);
   const posts: PostType[] = useSelector(getPostsSelector);
   const user: FirebaseAuthTypes.User | null = useSelector(getUserSelector);
-
   const userUID = user && user.uid;
 
   const onPressAddPost = () => navigation.navigate(screenNames.ADD_POST_SCREEN);
 
-  const fetch = () => {
-    try {
-      dispatch(setIsLoadingPost(true));
-      firebase
-        .database()
-        .ref('usersPost')
-        .on('value', snapshot => {
-          const listData: any = [];
-          snapshot.forEach(childSnapshot => {
-            const {
-              id,
-              firstName,
-              lastName,
-              userId,
-              post,
-              postImg,
-              postTime,
-              likes,
-              userImage,
-            } = childSnapshot.val();
-            listData.push({
-              id,
-              firstName,
-              lastName,
-              userId,
-              userImage,
-              postTime,
-              post,
-              postImg,
-              likes,
-            });
-          });
-          dispatch(setPosts(listData));
-          dispatch(setIsLoadingPost(false));
-        });
-      dispatch(setUserCommentsFromFirebase());
-    }
-    catch (error) {
-      console.log(error);
-    }
-  };
+  const fetch = useCallback(() => {
+    dispatch(setAllUsersPostsFromFirebase());
+  }, [dispatch]);
 
   useEffect(() => {
     fetch();
@@ -90,67 +45,14 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
 
   const fetchUserPosts = useCallback(
     (item: PostType) => {
-      try {
-        dispatch(setIsLoadingUserPost(true));
-        const postsRef = firebase.database().ref('usersPost');
-        const onLoadingFeed = postsRef.on('value', snapshot => {
-          const listData: any[] = [];
-          snapshot.forEach(childSnapshot => {
-            const currentUserId = childSnapshot.val().userId;
-            if (currentUserId === item.userId) {
-              const {
-                id,
-                firstName,
-                lastName,
-                userId,
-                post,
-                postImg,
-                postTime,
-                likes,
-                userImage,
-              } = childSnapshot.val();
-              listData.push({
-                id,
-                firstName,
-                lastName,
-                userId,
-                userImage,
-                postTime,
-                post,
-                postImg,
-                likes,
-              });
-            }
-          });
-          dispatch(setOtherUserPosts(listData));
-          dispatch(setIsLoadingUserPost(false));
-        });
-        return () => {
-          postsRef.off('value', onLoadingFeed);
-        };
-      }
-      catch (error) {
-        console.log(error);
-      }
+      dispatch(setOtherUserPostFromFirebase(item.userId));
     },
     [dispatch],
   );
 
   const getUser = useCallback(
     (item: PostType) => {
-      try {
-        firebase
-          .database()
-          .ref(`users/${item.userId}`)
-          .on('value', snapshot => {
-            if (snapshot.exists()) {
-              dispatch(setOtherUserInfo(snapshot.val()));
-            }
-          });
-      }
-      catch (error) {
-        console.log(error);
-      }
+      dispatch(setOtherUserInfoFromFirebase(item.userId));
     },
     [dispatch],
   );
@@ -186,51 +88,12 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
         },
         {
           text: 'Удалить',
-          onPress: () => deletePost(postId),
+          onPress: () => dispatch(deletePostFromFirebase(postId)),
           style: 'cancel',
         },
       ],
       {cancelable: false},
     );
-  };
-
-  const deletePost = (postId: string) => {
-    firebase
-      .database()
-      .ref(`usersPost/${postId}`)
-      .get()
-      .then(snapshot => {
-        if (snapshot.exists()) {
-          const {postImg} = snapshot.val();
-          if (postImg) {
-            const storageRef = storage().refFromURL(postImg);
-            const imageRef = storage().ref(storageRef.fullPath);
-            imageRef
-              .delete()
-              .then(() => {
-                console.log(`${postImg} успешно удалена!`);
-                deleteFirebaseData(postId);
-              })
-              .catch(err => {
-                console.log(err);
-              });
-          } else {
-            deleteFirebaseData(postId);
-          }
-        }
-      });
-    const deleteFirebaseData = (postId: string) => {
-      firebase
-        .database()
-        .ref(`usersPost/${postId}`)
-        .remove()
-        .then(() => {
-          Alert.alert('Пост удален', 'Ваш пост удален успешно!');
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    };
   };
 
   return (

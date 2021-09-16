@@ -14,7 +14,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {
   getUserInfoSelector,
   getUserSelector,
-  isLoadingEditUserSelector,
+  isLoadingImageSelector,
   progressLoadingImageSelector,
 } from '../../store/selectors';
 import firebase from 'firebase';
@@ -35,7 +35,7 @@ import {UserInfoType} from '../../types/types';
 
 export const CreateProfileInfoScreen: React.FC<any> = ({navigation}) => {
   const user: FirebaseAuthTypes.User | null = useSelector(getUserSelector);
-  const isLoadingInfo = useSelector(isLoadingEditUserSelector);
+  const isLoadingImage = useSelector(isLoadingImageSelector);
   const userInfo: UserInfoType | null = useSelector(getUserInfoSelector);
   const progressLoadingImage = useSelector(progressLoadingImageSelector);
   const dispatch = useDispatch();
@@ -86,7 +86,7 @@ export const CreateProfileInfoScreen: React.FC<any> = ({navigation}) => {
         imgUrl = usersImage;
       }
       if (firstName !== '' && lastName !== '') {
-        await firebase
+        firebase
           .database()
           .ref(`users/${userUID}`)
           .update({
@@ -191,7 +191,7 @@ export const CreateProfileInfoScreen: React.FC<any> = ({navigation}) => {
           style={styles.textInput}
         />
       </View>
-      {isLoadingInfo ? (
+      {isLoadingImage ? (
         <View style={styles.statusLoadingWrapper}>
           <Text>{progressLoadingImage} % Загружено!</Text>
           <ActivityIndicator size="large" color="#0000ff" />

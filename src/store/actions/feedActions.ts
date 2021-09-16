@@ -2,6 +2,8 @@ import actionTypes from '../actionTypes';
 import {CommentType, PostType} from '../../types/types';
 import {Dispatch} from 'redux';
 import firebase from 'firebase';
+import {Alert} from 'react-native';
+import storage from '@react-native-firebase/storage';
 
 export const setPosts = (posts: PostType[]) =>
   ({
@@ -58,3 +60,44 @@ export const setUserCommentsFromFirebase = () => async (dispatch: Dispatch) => {
     console.log(error);
   }
 };
+
+const deleteFirebaseData: any = (postId: string) => {
+  firebase
+    .database()
+    .ref(`usersPost/${postId}`)
+    .remove()
+    .then(() => {
+      Alert.alert('Пост удален', 'Ваш пост удален успешно!');
+    })
+    .catch(err => {
+      console.log(err);
+    });
+};
+
+export const deletePostFromFirebase =
+  (postId: string) => (dispatch: Dispatch) => {
+    firebase
+      .database()
+      .ref(`usersPost/${postId}`)
+      .get()
+      .then(snapshot => {
+        if (snapshot.exists()) {
+          const {postImg} = snapshot.val();
+          if (postImg) {
+            const storageRef = storage().refFromURL(postImg);
+            const imageRef = storage().ref(storageRef.fullPath);
+            imageRef
+              .delete()
+              .then(() => {
+                console.log(`${postImg} успешно удалена!`);
+                dispatch(deleteFirebaseData(postId));
+              })
+              .catch(err => {
+                console.log(err);
+              });
+          } else {
+            dispatch(deleteFirebaseData(postId));
+          }
+        }
+      });
+  };

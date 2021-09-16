@@ -4,7 +4,7 @@ import actionTypes from '../actionTypes';
 const initialState = {
   userInfo: null as UserInfoType | null,
   userImage: '',
-  upLoadingUserInfo: false,
+  upLoadingUserImage: false,
   progressLoadingImage: 0,
   userPosts: [],
   isLoadingUserPost: false,
@@ -19,7 +19,7 @@ export const userProfileReducer = (
     case actionTypes.userProfile.SET_USER_INFO:
       return <initialStateType>{...state, userInfo: action.payload};
     case actionTypes.userProfile.SET_UPLOADING_USER_IMAGE:
-      return <initialStateType>{...state, upLoadingUserInfo: action.payload};
+      return <initialStateType>{...state, upLoadingUserImage: action.payload};
     case actionTypes.userProfile.SET_PROGRESS_LOADING_IMAGE:
       return <initialStateType>{...state, progressLoadingImage: action.payload};
     case actionTypes.userProfile.SET_USER_IMAGE:
