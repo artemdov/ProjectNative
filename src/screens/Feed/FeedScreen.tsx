@@ -17,10 +17,10 @@ import {
   getPostsSelector,
   getUserSelector,
 } from '../../store/selectors';
-import {setAllUsersPostsFromFirebase} from '../../store/actions/userProfileActions';
+import {setAllUserPostsFromFirebase} from '../../store/actions/userProfileActions';
 import {
   setOtherUserInfoFromFirebase,
-  setOtherUserPostFromFirebase,
+  setOtherUserPostsFromFirebase,
 } from '../../store/actions/otherUserProfileActions';
 import {PostType} from '../../types/types';
 import {FirebaseAuthTypes} from '@react-native-firebase/auth';
@@ -36,7 +36,7 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
   const onPressAddPost = () => navigation.navigate(screenNames.ADD_POST_SCREEN);
 
   const fetch = useCallback(() => {
-    dispatch(setAllUsersPostsFromFirebase());
+    dispatch(setAllUserPostsFromFirebase());
   }, [dispatch]);
 
   useEffect(() => {
@@ -45,7 +45,7 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
 
   const fetchUserPosts = useCallback(
     (item: PostType) => {
-      dispatch(setOtherUserPostFromFirebase(item.userId));
+      dispatch(setOtherUserPostsFromFirebase(item.userId));
     },
     [dispatch],
   );

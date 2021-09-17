@@ -10,6 +10,7 @@ export const setPosts = (posts: PostType[]) =>
     type: actionTypes.feed.SET_POSTS,
     payload: posts,
   } as const);
+
 export const setComments = (comments: CommentType[]) =>
   ({
     type: actionTypes.feed.SET_COMMENTS,

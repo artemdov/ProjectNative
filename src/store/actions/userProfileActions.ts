@@ -1,5 +1,5 @@
 import actionTypes from '../actionTypes';
-import {AnyAction, Dispatch} from 'redux';
+import {Dispatch} from 'redux';
 import storage from '@react-native-firebase/storage';
 import {Alert} from 'react-native';
 import {PostType, UserInfoType} from '../../types/types';
@@ -80,46 +80,45 @@ export const uploadImage =
     }
   };
 
-export const setAllUsersPostsFromFirebase =
-  () => async (dispatch: Dispatch) => {
-    try {
-      dispatch(setIsLoadingPost(true));
-      firebase
-        .database()
-        .ref('usersPost')
-        .on('value', snapshot => {
-          const listData: any = [];
-          snapshot.forEach(childSnapshot => {
-            const {
-              id,
-              firstName,
-              lastName,
-              userId,
-              post,
-              postImg,
-              postTime,
-              likes,
-              userImage,
-            } = childSnapshot.val();
-            listData.push({
-              id,
-              firstName,
-              lastName,
-              userId,
-              userImage,
-              postTime,
-              post,
-              postImg,
-              likes,
-            });
+export const setAllUserPostsFromFirebase = () => async (dispatch: Dispatch) => {
+  try {
+    dispatch(setIsLoadingPost(true));
+    firebase
+      .database()
+      .ref('usersPost')
+      .on('value', snapshot => {
+        const listData: any = [];
+        snapshot.forEach(childSnapshot => {
+          const {
+            id,
+            firstName,
+            lastName,
+            userId,
+            post,
+            postImg,
+            postTime,
+            likes,
+            userImage,
+          } = childSnapshot.val();
+          listData.push({
+            id,
+            firstName,
+            lastName,
+            userId,
+            userImage,
+            postTime,
+            post,
+            postImg,
+            likes,
           });
-          dispatch(setPosts(listData));
-          dispatch(setIsLoadingPost(false));
         });
-      // @ts-ignore
-      dispatch(setUserCommentsFromFirebase());
-    }
-    catch (error) {
-      console.log(error);
-    }
-  };
+        dispatch(setPosts(listData));
+        dispatch(setIsLoadingPost(false));
+      });
+    // @ts-ignore
+    dispatch(setUserCommentsFromFirebase());
+  }
+  catch (error) {
+    console.log(error);
+  }
+};

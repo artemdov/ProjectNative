@@ -16,7 +16,7 @@ export const setOtherUserPosts = (posts: PostType[]) =>
     payload: posts,
   } as const);
 
-export const setOtherUserPostFromFirebase =
+export const setOtherUserPostsFromFirebase =
   (userUID: string | null): any =>
   async (dispatch: Dispatch) => {
     try {
