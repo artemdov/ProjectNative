@@ -1,11 +1,13 @@
 import actionTypes from '../actionTypes';
 import {ActionType} from '../../types/types';
+import {FirebaseAuthTypes} from '@react-native-firebase/auth';
 
 const initialState = {
-  user: null,
+  user: null as FirebaseAuthTypes.User | null,
   loading: true,
   error: '',
   isLoggedIn: false,
+  profileSetupFinished: true,
 };
 type initialStateType = typeof initialState;
 
@@ -19,6 +21,8 @@ export const authReducer = (state = initialState, action: ActionType) => {
       return <initialStateType>{...state, error: action.payload};
     case actionTypes.auth.LOGIN:
       return <initialStateType>{...state, isLoggedIn: action.payload};
+    case actionTypes.auth.SET_PROFILE_SETUP_FINISHED:
+      return <initialStateType>{...state, profileSetupFinished: action.payload};
     default:
       return state;
   }

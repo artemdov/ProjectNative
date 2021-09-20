@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {
   ActivityIndicator,
-  Alert,
   Image,
   Platform,
   SafeAreaView,
@@ -16,28 +15,38 @@ import ImagePicker from 'react-native-image-crop-picker';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   getUserSelector,
-  isLoadingImageSelector,
-  isTransferredSelector,
   getImageSelector,
+  isLoadingImageSelector,
+  getUserInfoSelector,
+  progressLoadingImageSelector,
 } from '../../store/selectors';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {CustomButton} from '../../components/common/CustomButton';
+import {CustomFormButton} from '../../components/common/CustomFormButton';
 import {rem, vrem} from '../../consts/size';
-import {
-  setImage,
-  setTransferred,
-  upLoadingImage,
-} from '../../store/actions/feedAction';
-import storage from '@react-native-firebase/storage';
+import {setImage} from '../../store/actions/feedActions';
 import firebase from 'firebase';
+import {uploadImage} from '../../store/actions/userProfileActions';
+import {UserInfoType} from '../../types/types';
+import {FirebaseAuthTypes} from '@react-native-firebase/auth';
+import {setUserPostFromFirebase} from '../../store/actions/authActions';
 
 export const AddPostScreen: React.FC<any> = ({navigation}) => {
-  const [postValue, setPostValue] = useState('');
-  const dispatch = useDispatch();
   const newImage = useSelector(getImageSelector);
-  const user: any = useSelector(getUserSelector);
-  const isTransferred = useSelector(isTransferredSelector);
+  const user: FirebaseAuthTypes.User | null = useSelector(getUserSelector);
+  const progressLoadingImage = useSelector(progressLoadingImageSelector);
   const isLoadingImage = useSelector(isLoadingImageSelector);
+  const dispatch = useDispatch();
+  const userInfo: UserInfoType | null = useSelector(getUserInfoSelector);
+
+  const userUID = user && user.uid;
+
+  const imageUser = userInfo && userInfo.userImage;
+
+  const userFirstName = userInfo && userInfo.firstName;
+
+  const userLastName = userInfo && userInfo.lastName;
+
+  const [postValue, setPostValue] = useState('');
 
   const takePhotoFromCamera = () => {
     ImagePicker.openCamera({
@@ -64,17 +73,19 @@ export const AddPostScreen: React.FC<any> = ({navigation}) => {
   };
 
   const submitPost = async () => {
-    const key: any = await firebase.database().ref().push().key;
-    const imageUrl = await uploadImage();
+    const key: string | null = await firebase.database().ref().push().key;
+    const imageUrl = await dispatch(uploadImage(newImage));
     dispatch(setImage(''));
-    await firebase
+    firebase
       .database()
       .ref(`usersPost/${key}`)
       .update({
         id: key,
-        userId: user.uid || null,
+        firstName: userFirstName,
+        lastName: userLastName,
+        userImage: imageUser,
+        userId: userUID,
         post: postValue,
-        userName: user.uid,
         postImg: imageUrl,
         postTime: firebase.database.ServerValue.TIMESTAMP,
         comments: null,
@@ -87,42 +98,7 @@ export const AddPostScreen: React.FC<any> = ({navigation}) => {
       .catch(err => {
         console.log(err);
       });
-  };
-
-  const onChangePost = (value: string) => {
-    setPostValue(value);
-  };
-
-  const uploadImage = async () => {
-    if (!newImage) {
-      return null;
-    }
-    const uploadUri = newImage;
-    let fileName = uploadUri.substring(uploadUri.lastIndexOf('/') + 1);
-    const extension = fileName.split('.').pop();
-    const name = fileName.split('.').slice(0, -1).join('.');
-    fileName = name + Date.now() + '.' + extension;
-    const storageRef = storage().ref(`photos/${fileName}`);
-    const task = storageRef.putFile(uploadUri);
-    task.on('state_changed', taskSnapshot => {
-      dispatch(
-        setTransferred(
-          Math.round(taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) *
-            100,
-        ),
-      );
-    });
-    try {
-      dispatch(upLoadingImage(true));
-      dispatch(setTransferred(0));
-      await task;
-      const url = await storageRef.getDownloadURL();
-      dispatch(upLoadingImage(false));
-      return url;
-    } catch (err) {
-      Alert.alert(err);
-      return '';
-    }
+    dispatch(setUserPostFromFirebase(userUID));
   };
 
   return (
@@ -140,12 +116,12 @@ export const AddPostScreen: React.FC<any> = ({navigation}) => {
         )}
         {isLoadingImage ? (
           <View style={styles.statusLoadingWrapper}>
-            <Text>{isTransferred} % Загружено!</Text>
+            <Text>{progressLoadingImage} % Загружено!</Text>
             <ActivityIndicator size="large" color="#0000ff" />
           </View>
         ) : (
           <View style={styles.customButton}>
-            <CustomButton title="Отправить" onPress={submitPost} />
+            <CustomFormButton title="Отправить" onPress={submitPost} />
           </View>
         )}
         <TextInput
@@ -153,7 +129,7 @@ export const AddPostScreen: React.FC<any> = ({navigation}) => {
           placeholder="Подпись к фото"
           multiline
           value={postValue}
-          onChangeText={onChangePost}
+          onChangeText={setPostValue}
         />
         <ActionButton
           size={rem(50)}
@@ -176,6 +152,7 @@ export const AddPostScreen: React.FC<any> = ({navigation}) => {
     </SafeAreaView>
   );
 };
+
 const styles = StyleSheet.create({
   containerWrapper: {
     flex: 1,

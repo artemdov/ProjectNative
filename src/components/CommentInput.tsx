@@ -7,39 +7,51 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {rem} from '../consts/size';
-import {useSelector} from 'react-redux';
-import {getUserSelector} from '../store/selectors';
+import {useDispatch, useSelector} from 'react-redux';
+import {getUserInfoSelector, getUserSelector} from '../store/selectors';
 import firebase from 'firebase';
+import {setUserCommentsFromFirebase} from '../store/actions/feedActions';
+import {FirebaseAuthTypes} from '@react-native-firebase/auth';
+import {UserInfoType} from '../types/types';
 
 export const CommentInput: React.FC<any> = ({item}) => {
-  const commentKey: any = firebase.database().ref().push().key;
-  const user: any = useSelector(getUserSelector);
+  const commentKey: string | null = firebase.database().ref().push().key;
+  const user: FirebaseAuthTypes.User | null = useSelector(getUserSelector);
+  const userInfo: UserInfoType | null = useSelector(getUserInfoSelector);
+  const dispatch = useDispatch();
+
+  const userUID = user && user.uid;
+
+  const image = userInfo && userInfo.userImage;
+
+  const firstName = userInfo && userInfo.firstName;
+
+  const lastName = userInfo && userInfo.lastName;
 
   const [commentValue, setCommentValue] = useState('');
 
-  const onChangeCommentValue = (value: string) => {
-    setCommentValue(value);
-  };
-
-  const addComment = () => {
-    firebase
-      .database()
-      .ref(`comments/${commentKey}`)
-      .update({
-        comment: commentValue,
-        createdAt: firebase.database.ServerValue.TIMESTAMP,
-        postId: item.id,
-        userId: user.uid,
-        userName: user.uid,
-        userImage:
-          'https://lh5.googleusercontent.com/' +
-          '-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/' +
-          'AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg',
-      })
-      .then(() => {
-        setCommentValue('');
-        console.log('comment added');
-      });
+  const addComment = async () => {
+    try {
+      await firebase
+        .database()
+        .ref(`comments/${commentKey}`)
+        .update({
+          comment: commentValue,
+          createdAt: firebase.database.ServerValue.TIMESTAMP,
+          postId: item.id,
+          userId: userUID,
+          userName: `${firstName} ${lastName}`,
+          userImage: image,
+        })
+        .then(() => {
+          setCommentValue('');
+          console.log('comment added');
+        });
+      dispatch(setUserCommentsFromFirebase());
+    }
+    catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -49,7 +61,7 @@ export const CommentInput: React.FC<any> = ({item}) => {
         placeholder="Комментарий"
         multiline
         value={commentValue}
-        onChangeText={onChangeCommentValue}
+        onChangeText={setCommentValue}
       />
       <TouchableOpacity onPress={addComment} style={styles.button}>
         <Text style={styles.buttonName}>Отправить</Text>

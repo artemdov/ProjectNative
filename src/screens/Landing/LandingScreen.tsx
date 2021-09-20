@@ -1,12 +1,12 @@
 import React from 'react';
 import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
-import {CustomButton} from '../../components/common/CustomButton';
+import {CustomFormButton} from '../../components/common/CustomFormButton';
 import {rem, vrem} from '../../consts/size';
 import screenNames from '../../navigation/ScreenNames';
 
 export const LandingScreen: React.FC<any> = ({navigation}) => {
   const onPressSubmit = () => {
-    navigation.navigate(screenNames.LOGIN_SCREEN);
+    navigation.navigate(screenNames.LOGIN_STACK);
   };
 
   const onPressRegister = () => {
@@ -18,10 +18,10 @@ export const LandingScreen: React.FC<any> = ({navigation}) => {
       <Text style={styles.header}>Добро пожаловать в приложение</Text>
       <View style={styles.buttonWrapper}>
         <View style={styles.buttonEnter}>
-          <CustomButton title={'Вход'} onPress={onPressSubmit} />
+          <CustomFormButton title="Вход" onPress={onPressSubmit} />
         </View>
         <View style={styles.buttonRegistration}>
-          <CustomButton title={'Регистрация'} onPress={onPressRegister} />
+          <CustomFormButton title="Регистрация" onPress={onPressRegister} />
         </View>
       </View>
     </SafeAreaView>

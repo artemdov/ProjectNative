@@ -1,102 +1,58 @@
 import React, {useEffect, useState} from 'react';
-import {rem, vrem} from '../consts/size';
+import {rem} from '../consts/size';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import {useDispatch, useSelector} from 'react-redux';
 import {
-  getUserSelector,
   getCommentsSelector,
+  getUserSelector,
   isCommentVisibleSelector,
 } from '../store/selectors';
 import moment from 'moment';
 import firebase from 'firebase';
 import {CommentInput} from './CommentInput';
 import {Comment} from './Comment';
-import {setComments, setCommentMenuVisible} from '../store/actions/feedAction';
-import {StyleSheet, View, TouchableOpacity, Text, Image} from 'react-native';
+import {setCommentMenuVisible} from '../store/actions/feedActions';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {FirebaseAuthTypes} from '@react-native-firebase/auth';
+import {CommentType} from '../types/types';
 
-export const PostCard: React.FC<any> = ({item, onDelete}) => {
-  let [likes, setLikes] = useState<any>([]);
+export const PostCard: React.FC<any> = ({item, onDelete, onPress}) => {
   const dispatch = useDispatch();
   const comments = useSelector(getCommentsSelector);
-  const user: any = useSelector(getUserSelector);
+  const user: FirebaseAuthTypes.User | null = useSelector(getUserSelector);
   const isCommentVisibleMenu = useSelector(isCommentVisibleSelector);
 
-  const fetchComments = () => {
-    const postCommentsRef = firebase.database().ref('comments/');
-    const onLoadingComments = postCommentsRef.on('value', snapshot => {
-      const commentsMap: any = [];
-      snapshot.forEach(childSnapshot => {
-        const {comment, createdAt, postId, userId, userName} =
-          childSnapshot.val();
-        commentsMap.push({
-          comment,
-          createdAt,
-          postId,
-          userId,
-          userName,
-          userImage:
-            'https://lh5.googleusercontent.com/' +
-            '-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/' +
-            'AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg',
-        });
-      });
-      dispatch(setComments(commentsMap));
-    });
-    return () => {
-      postCommentsRef.off('value', onLoadingComments);
-    };
-  };
+  const userUID = user && user.uid;
 
-  useEffect(() => {
-    fetchComments();
-  }, []);
+  let [likes, setLikes] = useState<(string | null)[]>([]);
 
   useEffect(() => {
     if (item.likes) {
       setLikes(Object.keys(item.likes));
-    } else {
-      setLikes([]);
     }
   }, []);
 
   const likeToggled = () => {
-    if (likes.length === 0) {
+    const isLiked = likes.includes(userUID);
+    if (isLiked) {
       firebase
         .database()
-        .ref(`usersPost/${item.id}/likes/${user.uid}`)
+        .ref(`usersPost/${item.id}/likes/${userUID}`)
+        .remove()
+        .then(() => {
+          setLikes(likes.filter((likeId: string | null) => likeId !== userUID));
+        });
+    } else {
+      firebase
+        .database()
+        .ref(`usersPost/${item.id}/likes/${userUID}`)
         .set({
           isLike: true,
         })
         .then(() => {
-          setLikes([...likes, `${user.uid}`]);
-          console.log('likes1', likes);
+          setLikes([...likes, userUID]);
         });
-    } else {
-      likes.forEach(async (likeKey: string) => {
-        if (likeKey === `${user.uid}`) {
-          await firebase
-            .database()
-            .ref(`usersPost/${item.id}/likes/${user.uid}`)
-            .remove()
-            .then(() => {
-              setLikes(likes.filter((item: any) => item !== user.uid));
-              console.log('likes2', likes);
-            });
-        }
-        if (likeKey !== `${user.uid}`) {
-          await firebase
-            .database()
-            .ref(`usersPost/${item.id}/likes/${user.uid}`)
-            .set({
-              isLike: true,
-            })
-            .then(() => {
-              setLikes([...likes, `${user.uid}`]);
-              console.log('likes3', likes);
-            });
-        }
-      });
     }
   };
 
@@ -107,13 +63,14 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
   const deletePostHandler = () => onDelete(item.id);
 
   const isPostLiked =
-    likes && likes.find((userId: string) => userId === user.uid);
+    likes && likes.find((userId: string | null) => user && userId === user.uid);
 
   const likeIcon = isPostLiked ? 'heart' : 'heart-outline';
 
   const likeIconColor = isPostLiked ? '#2e64e5' : '#333';
 
   const commentsFromUsersId: any[] = [];
+
   comments.forEach((comment: any) => {
     for (let value in comment) {
       if (item.id === comment[value]) {
@@ -123,11 +80,17 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
   });
 
   return (
-    <View style={styles.card}>
+    <View style={styles.card} key={item.id}>
       <View style={styles.userInfo}>
-        <Image style={styles.userImg} source={{uri: item.userImage}} />
+        <Image style={styles.userImage} source={{uri: item.userImage}} />
         <View style={styles.userInfoText}>
-          <Text style={styles.userName}>{item.userName}</Text>
+          <TouchableOpacity onPress={onPress}>
+            <Text style={styles.userName}>
+              {`${item.firstName || 'Без имени'} ${
+                (item.firstName && item.lastName) || ''
+              }`}
+            </Text>
+          </TouchableOpacity>
           <Text style={styles.postTime}>{moment(item.postTime).fromNow()}</Text>
         </View>
       </View>
@@ -150,7 +113,7 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
           </View>
         </TouchableOpacity>
         <Text style={styles.interactionText}>{commentsFromUsersId.length}</Text>
-        {user.uid && user.uid === item.userId && (
+        {userUID === item.userId && (
           <TouchableOpacity onPress={deletePostHandler}>
             <View style={styles.interactionHeart}>
               <Ionicons name="trash-bin-outline" size={24} color="#000" />
@@ -162,7 +125,7 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
         <View>
           <CommentInput item={item} />
           {comments &&
-            comments.map((comment: any) => {
+            comments.map((comment: CommentType) => {
               if (item.id === comment.postId) {
                 return (
                   <Comment
@@ -180,6 +143,7 @@ export const PostCard: React.FC<any> = ({item, onDelete}) => {
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   card: {
     backgroundColor: '#f8f8f8',
@@ -192,7 +156,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     padding: rem(15),
   },
-  userImg: {
+  userImage: {
     width: rem(50),
     height: rem(50),
     borderRadius: rem(30),

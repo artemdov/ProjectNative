@@ -6,20 +6,28 @@ import {
   setLoadingStatus,
   setIsLoggedIn,
   setUser,
-} from '../store/actions/authAction';
-import {
-  setArtworks,
-  isLoadingArtworks,
-} from '../store/actions/ArtworksAction';
+  setProfileSetup,
+} from '../store/actions/authActions';
+import {setArtworks, isLoadingArtworks} from '../store/actions/artworksActions';
 import {
   setCommentMenuVisible,
   setComments,
   setImage,
   setIsLoadingPost,
   setPosts,
-  setTransferred,
-  upLoadingImage,
-} from '../store/actions/feedAction';
+} from '../store/actions/feedActions';
+import {
+  setProgressLoadingUserImage,
+  setUserImage,
+  setUserInfo,
+  upLoadingUserImage,
+  setUserPosts,
+  setIsLoadingUserPost,
+} from '../store/actions/userProfileActions';
+import {
+  setOtherUserInfo,
+  setOtherUserPosts,
+} from '../store/actions/otherUserProfileActions';
 
 export type myOptionsType = {
   title: string;
@@ -41,7 +49,7 @@ export type Props = {
   navigation: LandingScreenProp;
 };
 
-export type CustomTextInputType = {
+export type CustomFormTextInputType = {
   onChangePassword: (text: string) => void;
   onBlur?: (e: FocusEvent) => void;
   value: string;
@@ -61,7 +69,8 @@ export type OnSubmitLoginType = {
 export type PostType = {
   id: string;
   userId: string;
-  userName?: string;
+  firstName?: string;
+  lastName?: string;
   userImage?: string;
   postTime: number;
   post?: string;
@@ -69,6 +78,16 @@ export type PostType = {
   likes?: {
     isLike: boolean;
   };
+};
+export type UserInfoType = {
+  country?: string;
+  createdAt?: number;
+  email?: string;
+  firstName: string;
+  lastName: string;
+  phone?: string;
+  userId: string;
+  userImage?: string;
 };
 export type CommentType = {
   comment?: string;
@@ -89,7 +108,8 @@ type AuthActionType =
   | ReturnType<typeof setIsLoggedIn>
   | ReturnType<typeof errorMessage>
   | ReturnType<typeof setLoadingStatus>
-  | ReturnType<typeof setUser>;
+  | ReturnType<typeof setUser>
+  | ReturnType<typeof setProfileSetup>;
 
 type ArtworkActionType =
   | ReturnType<typeof setArtworks>
@@ -100,8 +120,23 @@ type feedActionType =
   | ReturnType<typeof setComments>
   | ReturnType<typeof setImage>
   | ReturnType<typeof setCommentMenuVisible>
-  | ReturnType<typeof upLoadingImage>
-  | ReturnType<typeof setIsLoadingPost>
-  | ReturnType<typeof setTransferred>;
+  | ReturnType<typeof setIsLoadingPost>;
 
-export type ActionType = ArtworkActionType | AuthActionType | feedActionType;
+type ProfileUserType =
+  | ReturnType<typeof setUserInfo>
+  | ReturnType<typeof upLoadingUserImage>
+  | ReturnType<typeof setProgressLoadingUserImage>
+  | ReturnType<typeof setUserImage>
+  | ReturnType<typeof setUserPosts>
+  | ReturnType<typeof setIsLoadingUserPost>;
+
+type OtherProfileUserType =
+  | ReturnType<typeof setOtherUserPosts>
+  | ReturnType<typeof setOtherUserInfo>;
+
+export type ActionType =
+  | ArtworkActionType
+  | AuthActionType
+  | feedActionType
+  | ProfileUserType
+  | OtherProfileUserType;

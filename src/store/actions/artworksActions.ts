@@ -2,10 +2,10 @@ import actionTypes from '../actionTypes';
 import {Dispatch} from 'redux';
 import {API} from '../../api/api';
 
-export const setArtworks = (data: []) =>
+export const setArtworks = (artworksInfo: []) =>
   ({
     type: actionTypes.artworks.SET_ARTWORKS,
-    payload: data,
+    payload: artworksInfo,
   } as const);
 
 export const isLoadingArtworks = (isLoading: boolean) =>
@@ -23,6 +23,7 @@ export const getArtworks = () => async (dispatch: Dispatch) => {
     console.log(er);
   }
 };
+
 export const searchArtwork = (value: string) => async (dispatch: Dispatch) => {
   try {
     let response = await API.searchArtwork(value);

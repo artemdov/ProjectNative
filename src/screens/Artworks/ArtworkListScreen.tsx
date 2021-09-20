@@ -19,7 +19,7 @@ import {
   getArtworks,
   searchArtwork,
   isLoadingArtworks,
-} from '../../store/actions/ArtworksAction';
+} from '../../store/actions/artworksActions';
 import {rem, vrem} from '../../consts/size';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 

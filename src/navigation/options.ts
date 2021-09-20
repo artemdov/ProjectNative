@@ -1,10 +1,10 @@
-import {rem} from '../consts/size';
+import {rem, vrem} from '../consts/size';
 
 export const commonHeaderOptions = {
   backgroundColor: '#0c0c30',
-  height: 50,
+  height: vrem(60),
 };
-export const myOptions = {
+export const loginOptions = {
   title: 'Вход',
   headerTintColor: '#fff',
   headerStyle: commonHeaderOptions,
@@ -20,9 +20,35 @@ export const addPostOptions = {
     shadowColor: '#2e64e515',
     elevation: 0,
   },
+  headerTitleStyle: {
+    fontSize: rem(22),
+  },
   headerBackTitleVisible: false,
 };
-export const ArtworkDetailScreenOptions = {
+export const profileOptions = {
+  title: '',
+  headerTitleAlign: 'center',
+  headerStyle: {
+    backgroundColor: '#fff',
+    shadowColor: '#fff',
+    elevation: 0,
+  },
+  headerBackTitleVisible: false,
+};
+export const editProfileOptions = {
+  headerTitle: 'Редактировать профиль',
+  headerBackTitleVisible: false,
+  headerTitleAlign: 'center',
+  headerStyle: {
+    height: vrem(60),
+    shadowColor: '#fff',
+    elevation: 0,
+  },
+  headerTitleStyle: {
+    fontSize: rem(22),
+  },
+};
+export const artworkDetailOptions = {
   title: '',
   headerTintColor: '#fff',
   headerStyle: {...commonHeaderOptions, backgroundColor: '#4f016d'},

@@ -1,17 +1,18 @@
 import React from 'react';
 import {StyleSheet, Text, View, SafeAreaView} from 'react-native';
-import {CustomButton} from '../../components/common/CustomButton';
-import {CustomTextInput} from '../../components/common/CustomTextInput';
+import {CustomFormButton} from '../../components/common/CustomFormButton';
+import {CustomFormTextInput} from '../../components/common/CustomFormTextInput';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {LoginSchema} from '../../consts/validation';
 import {Formik} from 'formik';
 import {useDispatch} from 'react-redux';
-import {onSubmitLogIn} from '../../store/actions/authAction';
+import {onSubmitLogIn} from '../../store/actions/authActions';
 import {rem, vrem} from '../../consts/size';
 
-export const LoginScreen = () => {
+export const LoginScreen: React.FC<any> = () => {
   const dispatch = useDispatch();
-  const onSubmit = (values: any) => {
+
+  const onSubmit = async (values: any) => {
     dispatch(onSubmitLogIn(values));
   };
 
@@ -35,7 +36,7 @@ export const LoginScreen = () => {
               handleSubmit,
             }) => (
               <View style={styles.wrapperElements}>
-                <CustomTextInput
+                <CustomFormTextInput
                   label={'Email'}
                   error={!!errors.email && touched.email}
                   errorMessage={errors.email}
@@ -43,7 +44,7 @@ export const LoginScreen = () => {
                   onChangePassword={handleChange('email')}
                   onBlur={handleBlur('email')}
                 />
-                <CustomTextInput
+                <CustomFormTextInput
                   label={'Пароль'}
                   error={!!errors.password && touched.password}
                   errorMessage={errors.password}
@@ -53,7 +54,7 @@ export const LoginScreen = () => {
                   secureTextEntry={true}
                 />
                 <View style={styles.button}>
-                  <CustomButton title={'Вход'} onPress={handleSubmit} />
+                  <CustomFormButton title="Вход" onPress={handleSubmit} />
                 </View>
               </View>
             )}
@@ -66,6 +67,8 @@ export const LoginScreen = () => {
 
 const styles = StyleSheet.create({
   containerKeyboard: {
+    height: '100%',
+    width: '100%',
     backgroundColor: '#8a2be2',
   },
   header: {

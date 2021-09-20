@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {
   StyleSheet,
   FlatList,
@@ -11,57 +11,70 @@ import {rem} from '../../consts/size';
 import {PostCard} from '../../components/PostCard';
 import screenNames from '../../navigation/ScreenNames';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import firebase from 'firebase';
 import {useDispatch, useSelector} from 'react-redux';
-import {isLoadingPostSelector, getPostsSelector} from '../../store/selectors';
-import {setIsLoadingPost, setPosts} from '../../store/actions/feedAction';
-import storage from '@react-native-firebase/storage';
+import {
+  isLoadingPostSelector,
+  getPostsSelector,
+  getUserSelector,
+} from '../../store/selectors';
+import {setAllUserPostsFromFirebase} from '../../store/actions/userProfileActions';
+import {
+  setOtherUserInfoFromFirebase,
+  setOtherUserPostsFromFirebase,
+} from '../../store/actions/otherUserProfileActions';
+import {PostType} from '../../types/types';
+import {FirebaseAuthTypes} from '@react-native-firebase/auth';
+import {deletePostFromFirebase} from '../../store/actions/feedActions';
 
 export const FeedScreen: React.FC<any> = ({navigation}) => {
   const dispatch = useDispatch();
   const isLoadingPost = useSelector(isLoadingPostSelector);
-  const data: any = useSelector(getPostsSelector);
+  const posts: PostType[] = useSelector(getPostsSelector);
+  const user: FirebaseAuthTypes.User | null = useSelector(getUserSelector);
+  const userUID = user && user.uid;
 
   const onPressAddPost = () => navigation.navigate(screenNames.ADD_POST_SCREEN);
 
-  const fetch = () => {
-    dispatch(setIsLoadingPost(true));
-    const postsRef = firebase.database().ref('usersPost');
-    const onLoadingFeed = postsRef.on('value', snapshot => {
-      const listData: any = [];
-      snapshot.forEach(childSnapshot => {
-        const {id, userId, post, postImg, postTime, likes, userName} =
-          childSnapshot.val();
-        listData.push({
-          id,
-          userId,
-          userName,
-          userImage:
-            'https://lh5.googleusercontent.com/' +
-            '-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/' +
-            'AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg',
-          postTime,
-          post,
-          postImg,
-          likes,
-        });
-      });
-      dispatch(setPosts(listData));
-      dispatch(setIsLoadingPost(false));
-    });
-    return () => {
-      postsRef.off('value', onLoadingFeed);
-    };
-  };
+  const fetch = useCallback(() => {
+    dispatch(setAllUserPostsFromFirebase());
+  }, [dispatch]);
 
   useEffect(() => {
     fetch();
   }, []);
 
+  const fetchUserPosts = useCallback(
+    (item: PostType) => {
+      dispatch(setOtherUserPostsFromFirebase(item.userId));
+    },
+    [dispatch],
+  );
+
+  const getUser = useCallback(
+    (item: PostType) => {
+      dispatch(setOtherUserInfoFromFirebase(item.userId));
+    },
+    [dispatch],
+  );
+
   const keyExtractor = (item: {id: string}) => item.id;
 
-  const renderItem = ({item}: any) => (
-    <PostCard item={item} onDelete={handleDelete} />
+  const onPressPostCard = async (item: PostType) => {
+    await getUser(item);
+    await fetchUserPosts(item);
+    navigation.navigate(
+      userUID === item.userId
+        ? screenNames.PROFILE_SCREEN
+        : screenNames.OTHER_PROFILE_SCREEN,
+    );
+  };
+
+  const renderItem: ({item}: {item: PostType}) => JSX.Element = ({item}) => (
+    <PostCard
+      item={item}
+      onDelete={handleDelete}
+      onPress={() => onPressPostCard(item)}
+    />
   );
 
   const handleDelete = (postId: string) => {
@@ -71,56 +84,16 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
       [
         {
           text: 'Отмена',
-          onPress: () => console.log('Cancel pressed'),
           style: 'cancel',
         },
         {
           text: 'Удалить',
-          onPress: () => deletePost(postId),
+          onPress: () => dispatch(deletePostFromFirebase(postId)),
           style: 'cancel',
         },
       ],
       {cancelable: false},
     );
-  };
-
-  const deletePost = (postId: string) => {
-    firebase
-      .database()
-      .ref(`usersPost/${postId}`)
-      .get()
-      .then(snapshot => {
-        if (snapshot.exists()) {
-          const {postImg} = snapshot.val();
-          if (postImg) {
-            const storageRef = storage().refFromURL(postImg);
-            const imageRef = storage().ref(storageRef.fullPath);
-            imageRef
-              .delete()
-              .then(() => {
-                console.log(`${postImg} успешно удалена!`);
-                deleteFirebaseData(postId);
-              })
-              .catch(err => {
-                console.log(err);
-              });
-          } else {
-            deleteFirebaseData(postId);
-          }
-        }
-      });
-    const deleteFirebaseData = (postId: string) => {
-      firebase
-        .database()
-        .ref(`usersPost/${postId}`)
-        .remove()
-        .then(() => {
-          Alert.alert('Пост удален', 'Ваш пост удален успешно!');
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    };
   };
 
   return (
@@ -132,7 +105,7 @@ export const FeedScreen: React.FC<any> = ({navigation}) => {
         <ActivityIndicator style={styles.loader} size="large" color="#0000ff" />
       ) : (
         <FlatList
-          data={data}
+          data={posts}
           renderItem={renderItem}
           keyExtractor={keyExtractor}
           showsVerticalScrollIndicator={false}

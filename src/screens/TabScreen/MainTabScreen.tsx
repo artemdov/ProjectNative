@@ -1,12 +1,14 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {ProfileScreen} from '../Profile/ProfileScreen';
 import screenNames from '../../navigation/ScreenNames';
 import {bottomTabBarOptions} from '../../navigation/options';
 import {Image, StyleSheet} from 'react-native';
 import {rem} from '../../consts/size';
 import {FeedPostStack} from '../../navigation/routes/FeedPostStack';
 import {ArtworkStack} from '../../navigation/routes/ArtworkStack';
+import {ProfileStack} from '../../navigation/routes/ProfileStack';
+import {useSelector} from 'react-redux';
+import {isProfileSetupFinishedSelector} from '../../store/selectors';
 
 const Tab = createBottomTabNavigator<any>();
 const notFocused = 0.51;
@@ -31,34 +33,42 @@ const FeedTabBarIcon: React.FC<any> = ({focused}) => (
   />
 );
 
-export const MainTabScreen = () => (
-  <Tab.Navigator tabBarOptions={bottomTabBarOptions}>
-    <Tab.Screen
-      name={screenNames.PROFILE_SCREEN}
-      component={ProfileScreen}
-      options={{
-        tabBarLabel: 'Профиль',
-        tabBarIcon: profileTabBarIcon,
-      }}
-    />
-    <Tab.Screen
-      name={screenNames.FEED_POST_STACK}
-      component={FeedPostStack}
-      options={{
-        tabBarLabel: 'Лента',
-        tabBarIcon: FeedTabBarIcon,
-      }}
-    />
-    <Tab.Screen
-      name={screenNames.ARTWORK_API_STACK}
-      component={ArtworkStack}
-      options={{
-        tabBarLabel: 'Данные',
-        tabBarIcon: ArtworkTabBarIcon,
-      }}
-    />
-  </Tab.Navigator>
-);
+export const MainTabScreen = () => {
+  const isProfileSetupFinished = useSelector(isProfileSetupFinishedSelector);
+
+  return (
+    <Tab.Navigator tabBarOptions={bottomTabBarOptions}>
+      <Tab.Screen
+        name={screenNames.PROFILE_STACK}
+        component={ProfileStack}
+        options={{
+          tabBarLabel: 'Профиль',
+          tabBarIcon: profileTabBarIcon,
+        }}
+      />
+      {isProfileSetupFinished && (
+        <Tab.Screen
+          name={screenNames.FEED_POST_STACK}
+          component={FeedPostStack}
+          options={{
+            tabBarLabel: 'Лента',
+            tabBarIcon: FeedTabBarIcon,
+          }}
+        />
+      )}
+      {isProfileSetupFinished && (
+        <Tab.Screen
+          name={screenNames.ARTWORK_API_STACK}
+          component={ArtworkStack}
+          options={{
+            tabBarLabel: 'Данные',
+            tabBarIcon: ArtworkTabBarIcon,
+          }}
+        />
+      )}
+    </Tab.Navigator>
+  );
+};
 
 const styles = StyleSheet.create({
   icon: {

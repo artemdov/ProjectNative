@@ -1,20 +1,18 @@
 import React from 'react';
 import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
-import {CustomButton} from '../../components/common/CustomButton';
-import {CustomTextInput} from '../../components/common/CustomTextInput';
+import {CustomFormButton} from '../../components/common/CustomFormButton';
+import {CustomFormTextInput} from '../../components/common/CustomFormTextInput';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Formik} from 'formik';
 import {RegistrationSchema} from '../../consts/validation';
 import {useDispatch} from 'react-redux';
-import {onSubmitRegistration} from '../../store/actions/authAction';
-import screenNames from '../../navigation/ScreenNames';
+import {onSubmitRegistration} from '../../store/actions/authActions';
 import {rem, vrem} from '../../consts/size';
 
-export const RegistrationScreen: React.FC<any> = ({navigation}) => {
+export const RegistrationScreen: React.FC<any> = () => {
   const dispatch = useDispatch();
   const onSubmit = (values: any) => {
     dispatch(onSubmitRegistration(values));
-    navigation.navigate(screenNames.LOGIN_SCREEN);
   };
 
   return (
@@ -37,7 +35,7 @@ export const RegistrationScreen: React.FC<any> = ({navigation}) => {
               handleSubmit,
             }) => (
               <View style={styles.wrapperElements}>
-                <CustomTextInput
+                <CustomFormTextInput
                   label={'Email'}
                   error={!!errors.email && touched.email}
                   errorMessage={errors.email}
@@ -45,7 +43,7 @@ export const RegistrationScreen: React.FC<any> = ({navigation}) => {
                   onChangePassword={handleChange('email')}
                   onBlur={handleBlur('email')}
                 />
-                <CustomTextInput
+                <CustomFormTextInput
                   label={'Пароль'}
                   error={!!errors.password && touched.password}
                   errorMessage={errors.password}
@@ -54,7 +52,7 @@ export const RegistrationScreen: React.FC<any> = ({navigation}) => {
                   onBlur={handleBlur('password')}
                   secureTextEntry={true}
                 />
-                <CustomTextInput
+                <CustomFormTextInput
                   label={'Повторите Пароль'}
                   error={!!errors.confirmPassword && touched.confirmPassword}
                   errorMessage={errors.confirmPassword}
@@ -64,7 +62,7 @@ export const RegistrationScreen: React.FC<any> = ({navigation}) => {
                   secureTextEntry={true}
                 />
                 <View style={styles.button}>
-                  <CustomButton title={'Продолжить'} onPress={handleSubmit} />
+                  <CustomFormButton title="Продолжить" onPress={handleSubmit} />
                 </View>
               </View>
             )}
@@ -84,6 +82,9 @@ const styles = StyleSheet.create({
     fontSize: rem(26),
     marginVertical: vrem(50),
     color: '#ffff',
+  },
+  updateInfoButton: {
+    marginVertical: vrem(2),
   },
   button: {
     marginTop: vrem(42),
