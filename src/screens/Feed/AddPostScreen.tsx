@@ -54,10 +54,16 @@ export const AddPostScreen: React.FC<any> = ({navigation}) => {
       height: 200,
       cropping: true,
       freeStyleCropEnabled: true,
-    }).then(image => {
-      const imageUri = Platform.OS === 'ios' ? image.sourceURL : image.path;
-      dispatch(setImage(imageUri));
-    });
+    })
+      .then(image => {
+        const imageUri = Platform.OS === 'ios' ? image.sourceURL : image.path;
+        dispatch(setImage(imageUri));
+      })
+      .catch(error => {
+        if (error.code === 'E_PICKER_CANCELLED') {
+          return false;
+        }
+      });
   };
 
   const choosePhotoFromLibrary = () => {
@@ -66,10 +72,16 @@ export const AddPostScreen: React.FC<any> = ({navigation}) => {
       height: 200,
       cropping: true,
       freeStyleCropEnabled: true,
-    }).then(image => {
-      const imageUri = Platform.OS === 'ios' ? image.sourceURL : image.path;
-      dispatch(setImage(imageUri));
-    });
+    })
+      .then(image => {
+        const imageUri = Platform.OS === 'ios' ? image.sourceURL : image.path;
+        dispatch(setImage(imageUri));
+      })
+      .catch(error => {
+        if (error.code === 'E_PICKER_CANCELLED') {
+          return false;
+        }
+      });
   };
 
   const submitPost = async () => {
