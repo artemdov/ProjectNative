@@ -58,11 +58,17 @@ export const CreateProfileInfoScreen: React.FC<any> = ({navigation}) => {
       height: 200,
       cropping: true,
       freeStyleCropEnabled: true,
-    }).then(image => {
-      const imageUri: string | undefined =
-        Platform.OS === 'ios' ? image.sourceURL : image.path;
-      setUsersImage(imageUri);
-    });
+    })
+      .then(image => {
+        const imageUri: string | undefined =
+          Platform.OS === 'ios' ? image.sourceURL : image.path;
+        setUsersImage(imageUri);
+      })
+      .catch(error => {
+        if (error.code === 'E_PICKER_CANCELLED') {
+          return false;
+        }
+      });
   };
 
   const choosePhotoFromLibrary = () => {
@@ -71,11 +77,17 @@ export const CreateProfileInfoScreen: React.FC<any> = ({navigation}) => {
       height: 200,
       cropping: true,
       freeStyleCropEnabled: true,
-    }).then(image => {
-      const imageUri: string | undefined =
-        Platform.OS === 'ios' ? image.sourceURL : image.path;
-      setUsersImage(imageUri);
-    });
+    })
+      .then(image => {
+        const imageUri: string | undefined =
+          Platform.OS === 'ios' ? image.sourceURL : image.path;
+        setUsersImage(imageUri);
+      })
+      .catch(error => {
+        if (error.code === 'E_PICKER_CANCELLED') {
+          return false;
+        }
+      });
   };
 
   const updateUserInfo = async () => {
@@ -106,6 +118,7 @@ export const CreateProfileInfoScreen: React.FC<any> = ({navigation}) => {
             lastName,
             phone,
             country,
+            userId: userUID,
             userImage: imgUrl,
           }),
         );

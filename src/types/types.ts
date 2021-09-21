@@ -86,8 +86,8 @@ export type UserInfoType = {
   firstName: string;
   lastName: string;
   phone?: string;
-  userId: string;
-  userImage?: string;
+  userId: string | null;
+  userImage?: any;
 };
 export type CommentType = {
   comment?: string;
