@@ -127,6 +127,7 @@ export const CreateProfileInfoScreen: React.FC<any> = ({navigation}) => {
     }
     catch (error) {
       console.log(error);
+      dispatch(setProfileSetup(false));
     }
   };
 

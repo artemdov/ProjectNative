@@ -8,7 +8,7 @@ import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import {withoutHeader} from '../options';
 import {isLoadingSelector, getUserSelector} from '../../store/selectors';
 import {LoadingScreen} from '../../screens/Loading/LoadingScreen';
-import {MainTabScreen} from '../../screens/TabScreen/MainTabScreen';
+import {MainTabScreen} from './MainTabScreen';
 
 const Stack = createStackNavigator<any>();
 

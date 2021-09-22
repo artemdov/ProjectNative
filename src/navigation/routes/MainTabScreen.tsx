@@ -1,12 +1,12 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import screenNames from '../../navigation/ScreenNames';
-import {bottomTabBarOptions} from '../../navigation/options';
+import screenNames from '../ScreenNames';
+import {bottomTabBarOptions} from '../options';
 import {Image, StyleSheet} from 'react-native';
 import {rem} from '../../consts/size';
-import {FeedPostStack} from '../../navigation/routes/FeedPostStack';
-import {ArtworkStack} from '../../navigation/routes/ArtworkStack';
-import {ProfileStack} from '../../navigation/routes/ProfileStack';
+import {FeedPostStack} from './FeedPostStack';
+import {ArtworkStack} from './ArtworkStack';
+import {ProfileStack} from './ProfileStack';
 import {useSelector} from 'react-redux';
 import {isProfileSetupFinishedSelector} from '../../store/selectors';
 

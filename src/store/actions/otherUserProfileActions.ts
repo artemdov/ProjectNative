@@ -60,6 +60,7 @@ export const setOtherUserPostsFromFirebase =
     }
     catch (error) {
       console.log(error);
+      dispatch(setIsLoadingUserPost(false));
     }
   };
 
@@ -77,5 +78,6 @@ export const setOtherUserInfoFromFirebase =
     }
     catch (error) {
       console.log(error);
+      dispatch(setIsLoadingUserPost(false));
     }
   };
