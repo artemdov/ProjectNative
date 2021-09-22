@@ -115,6 +115,7 @@ export const onSubmitRegistration =
 export const onSubmitLogIn =
   (data: OnSubmitLoginType) => async (dispatch: Dispatch) => {
     try {
+      dispatch(setLoadingStatus(true));
       const res = await auth().signInWithEmailAndPassword(
         data.email,
         data.password,

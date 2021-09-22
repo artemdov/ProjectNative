@@ -73,8 +73,8 @@ export const uploadImage =
       const url = await storageRef.getDownloadURL();
       dispatch(upLoadingUserImage(false));
       return url;
-    }
-    catch (err) {
+    } catch (err) {
+      dispatch(upLoadingUserImage(false));
       Alert.alert(err);
       return '';
     }
@@ -117,8 +117,8 @@ export const setAllUserPostsFromFirebase = () => async (dispatch: Dispatch) => {
       });
     // @ts-ignore
     dispatch(setUserCommentsFromFirebase());
-  }
-  catch (error) {
+  } catch (error) {
+    dispatch(setIsLoadingPost(false));
     console.log(error);
   }
 };
